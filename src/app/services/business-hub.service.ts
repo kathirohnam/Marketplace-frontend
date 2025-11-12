@@ -1,14 +1,16 @@
-// services/business-hub.service.ts
 import { Injectable, signal } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { BusinessHubApi } from './business-hub.api';
+import { BusinessHubApi, BusinessAdminPageDto } from './business-hub.api';
 import {
   BusinessDto,
   BusinessRegistrationDto,
   Page,
   WeightedBusinessHitDto,
+  BusinessImageDto,
+  BusinessServiceDto,
 } from '../models/business-backend';
 
+/** Card VM used in lists/grids */
 export interface BusinessCardVM {
   id: number;
   name: string;
@@ -25,13 +27,22 @@ export interface BusinessCardVM {
   memberSince: number;
   verified: boolean;
   featured: boolean;
+  ownerId?: number; // used by click-audit
 }
 
+/** Detail VM used in the business detail page */
 export interface DetailedBusinessVM extends BusinessCardVM {
   fullDescription: string;
   services: string[];
   gallery: string[];
   reviews: Array<{ id: number; author: string; rating: number; comment: string; date: string }>;
+}
+
+/** Dialog VM (business + owner) */
+export interface BusinessDialogVM {
+  business: any;
+  owner: any;
+  verified?: boolean;
 }
 
 export interface Category {
@@ -49,7 +60,7 @@ export class BusinessHubService {
 
   constructor(private api: BusinessHubApi) {}
 
-  // Categories
+  // ===================== CATEGORIES =====================
   getCategories(): Observable<Category[]> {
     return this.api.listCategoriesVM().pipe(
       map((services) =>
@@ -64,20 +75,87 @@ export class BusinessHubService {
     );
   }
 
-  // Lists / detail
-  getBusinessesByCategory(categoryServiceId: number | string): Observable<BusinessCardVM[]> {
-    const id = Number(categoryServiceId);
-    return this.api.listBusinesses(id).pipe(map(list => list.map(this.toCardVM)));
+  getServiceName(serviceId: number): Observable<string> {
+    return this.api.getService(serviceId).pipe(map((s: BusinessServiceDto) => s.serviceName));
   }
 
+  // ===================== DIRECTORY / SEARCH (plural path) =====================
+  /**
+   * Backend search across directory.
+   * - categoryValue: 'all' or serviceId (string)
+   * - zip: optional
+   * - page/size: optional
+   */
+  searchDirectory(opts: {
+    q?: string;
+    categoryValue?: string;  // 'all' | '<serviceId>'
+    zip?: string;
+    page?: number;
+    size?: number;
+  }): Observable<BusinessCardVM[]> {
+    const serviceIdParam =
+      opts.categoryValue && opts.categoryValue !== 'all' ? String(opts.categoryValue) : undefined;
+
+    return this.api.searchDirectory({
+      q: opts.q ?? undefined,
+      serviceId: serviceIdParam,
+      zipCode: opts.zip ?? undefined,
+      page: opts.page ?? 0,
+      size: opts.size ?? 50,
+    }).pipe(
+      map((res: Page<BusinessDto>) => (res?.content ?? []).map(this.toCardVM))
+    );
+  }
+
+  /** List businesses for a specific service/category (plural path). */
+  getBusinessesByCategory(categoryServiceId: number | string): Observable<BusinessCardVM[]> {
+    const sid = String(categoryServiceId);
+    return this.api.getBusinessesByService(sid, 0, 50).pipe(
+      map((page: Page<BusinessDto>) => (page?.content ?? []).map(this.toCardVM))
+    );
+  }
+
+  /** Weighted (NLP) search passthrough */
   searchWeighted(q: string, page = 0, size = 10): Observable<Page<WeightedBusinessHitDto>> {
     return this.api.searchWeighted(q, page, size);
   }
 
+  // ===================== DETAIL / DIALOG =====================
+  /** Detail for the page (maps to DetailedBusinessVM) */
   getBusinessById(id: number): Observable<DetailedBusinessVM | null> {
-    return this.api.getBusiness(id).pipe(map(b => (b ? this.toDetailVM(b) : null)));
+    return this.api.getBusiness(id).pipe(map((reg) => (reg ? this.toDetailVMFromRegistration(reg) : null)));
   }
 
+  /** Detail for dialog (business + owner) */
+  getDetails(id: number): Observable<BusinessDialogVM> {
+    return this.api.getBusiness(id).pipe(map((reg) => this.toDialogVMFromRegistration(reg)));
+  }
+
+  // ===================== ADMIN / VERIFY / UPLOADS =====================
+  adminList(args: { page: number; size: number; serviceId?: number; zipCode?: string }): Observable<BusinessAdminPageDto> {
+    return this.api.adminList(args);
+  }
+
+  toggleVerify(businessId: number, loginUserId: number) {
+    return this.api.verifyIfPending(businessId, loginUserId);
+  }
+
+  uploadImages(businessId: number, files: File[]) {
+    return this.api.uploadImages(businessId, files);
+  }
+
+  // ===================== GALLERY HELPERS =====================
+  /**
+   * Used by category cards to swap avatar with first gallery image (if present).
+   * Returns URL string or null.
+   */
+  getFirstGalleryImage(businessId: number): Observable<string | null> {
+    return this.api.listImages(businessId).pipe(
+      map((arr: BusinessImageDto[]) => this.extractImageUrl(arr?.[0]) ?? null)
+    );
+  }
+
+  // ===================== REGISTRATION (owner + business) =====================
   registerBusinessAndOwner(payload: {
     owner: { firstName: string; lastName: string; email: string; phone: string };
     business: {
@@ -127,42 +205,91 @@ export class BusinessHubService {
     );
   }
 
-  uploadImages(businessId: number, files: File[]) {
-    return this.api.uploadImages(businessId, files);
-  }
+  // ===================== MAPPERS =====================
+  /** Base card mapper: BusinessDto -> BusinessCardVM */
+  private toCardVM = (b: BusinessDto): BusinessCardVM => {
+    // try to discover optional fields from DTO (keeps your UI resilient)
+    const anyB: any = b;
 
-  // Helpers
-  private toCardVM(b: BusinessDto): BusinessCardVM {
+    // Derive first gallery image if DTO already carries string[] gallery
+    const galleryArr: string[] | undefined = Array.isArray(anyB.gallery) ? anyB.gallery : undefined;
+    const firstGallery = galleryArr?.[0];
+
     return {
       id: b.businessId,
       name: b.businessName,
       description: b.serviceDescription || '',
-      rating: 4.6,
-      reviewCount: 25,
+      rating: Number(anyB.avgRating ?? 0),
+      reviewCount: Number(anyB.reviewsCount ?? 0),
       address: b.businessAddress || '',
-      phone: '',
+      phone: anyB.contactPhone || '',
       email: b.businessEmail || '',
       website: b.websiteUrl || '',
       hours: b.businessHours || '',
-      image: '/assets/placeholder-business.jpg',
-      tags: [],
+      // prefer gallery[0], then logoUrl, else placeholder
+      image: firstGallery ?? anyB.logoUrl ?? '/assets/placeholder-business.jpg',
+      tags: anyB.tags ?? [],
       memberSince: (b.createdOn ? new Date(b.createdOn).getFullYear() : 2022),
-      verified: true,
-      featured: false,
+      verified:
+        anyB.verified === true ||
+        anyB.statusName === 'verified' ||
+        (typeof anyB.updatedBy === 'string' && anyB.updatedBy.toLowerCase() === 'admin'),
+      featured: Boolean(anyB.featured ?? false),
+      ownerId: anyB.ownerId, // present on admin/directory list responses sometimes
     };
-  }
+  };
 
-  private toDetailVM(b: BusinessDto): DetailedBusinessVM {
-    const card = this.toCardVM(b);
+  /** RegistrationDto -> DetailedBusinessVM (detail page) */
+  private toDetailVMFromRegistration(reg: BusinessRegistrationDto): DetailedBusinessVM {
+    const anyReg: any = reg;
+    const b: BusinessDto = (anyReg.business ?? reg) as BusinessDto;
+
+    const base = this.toCardVM(b);
+
+    // If gallery not present, default to [hero]
+    const gallery: string[] = Array.isArray((anyReg.business ?? anyReg).gallery)
+      ? (anyReg.business ?? anyReg).gallery
+      : [base.image];
+
+    const hero = gallery.length ? gallery[0] : base.image;
+
     return {
-      ...card,
-      fullDescription: card.description || '—',
-      services: [],
-      gallery: [card.image],
-      reviews: [],
+      ...base,
+      image: hero,
+      fullDescription: (anyReg.fullDescription ?? base.description) || '—',
+      services: (anyReg.services ?? []) as string[],
+      gallery,
+      reviews: ((anyReg.reviews ?? []) as any[]).map((r: any, idx: number) => ({
+        id: r?.id ?? idx + 1,
+        author: r?.author ?? 'User',
+        rating: Number(r?.rating ?? 0),
+        comment: r?.comment ?? r?.text ?? '',
+        date: r?.date ?? '',
+      })),
     };
   }
 
+  /** RegistrationDto -> Dialog VM ({business, owner, verified}) */
+  private toDialogVMFromRegistration(reg: BusinessRegistrationDto): BusinessDialogVM {
+    const anyReg: any = reg;
+    const business = anyReg.business ?? reg ?? {};
+    const owner = anyReg.owner ?? {};
+    const verified =
+      business?.verified === true ||
+      anyReg?.verified === true ||
+      business?.statusName === 'verified' ||
+      (typeof business?.updatedBy === 'string' && business.updatedBy.toLowerCase() === 'admin');
+
+    return { business, owner, verified };
+  }
+
+  /** Extract a URL string from a BusinessImageDto-like object */
+  private extractImageUrl(img?: BusinessImageDto | any | null): string | null {
+    if (!img) return null;
+    return img.url ?? img.imageUrl ?? img.presignedUrl ?? null;
+  }
+
+  // ===================== STYLE HELPERS =====================
   private pickCategoryImage(_name: string, i: number): string {
     const images = [
       'https://images.unsplash.com/photo-1674981208693-de5a9c4c4f44?q=80&w=1080',

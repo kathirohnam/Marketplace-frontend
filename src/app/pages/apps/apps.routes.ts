@@ -23,6 +23,7 @@ import { BusinessHubComponent } from "./marketplace/business-hub/business-hub.co
 import { CategoryDetailComponent } from "./marketplace/category-detail/category-detail.component";
 import { BusinessDetailComponent } from "./marketplace/business-detail/business-detail.component";
 import { BusinessRegistrationComponent } from "./marketplace/business-registration/business-registration.component";
+import { BusinessViewComponent } from "./marketplace/business-view/business-view.component";
 export const AppsRoutes: Routes = [
   {
     path: "",
@@ -262,7 +263,7 @@ export const AppsRoutes: Routes = [
         }
       },
       {
-        path: 'business/:id',
+        path: 'business/id/:id',
         component: BusinessDetailComponent,
         data: {
           title: 'Business Details',
@@ -282,5 +283,17 @@ export const AppsRoutes: Routes = [
             { title: 'Business Registration' }
           ]
         }
+      },
+      {
+        path: 'business-view',
+        component: BusinessViewComponent,
+        data: {
+          title: 'Business View',
+          urls: [
+            { title: 'Marketplace', url: '/marketplace' },
+            { title: 'Business View' }
+          ]
+        }
       }
+
 ];

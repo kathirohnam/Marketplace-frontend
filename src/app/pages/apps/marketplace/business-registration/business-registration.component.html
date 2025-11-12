@@ -1,225 +1,195 @@
-<div class="modal-backdrop">
-  <div class="modal-container">
-    <!-- Header -->
-    <div class="modal-header">
-      <h2 class="modal-title">Join BusinessHub</h2>
-      <button (click)="onClose()" class="close-button" aria-label="Close">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
+<!-- Success Screen -->
+<div *ngIf="showSuccess" class="success-container">
+  <div class="success-card">
+    <div class="success-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline></svg>
     </div>
+    <h2 class="success-title">Registration Successful!</h2>
+    <p class="success-message">Welcome to ClearCorp, <span class="success-name">{{ formData.firstName }}</span>!</p>
+    <p class="success-subtitle">Your business profile has been created successfully.</p>
+    <div class="success-redirect"><div class="pulse-dot"></div><span>Redirecting to your dashboard...</span></div>
+  </div>
+</div>
 
-    <!-- Steps: 1—2—3—4—5 -->
-    <div class="progress-section">
-      <ol class="steps">
-        <li *ngFor="let step of steps; let i = index"
-            class="step"
-            [class.is-done]="currentStep() > i"
-            [class.is-current]="currentStep() === i">
-          <span class="dot">{{ i + 1 }}</span>
-          <span *ngIf="i < steps.length - 1" class="bar" aria-hidden="true"></span>
-        </li>
-      </ol>
-    </div>
-
-    <!-- Content -->
-    <div class="form-content">
-      <!-- Step 0 -->
-      <section *ngIf="currentStep() === 0" class="form-step">
-        <h3 class="step-heading">Account Information</h3>
-        <div class="form-fields">
-          <div class="field-group">
-            <label class="field-label">Email Address *</label>
-            <input type="email" [(ngModel)]="formData.email" class="field-input"
-                   placeholder="Enter your email address" required />
-            <p class="field-helper">We'll use this email to send you updates about your registration.</p>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">Are you a previous user? *</label>
-            <div class="user-check-buttons">
-              <button type="button" class="user-check-btn"
-                      [class.active]="formData.isPreviousUser === true"
-                      (click)="setPreviousUser(true)">
-                <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Yes, I have an account
-              </button>
-              <button type="button" class="user-check-btn"
-                      [class.active]="formData.isPreviousUser === false"
-                      (click)="setPreviousUser(false)">
-                <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-                No, I'm a new user
-              </button>
-            </div>
-
-            <p class="field-helper" *ngIf="userChoiceMade() && formData.isPreviousUser">
-              We'll help you link this business to your existing account.
-            </p>
-            <p class="field-helper" *ngIf="userChoiceMade() && !formData.isPreviousUser">
-              We'll create a new account for you with this email.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 1: First/Last -->
-      <section *ngIf="currentStep() === 1" class="form-step">
-        <h3 class="step-heading">Business Owner Information</h3>
-        <div class="form-fields">
-          <div class="field-row">
-            <div class="field-group">
-              <label class="field-label">First Name *</label>
-              <input type="text" [(ngModel)]="formData.firstName" class="field-input"
-                     placeholder="Enter first name" required />
-            </div>
-            <div class="field-group">
-              <label class="field-label">Last Name *</label>
-              <input type="text" [(ngModel)]="formData.lastName" class="field-input"
-                     placeholder="Enter last name" required />
-            </div>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">Phone Number *</label>
-            <input type="tel" [(ngModel)]="formData.phone" class="field-input"
-                   placeholder="(XXX) XXX-XXXX" required />
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 2 -->
-      <section *ngIf="currentStep() === 2" class="form-step">
-        <h3 class="step-heading">Business Information</h3>
-        <div class="form-fields">
-          <div class="field-group">
-            <label class="field-label">Business Name *</label>
-            <input type="text" [(ngModel)]="formData.businessName" class="field-input" required />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Service Type *</label>
-              <select [(ngModel)]="selectedServiceId" class="field-select" required>
-                <option *ngFor="let s of serviceTypes" [ngValue]="s.id">{{ s.name }}</option>
-              </select>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Business Description</label>
-            <textarea [(ngModel)]="formData.description" rows="3" class="field-textarea"
-                      placeholder="Briefly describe your business and services"></textarea>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Years of Experience *</label>
-            <select [(ngModel)]="formData.yearsExperience" class="field-select" required>
-              <option value="">Select years of experience</option>
-              <option value="0-1">0-1 years</option>
-              <option value="2-5">2-5 years</option>
-              <option value="6-10">6-10 years</option>
-              <option value="11-20">11-20 years</option>
-              <option value="20+">20+ years</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 3 -->
-      <section *ngIf="currentStep() === 3" class="form-step">
-        <h3 class="step-heading">Location & Contact Details</h3>
-        <div class="form-fields">
-          <div class="field-group">
-            <label class="field-label">Business Address *</label>
-            <input type="text" [(ngModel)]="formData.address" class="field-input" required />
-          </div>
-          <div class="field-row">
-            <div class="field-group">
-              <label class="field-label">City *</label>
-              <input type="text" [(ngModel)]="formData.city" class="field-input" required />
-            </div>
-            <div class="field-group">
-              <label class="field-label">ZIP Code *</label>
-              <input type="text" [(ngModel)]="formData.zipCode" class="field-input"
-                     maxlength="5" pattern="[0-9]*" required />
-            </div>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Business Website</label>
-            <input type="url" [(ngModel)]="formData.website" class="field-input" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Business Hours</label>
-            <input type="text" [(ngModel)]="formData.hours" class="field-input"
-                   placeholder="e.g., Mon–Fri 9AM–5PM, Sat 10AM–2PM" />
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 4 -->
-      <section *ngIf="currentStep() === 4" class="form-step">
-        <h3 class="step-heading">Business Images</h3>
-        <div class="form-fields">
-          <div class="field-group">
-            <label class="field-label">Upload Business Photos</label>
-            <p class="field-helper">Add photos that showcase your business.</p>
-            <div class="file-upload-area">
-              <input id="businessImages" class="file-input" type="file"
-                     multiple accept="image/*" (change)="onFileSelected($event)" />
-              <label for="businessImages" class="file-upload-label">
-                <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                <span class="upload-text">Click to upload images</span>
-                <span class="upload-subtext">PNG, JPG, GIF up to 10MB each</span>
-              </label>
-            </div>
-
-            <div *ngIf="formData.businessImages.length > 0" class="uploaded-images">
-              <h4 class="uploaded-title">Uploaded Images ({{ formData.businessImages.length }})</h4>
-              <div class="image-preview-grid">
-                <div *ngFor="let image of formData.businessImages; let i = index" class="image-preview-item">
-                  <div class="image-preview-container">
-                    <img [src]="getImagePreview(image)" class="image-preview" alt="" />
-                    <button type="button" class="remove-image-btn" (click)="removeImage(i)">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
-                  </div>
-                  <p class="image-name">{{ image.name }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer -->
-      <div class="modal-footer">
-        <button *ngIf="currentStep() > 0" (click)="prevStep()" class="btn-secondary">← Previous</button>
-        <div class="flex-spacer"></div>
-        <div class="button-group">
-          <button (click)="onClose()" class="btn-cancel" type="button">Cancel</button>
-          <button *ngIf="currentStep() < steps.length - 1"
-                  (click)="nextStep()" [disabled]="!isCurrentStepValid()" class="btn-primary">
-            Next →
-          </button>
-          <button *ngIf="currentStep() === steps.length - 1"
-                  (click)="submitRegistration()"
-                  [disabled]="isSubmitting() || !isCurrentStepValid()"
-                  class="btn-submit">
-            {{ isSubmitting() ? 'Submitting...' : 'Complete Registration' }}
-          </button>
+<!-- Registration Form -->
+<div *ngIf="!showSuccess" class="registration-page">
+  <header class="header">
+    <div class="header-container">
+      <div class="header-content">
+        <div class="header-logo">
+          <span class="logo-badge">M</span>
+          <span class="logo-text">Marketplace</span>
         </div>
       </div>
     </div>
-  </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Join BusinessHub</h1>
+      <p class="page-subtitle">Tell us about you and your business. All fields marked <span class="required">*</span> are required.</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+      <div class="two-column-grid">
+
+        <!-- LEFT COLUMN: Personal + Location + Images -->
+        <div class="card">
+          <div class="card-content compact">
+
+            <!-- Personal Information -->
+            <h2 class="section-title">Personal Information</h2>
+            <div class="form-fields">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="firstName" class="form-label">First Name <span class="required">*</span></label>
+                  <input id="firstName" name="firstName" type="text" [(ngModel)]="formData.firstName" placeholder="John" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="lastName" class="form-label">Last Name <span class="required">*</span></label>
+                  <input id="lastName" name="lastName" type="text" [(ngModel)]="formData.lastName" placeholder="Doe" required class="form-input" />
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+                  <input id="email" name="email" type="email" [(ngModel)]="formData.email" placeholder="john.doe@example.com" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="phoneNumber" class="form-label">Phone Number <span class="required">*</span></label>
+                  <input id="phoneNumber" name="phoneNumber" type="tel" [(ngModel)]="formData.phoneNumber" placeholder="(555) 123-4567" required class="form-input" />
+                </div>
+              </div>
+            </div>
+
+            <hr class="section-divider" />
+
+            <!-- Location Information -->
+            <h2 class="section-title mt-tight">Location Information</h2>
+            <div class="form-fields">
+              <div class="form-group">
+                <label for="address" class="form-label">Street Address <span class="required">*</span></label>
+                <input id="address" name="address" type="text" [(ngModel)]="formData.address" placeholder="123 Main Street, Suite 100" required class="form-input" />
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="city" class="form-label">City <span class="required">*</span></label>
+                  <input id="city" name="city" type="text" [(ngModel)]="formData.city" placeholder="Los Angeles" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="state" class="form-label">State <span class="required">*</span></label>
+                  <select id="state" name="state" [(ngModel)]="formData.state" required class="form-input">
+                    <option value="" disabled selected>Select state</option>
+                    <option *ngFor="let s of usStates" [value]="s.value">{{ s.label }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="zipCode" class="form-label">ZIP Code <span class="required">*</span></label>
+                <input id="zipCode" name="zipCode" type="text" [(ngModel)]="formData.zipCode" placeholder="90001" required class="form-input" />
+              </div>
+            </div>
+
+            <!-- Business Images (moved here under Location) -->
+            <h2 class="section-title mt-tight">Business Images</h2>
+            <p class="section-subtitle">Upload photos of your business</p>
+
+            <div class="upload-section centered">
+              <div class="upload-area">
+                <input id="imageUpload" type="file" multiple accept="image/*" (change)="onImageUpload($event)" class="upload-input" />
+                <label for="imageUpload" class="upload-label center-label">
+                  <div class="upload-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text"><span class="upload-text-bold">Click to upload</span> or drag and drop</p>
+                    <p class="upload-hint">PNG, JPG, GIF up to 10MB</p>
+                    <p class="upload-hint">You can select multiple images at once</p>
+                  </div>
+                </label>
+              </div>
+
+              <div *ngIf="uploadedImages.length > 0" class="image-preview-section">
+                <label class="preview-label">Uploaded Images ({{ uploadedImages.length }})</label>
+                <div class="image-grid-small">
+                  <div *ngFor="let image of uploadedImages; let i = index" class="image-item">
+                    <img [src]="image" [alt]="'Upload ' + (i + 1)" class="image-thumbnail" />
+                    <div class="image-overlay">
+                      <button type="button" (click)="removeImage(i)" class="remove-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /upload-section -->
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Business Information + (Actions moved here) -->
+        <div class="card">
+          <div class="card-content">
+            <h2 class="section-title">Business Information</h2>
+            <div class="form-fields">
+              <div class="form-group">
+                <label for="businessName" class="form-label">Business Name <span class="required">*</span></label>
+                <input id="businessName" name="businessName" type="text" [(ngModel)]="formData.businessName" placeholder="ABC Services LLC" required class="form-input" />
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="businessService" class="form-label">Type of Service <span class="required">*</span></label>
+                  <select id="businessService" name="businessService" [(ngModel)]="formData.businessService" required class="form-input">
+                    <option value="" disabled selected>Select service type</option>
+                    <option *ngFor="let service of serviceTypes" [value]="service.value">{{ service.label }}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="yearsInBusiness" class="form-label">Years in Business <span class="required">*</span></label>
+                  <select id="yearsInBusiness" name="yearsInBusiness" [(ngModel)]="formData.yearsInBusiness" required class="form-input">
+                    <option value="" disabled selected>Select years</option>
+                    <option *ngFor="let opt of yearsOptions" [value]="opt.value">{{ opt.label }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="website" class="form-label">Website URL <span class="optional">(Optional)</span></label>
+                <input id="website" name="website" type="url" [(ngModel)]="formData.website" placeholder="https://www.yourbusiness.com" class="form-input" />
+              </div>
+
+              <div class="form-group">
+                <label for="serviceDescription" class="form-label">Service Description <span class="required">*</span></label>
+                <textarea id="serviceDescription" name="serviceDescription" rows="4" [(ngModel)]="formData.serviceDescription" placeholder="Describe what services you provide, what makes your business unique..." required class="form-textarea"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="businessHours" class="form-label">Business Hours <span class="optional">(Optional)</span></label>
+                <input id="businessHours" name="businessHours" type="text" [(ngModel)]="formData.businessHours" placeholder="Mon-Fri 9-5, Sat 10-2, Sun Closed" class="form-input" />
+                <p class="form-hint">Example: Mon-Fri 9-5, Sat 10-2, Sun Closed</p>
+              </div>
+            </div>
+
+            <!-- Actions (in place of previous image upload) -->
+            <div class="form-actions right-actions">
+              <button type="button" (click)="onBack()" [disabled]="isSubmitting" class="btn-cancel">Cancel</button>
+              <button type="submit" [disabled]="isSubmitting || !registrationForm.form.valid" class="btn-submit">
+                <div *ngIf="isSubmitting" class="submit-loading"><div class="spinner"></div><span>Submitting...</span></div>
+                <span *ngIf="!isSubmitting">Submit Registration</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </main>
 </div>

@@ -1,153 +1,574 @@
-<!-- ───────────────────────── HEADER ───────────────────────── -->
-<header class="hub-header">
-  <div class="hub-container hub-header__row">
-    <div class="hub-header__left">
-      <button (click)="onBack()" class="hub-back">
-        <svg class="hub-back__icon" viewBox="0 0 24 24" fill="none">
-          <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Back to Directory</span>
-      </button>
+<!-- Single component + single route; switch only by mode -->
+<ng-container [ngSwitch]="mode()">
 
-      <div class="hub-divider"></div>
-
-      <div class="hub-brand">
-        <span class="hub-brand__mark">M</span>
-        <h1 class="hub-brand__name">Marketplace</h1>
-      </div>
-    </div>
-
-    <div class="hub-header__right">
-      <button (click)="onJoinNow()" class="hub-btn-primary">Join Now</button>
-    </div>
-  </div>
-</header>
-
-<!-- ───────────────────────── HERO ───────────────────────── -->
-<section class="hub-hero">
-  <div class="hub-container">
-    <div class="hub-badges">
-      <span class="hub-badge">1,200+ Members</span>
-      <span class="hub-badge">Trusted Directory</span>
-      <span class="hub-badge">Growing Network</span>
-    </div>
-
-    <h2 class="hub-hero__title">Find Your Perfect Business Partner</h2>
-    <p class="hub-hero__sub">
-      Connect with verified local businesses and services in your community.<br/>
-      Discover quality, trusted partners for all your needs.
-    </p>
-  </div>
-</section>
-
-<!-- ───────────────────────── SEARCH (PRO LAYOUT) ───────────────────────── -->
-<section class="hub-search-pro">
-  <div class="hub-container">
-    <div class="hub-card hub-animate-in hub-search-pro__card">
-      <div class="hub-search-pro__head">
-        <h3 class="hub-h3">Search Local Businesses</h3>
-        <p class="hub-subtle">Find exactly what you need with our advanced search filters</p>
-      </div>
-
-      <!-- Row 1: fields | Row 2: button under first column -->
-      <div class="hub-search-pro__grid">
-        <!-- Query -->
-        <div class="hub-field hub-area-query">
-          <label class="hub-label" for="queryInput">What are you looking for?</label>
-          <input
-            id="queryInput"
-            type="text"
-            class="hub-input"
-            placeholder="Search businesses, services, or keywords..."
-            [value]="searchQuery()"
-            (input)="onSearchInput($event)" />
-        </div>
-
-        <!-- Category -->
-        <div class="hub-field hub-area-category">
-          <label class="hub-label" for="catSelect">Category</label>
-          <select
-            id="catSelect"
-            class="hub-select"
-            [value]="selectedCategory()"
-            (change)="onCategorySelect($event)">
-            <option value="all">All Categories</option>
-            <option *ngFor="let c of categories()" [value]="c.value">{{ c.name }}</option>
-          </select>
-        </div>
-
-        <!-- ZIP -->
-        <div class="hub-field hub-area-zip">
-          <label class="hub-label" for="zipInput">ZIP Code</label>
-          <input
-            id="zipInput"
-            type="text"
-            inputmode="numeric"
-            class="hub-input"
-            placeholder="Enter ZIP code"
-            [value]="zipCode()"
-            maxlength="5"
-            pattern="[0-9]*"
-            (input)="onZipCodeInput($event)" />
-        </div>
-
-        <!-- Button (row 2, left) -->
-        <div class="hub-actions hub-area-button">
-          <button class="hub-btn-primary hub-btn-primary--lg" (click)="onSearch()">
-            <span class="hub-btn__content">
-              <svg class="hub-ico-16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M21 21l-5.5-5.5M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-              </svg>
-              Search Businesses
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <div class="hub-popular">
-        <span class="hub-small">Popular searches:</span>
-        <div class="hub-chips">
-          <button class="hub-chip" (click)="searchQuery.set('Restaurants')">Restaurants</button>
-          <button class="hub-chip" (click)="searchQuery.set('Dentists')">Dentists</button>
-          <button class="hub-chip" (click)="searchQuery.set('Legal Services')">Legal Services</button>
-          <button class="hub-chip" (click)="searchQuery.set('Real Estate')">Real Estate</button>
-          <button class="hub-chip" (click)="searchQuery.set('Auto Repair')">Auto Repair</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ───────────────────────── CATEGORIES ───────────────────────── -->
-<section class="hub-categories">
-  <div class="hub-container">
-    <div class="hub-section__head">
-      <h3 class="hub-h3">Browse by Category</h3>
-      <p class="hub-subtle">Explore our comprehensive directory of local businesses</p>
-    </div>
-
-    <div class="hub-grid-3">
-      <article
-        class="hub-tile hub-card hub-animate-in"
-        *ngFor="let category of categories()"
-        (click)="onCategoryClick(category.value)"
-        tabindex="0"
-        (keyup.enter)="onCategoryClick(category.value)"
-        role="button"
-        [attr.aria-label]="'Open ' + category.name"
-      >
-        <div class="hub-tile__img" [style.backgroundImage]="'url(' + category.image + ')'"></div>
-        <div class="hub-tile__body">
-          <h4 class="hub-tile__title">{{ category.name }}</h4>
-          <p class="hub-small">{{ category.count }}+ listings</p>
-          <div class="hub-tile__actions">
-            <button class="hub-btn-primary">Explore →</button>
+  <!-- ========================= ADMIN ========================= -->
+  <ng-container *ngSwitchCase="HubMode.ADMIN_HUB">
+    <mat-card class="cardWithShadow">
+      <mat-card-content class="p-14">
+        <div class="header">
+          <div>
+            <h2 class="title">Business Hub</h2>
+            <p class="subtitle">Admin can verify businesses; consumers see their journey</p>
           </div>
         </div>
-      </article>
-    </div>
-  </div>
-</section>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-label">Total</div>
+            <div class="metric-value">{{ totals().total }}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Verified</div>
+            <div class="metric-value">{{ totals().verified }}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Pending</div>
+            <div class="metric-value">{{ totals().pending }}</div>
+          </div>
+        </div>
+
+        <div class="filters">
+          <mat-form-field appearance="outline">
+            <mat-label>Search name / email / owner</mat-label>
+            <input matInput (input)="onSearchInput($event)" />
+            <button mat-icon-button matSuffix aria-label="Clear" (click)="search.set('')">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ZIP</mat-label>
+            <input matInput [value]="zip() || ''" (input)="onZipInput($event)" />
+            <button mat-icon-button matSuffix aria-label="Clear" (click)="zip.set(null)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Service Id</mat-label>
+            <input matInput type="number" [value]="serviceId() || ''" (input)="onServiceIdInput($event)" />
+            <button mat-icon-button matSuffix aria-label="Clear" (click)="serviceId.set(null)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <button mat-stroked-button (click)="clearFilters()">
+            <mat-icon>filter_alt_off</mat-icon>
+            Clear
+          </button>
+          <button mat-flat-button color="primary" (click)="fetchAdmin()">
+            <mat-icon>search</mat-icon>
+            Apply
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <div class="spinner" *ngIf="isLoading()">
+            <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+          </div>
+
+          <table mat-table [dataSource]="filteredRows()" class="mat-elevation-z1">
+            <ng-container matColumnDef="businessName">
+              <th mat-header-cell *matHeaderCellDef>Business</th>
+              <td mat-cell *matCellDef="let b">{{ b.businessName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let b">{{ b.email || '—' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef>Phone</th>
+              <td mat-cell *matCellDef="let b">{{ b.phone || '—' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="ownerName">
+              <th mat-header-cell *matHeaderCellDef>Owner</th>
+              <td mat-cell *matCellDef="let b">{{ b.ownerName || '—' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="city">
+              <th mat-header-cell *matHeaderCellDef>City</th>
+              <td mat-cell *matCellDef="let b">{{ b.city || '—' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef>State</th>
+              <td mat-cell *matCellDef="let b">{{ b.state || '—' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="verified">
+              <th mat-header-cell *matHeaderCellDef>Verified</th>
+              <td mat-cell *matCellDef="let b">
+                <mat-slide-toggle [checked]="b.verified" [disabled]="true" color="primary"></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let b">
+                <div class="row-actions">
+                  <button
+                    mat-icon-button
+                    class="icon-btn"
+                    matTooltip="View"
+                    (click)="onView(b)"
+                    aria-label="View business">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator
+            [length]="total()"
+            [pageIndex]="page()"
+            [pageSize]="size()"
+            [pageSizeOptions]="[5,10,25,50]"
+            (page)="onPage($event)">
+          </mat-paginator>
+        </div>
+
+        <input #uploader type="file" accept="image/*" multiple hidden (change)="handleImagesSelected($event)" />
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <!-- ========================= CONSUMER: BUSINESS VIEW ========================= -->
+  <ng-container *ngSwitchCase="HubMode.CONSUMER_VIEW">
+    <mat-card class="cardWithShadow">
+      <mat-card-content class="p-14 fixed-wrapper">
+        <div class="formation-hub">
+          <!-- Header -->
+          <header class="header-section">
+            <div class="welcome-section">
+              <h1 class="dashboard-title">{{ getWelcomeMessage() }}</h1>
+              <p class="dashboard-subtitle">{{ getSubtitleMessage() }}</p>
+            </div>
+
+            <button class="create-company-btn" (click)="navigateToPages()">
+              Register new Business
+            </button>
+          </header>
+
+          <div class="main-layout">
+            <main class="main-content">
+              <!-- Section header -->
+              <div class="companies-section">
+                <div class="section-header">
+                  <h2 class="section-title">Your Marketplace Activity</h2>
+                  <p class="section-description">
+                    Track drafts, manage live listings, and review fulfilled orders
+                  </p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-container">
+                  <button class="tab-button" [class.active-tab]="selectedTabIndex === 0" (click)="selectedTabIndex = 0">
+                    <mat-icon>edit_note</mat-icon>
+                    <span class="tab-text">Existing Business</span>
+                    <span class="tab-count">({{ draftList.length }})</span>
+                  </button>
+
+                  <button class="tab-button" [class.active-tab]="selectedTabIndex === 1" (click)="selectedTabIndex = 1">
+                    <mat-icon>storefront</mat-icon>
+                    <span class="tab-text">In Progress</span>
+                    <span class="tab-count">({{ progressList.length }})</span>
+                  </button>
+
+                  <button class="tab-button" [class.active-tab]="selectedTabIndex === 2" (click)="selectedTabIndex = 2">
+                    <mat-icon>check_circle</mat-icon>
+                    <span class="tab-text">Registered Business</span>
+                    <span class="tab-count">({{ completedProgressList.length }})</span>
+                  </button>
+                </div>
+
+                <!-- Drafts -->
+                <div class="tab-content" *ngIf="selectedTabIndex === 0">
+                  <div class="companies-grid-container" *ngIf="draftList.length > 0">
+                    <div class="companies-grid" cdkDropList [cdkDropListData]="draftList" (cdkDropListDropped)="drop($event)">
+                      <div
+                        class="company-card card-side"
+                        *ngFor="let progress of draftList; trackBy: trackByCompanyId"
+                        [class.suggested-company]="isSuggestedCompany(progress)"
+                        cdkDrag
+                        (mouseenter)="onHoverCompany(progress)"
+                        (mouseleave)="onLeaveCompany()"
+                        (focusin)="onHoverCompany(progress)"
+                        (focusout)="onLeaveCompany()"
+                        (click)="selectCompany(progress)"
+                        tabindex="0"
+                      >
+                        <div class="card-header">
+                          <div class="state-badge">{{ progress.state || 'CATEGORY' }}</div>
+                          <div class="progress-indicator">
+                            <span class="progress-text">{{ getProgressPercentageForCompany(progress) }}%</span>
+                          </div>
+                        </div>
+
+                        <div class="suggested-tag" *ngIf="isSuggestedCompany(progress)">
+                          <mat-icon>star</mat-icon>
+                          <span class="suggested-tag-text">Recommended next</span>
+                        </div>
+
+                        <div class="company-info">
+                          <h3 class="company-name">{{ progress.companyName || progress.llcName }}</h3>
+                          <p class="company-status">{{ getDetailedStatus(progress.firstIncompleteStepIndex) }}</p>
+                          <div class="next-step">
+                            <mat-icon class="step-icon">arrow_forward</mat-icon>
+                            <span>Next: {{ getNextStepDescription(progress.firstIncompleteStepIndex) }}</span>
+                          </div>
+                        </div>
+
+                        <div class="card-actions">
+                          <button class="continue-btn" (click)="startWizard(progress.companyId, progress)">
+                            <mat-icon>play_arrow</mat-icon>
+                            <span class="btn-text">Continue Listing Setup</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="draftList.length === 0" class="empty-state">
+                    <div class="empty-icon"><mat-icon>storefront</mat-icon></div>
+                    <h3>Ready to showcase your service or product?</h3>
+                    <p>Create your first listing in a few guided steps. Add details, media, pricing, and publish whenever you’re ready.</p>
+                    <div class="trust-indicators">
+                      <div class="indicator"><mat-icon>verified</mat-icon><span>Verified Vendor Program</span></div>
+                      <div class="indicator"><mat-icon>schedule</mat-icon><span>Publish in Minutes</span></div>
+                      <div class="indicator"><mat-icon>support</mat-icon><span>Dedicated Support</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Active Listings -->
+                <div class="tab-content" *ngIf="selectedTabIndex === 1">
+                  <div class="companies-grid-container" *ngIf="progressList.length > 0">
+                    <div class="companies-grid" cdkDropList [cdkDropListData]="progressList" (cdkDropListDropped)="drop($event)">
+                      <div class="company-card card-side" *ngFor="let progress of progressList; trackBy: trackByCompanyId" cdkDrag>
+                        <div class="card-header">
+                          <div class="state-badge">{{ progress.state || 'LISTING' }}</div>
+                          <div class="success-badge" [ngClass]="getStatusClass(progress.statusName)">
+                            <mat-icon>{{ getStatusIcon(progress.statusName) }}</mat-icon>
+                            {{ getStatusDisplayText(progress.statusName) }}
+                          </div>
+                        </div>
+
+                        <div class="company-info">
+                          <h3 class="company-name">{{ progress.companyName || progress.llcName }}</h3>
+                          <div class="status-description"><p>{{ getInProgressInfo(progress.statusName).description }}</p></div>
+                          <div class="timeline"><mat-icon>update</mat-icon><span>{{ getInProgressInfo(progress.statusName).timeline }}</span></div>
+                        </div>
+
+                        <div class="card-actions">
+                          <button class="view-btn" (click)="openViewDetails(progress.companyId)">
+                            <mat-icon>visibility</mat-icon>
+                            <span class="btn-text">View Listing</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="progressList.length === 0" class="empty-state">
+                    <div class="empty-icon"><mat-icon>hourglass_top</mat-icon></div>
+                    <h3>Under verification from admin</h3>
+                    <p>Businesses that are being reviewed or awaiting approval will appear here.</p>
+                  </div>
+                </div>
+
+                <!-- Fulfilled -->
+                <div class="tab-content" *ngIf="selectedTabIndex === 2">
+                  <div class="companies-grid-container" *ngIf="completedProgressList.length > 0">
+                    <div class="companies-grid" cdkDropList [cdkDropListData]="completedProgressList" (cdkDropListDropped)="drop($event)">
+                      <div class="company-card completed card-side" *ngFor="let progress of completedProgressList; trackBy: trackByCompanyId" cdkDrag>
+                        <div class="card-header">
+                          <div class="state-badge">{{ progress.state || 'ORDER' }}</div>
+                          <div class="success-badge" [ngClass]="getStatusClass(progress.statusName)">
+                            <mat-icon>{{ getStatusIcon(progress.statusName) }}</mat-icon>
+                            {{ getStatusDisplayText(progress.statusName) }}
+                          </div>
+                        </div>
+
+                        <div class="company-info">
+                          <h3 class="company-name">{{ progress.companyName || progress.llcName }}</h3>
+                          <p class="company-status">Order fulfilled successfully</p>
+
+                          <div class="benefits-list">
+                            <div class="benefit"><mat-icon>thumb_up</mat-icon><span>Positive Buyer Feedback</span></div>
+                            <div class="benefit"><mat-icon>workspace_premium</mat-icon><span>Eligible for Featured Badge</span></div>
+                          </div>
+                        </div>
+
+                        <div class="card-actions">
+                          <button class="view-btn" (click)="openViewDetails(progress.companyId)">
+                            <mat-icon>visibility</mat-icon>
+                            <span class="btn-text">View</span>
+                          </button>
+                          <button class="secondary-btn" (click)="accessDocuments()">
+                            <mat-icon>folder</mat-icon>
+                            <span class="btn-text">Invoices & Docs</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="completedProgressList.length === 0" class="empty-state">
+                    <div class="empty-icon"><mat-icon>emoji_events</mat-icon></div>
+                    <h3>Verified businesses will appear here</h3>
+                    <p>Once your business is live and verified, it will be showcased here for customers</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
+              <div class="quick-actions-section">
+                <div class="section-header">
+                  <h2 class="section-title">Quick Actions</h2>
+                  <p class="section-description">Essential tools and resources for your marketplace</p>
+                </div>
+
+                <div class="quick-actions-grid">
+                  <div class="quick-action-card primary" (click)="navigateToPages()">
+                    <div class="action-icon"><mat-icon>add_business</mat-icon></div>
+                    <div class="action-content">
+                      <h3 class="action-title">Register new Business</h3>
+                      <p class="action-description">Add a new product or service with photos, pricing, and availability</p>
+                    </div>
+                  </div>
+
+                  <div class="quick-action-card" (click)="accessMarketplace()">
+                    <div class="action-icon"><mat-icon>folder_shared</mat-icon></div>
+                    <div class="action-content">
+                      <h3 class="action-title">View Marketplace</h3>
+                      <p class="action-description">Access and view the marketplace where the business will be displayed</p>
+                    </div>
+                  </div>
+
+                  <div class="quick-action-card" (click)="reviewCompliance()">
+                    <div class="action-icon"><mat-icon>request_quote</mat-icon></div>
+                    <div class="action-content">
+                      <h3 class="action-title">Billing & Payouts</h3>
+                      <p class="action-description">Track payments, refunds, and settlement reports</p>
+                    </div>
+                  </div>
+
+                  <div class="quick-action-card" (click)="goToUserProfile()">
+                    <div class="action-icon"><mat-icon>manage_accounts</mat-icon></div>
+                    <div class="action-content">
+                      <h3 class="action-title">Account Settings</h3>
+                      <p class="action-description">Update profile, business info, and notification preferences</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="sidebar">
+              <div class="sidebar-header">
+                <h2 class="sidebar-title">{{ getSidebarTitle() }}</h2>
+                <p class="sidebar-subtitle">{{ getSidebarSubtitle() }}</p>
+              </div>
+
+              <div class="progress-container">
+                <div class="progress-circle">
+                  <svg class="progress-svg" viewBox="0 0 36 36">
+                    <path class="progress-background" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none" stroke="currentColor" stroke-width="3"></path>
+                    <path class="progress-foreground" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none" stroke="currentColor" [attr.stroke-dasharray]="getProgressPercentage() + ', 100'"
+                          stroke-linecap="round" stroke-width="3"></path>
+                  </svg>
+                  <div class="progress-content">
+                    <span class="progress-percentage">{{ getProgressPercentage() }}%</span>
+                    <span class="progress-label">Complete</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-steps" *ngIf="selectedCompany || getFirstDraftCompany()">
+                <h4>Listing Pipeline</h4>
+                <div class="step-list">
+                  <div class="step" [class.completed]="getProgressPercentage() > 0">
+                    <mat-icon class="step-icon">
+                      {{ getProgressPercentage() > 0 ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span>Listing Details</span>
+                  </div>
+                  <div class="step" [class.completed]="getProgressPercentage() > 25">
+                    <mat-icon class="step-icon">
+                      {{ getProgressPercentage() > 25 ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span>Verification</span>
+                  </div>
+                  <div class="step" [class.completed]="getProgressPercentage() > 50">
+                    <mat-icon class="step-icon">
+                      {{ getProgressPercentage() > 50 ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span>Pricing & Policies</span>
+                  </div>
+                  <div class="step" [class.completed]="getProgressPercentage() > 75">
+                    <mat-icon class="step-icon">
+                      {{ getProgressPercentage() > 75 ? 'check_circle' : 'radio_button_unchecked' }}
+                    </mat-icon>
+                    <span>Publish & Go Live</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-cta" *ngIf="!selectedCompany && !getFirstDraftCompany()">
+                <div class="cta-content">
+                  <mat-icon style="font-size: 24px; width: 24px; height: 24px">rocket_launch</mat-icon>
+                  <h4>Reach more customers</h4>
+                  <p>Create a standout listing and start receiving inquiries and orders.</p>
+                  <button mat-raised-button class="cta-button-small" (click)="navigateToPages()">Create Listing</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <!-- ========================= CONSUMER: MARKETPLACE (Landing Access) ========================= -->
+  <ng-container *ngSwitchCase="HubMode.CONSUMER_HUB">
+    <!-- HEADER -->
+    <header class="hub-header">
+      <div class="hub-container hub-header__row">
+        <div class="hub-header__left">
+          <button (click)="onBack()" class="back-button" aria-label="Back to Directory">
+            <svg class="icon-16" viewBox="0 0 24 24" fill="none">
+              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <span>Back to Directory</span>
+          </button>
+
+          <div class="divider-vertical"></div>
+
+          <div class="hub-brand">
+            <span class="hub-brand__mark">M</span>
+            <h1 class="hub-brand__name">Marketplace</h1>
+          </div>
+        </div>
+
+        <div class="hub-header__right">
+          <button (click)="onJoinNow()" class="hub-btn-primary">Join Now</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hub-hero">
+      <div class="hub-container">
+        <div class="hub-badges">
+          <span class="hub-badge">1,200+ Members</span>
+          <span class="hub-badge">Trusted Directory</span>
+          <span class="hub-badge">Growing Network</span>
+        </div>
+
+        <h2 class="hub-hero__title">Find Your Perfect Business Partner</h2>
+        <p class="hub-hero__sub">
+          Connect with verified local businesses and services in your community.<br/>
+          Discover quality, trusted partners for all your needs.
+        </p>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="hub-search-pro">
+      <div class="hub-container">
+        <div class="hub-card hub-animate-in hub-search-pro__card">
+          <div class="hub-search-pro__head">
+            <h3 class="hub-h3">Search Local Businesses</h3>
+            <p class="hub-subtle">Find exactly what you need with our advanced search filters</p>
+          </div>
+
+          <div class="hub-search-pro__grid">
+            <div class="hub-field hub-area-query">
+              <label class="hub-label" for="queryInput">What are you looking for?</label>
+              <input id="queryInput" type="text" class="hub-input" placeholder="Search businesses, services, or keywords..."
+                     [value]="searchQuery()" (input)="onSearchFieldInput($event)"/>
+            </div>
+
+            <div class="hub-field hub-area-category">
+              <label class="hub-label" for="catSelect">Category</label>
+              <select id="catSelect" class="hub-select" [value]="selectedCategory()" (change)="onCategorySelect($event)">
+                <option value="all">All Categories</option>
+                <option *ngFor="let c of categories()" [value]="c.value">{{ c.name }}</option>
+              </select>
+            </div>
+
+            <div class="hub-field hub-area-zip">
+              <label class="hub-label" for="zipInput">ZIP Code</label>
+              <input id="zipInput" type="text" inputmode="numeric" class="hub-input" placeholder="Enter ZIP code"
+                     [value]="zipCode()" maxlength="5" pattern="[0-9]*" (input)="onZipCodeInput($event)"/>
+            </div>
+
+            <div class="hub-actions hub-area-button">
+              <button class="hub-btn-primary hub-btn-primary--lg" (click)="onSearch()">
+                <span class="hub-btn__content">
+                  <svg class="hub-ico-16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21 21l-5.5-5.5M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Search Businesses
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hub-popular">
+            <span class="hub-small">Popular searches:</span>
+            <div class="hub-chips">
+              <button class="hub-chip" (click)="searchQuery.set('Restaurants')">Restaurants</button>
+              <button class="hub-chip" (click)="searchQuery.set('Dentists')">Dentists</button>
+              <button class="hub-chip" (click)="searchQuery.set('Legal Services')">Legal Services</button>
+              <button class="hub-chip" (click)="searchQuery.set('Real Estate')">Real Estate</button>
+              <button class="hub-chip" (click)="searchQuery.set('Auto Repair')">Auto Repair</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="hub-categories">
+      <div class="hub-container">
+        <div class="hub-section__head">
+          <h3 class="hub-h3">Browse by Category</h3>
+          <p class="hub-subtle">Explore our comprehensive directory of local businesses</p>
+        </div>
+
+        <div class="hub-grid-3">
+          <article class="hub-tile hub-card hub-animate-in" *ngFor="let category of filteredCategories()">
+            <div class="hub-tile__img" [style.backgroundImage]="'url(' + category.image + ')'"></div>
+            <div class="hub-tile__body">
+              <h4 class="hub-tile__title">{{ category.name }}</h4>
+              <p class="hub-small">{{ category.count }}+ listings</p>
+              <div class="hub-tile__actions">
+                <button class="hub-btn-primary" (click)="onCategoryClick(category.value)" [attr.aria-label]="'Open ' + category.name">
+                  Explore →
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+  <!-- ========================= DEFAULT (safety) ========================= -->
+  <ng-container *ngSwitchDefault>
+    <div class="p-24">Loading Business Hub…</div>
+  </ng-container>
+
+</ng-container>

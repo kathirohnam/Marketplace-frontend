@@ -61,8 +61,8 @@ export const routes: Routes = [
   // Secured profile routes (if applicable, add route data flags as needed)
 
   // Fallback route redirects to an error page inside the authentication module
-  {
-    path: '**',
-    redirectTo: 'authentication/error',
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: 'authentication/error',
+  // },
 ];

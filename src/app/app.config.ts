@@ -43,7 +43,7 @@ import { DatePipe } from "@angular/common";
 import { NgxStripeModule } from "ngx-stripe";
 import { provideEnvironmentNgxMask } from "ngx-mask";
 import { AuthInterceptor } from "./services/interceptor/auth.interceptor";
-import { ErrorInterceptor } from "./services/interceptor/error.interceptor";
+// import { ErrorInterceptor } from "./services/interceptor/error.interceptor";
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");

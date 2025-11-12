@@ -57,14 +57,14 @@ export interface WeightedBusinessHitDto {
 export interface AuditClickRequestDto {
   businessId: number;
   ownerId?: number | null;
-  sessionId: string;
+  sessionId: string | null;
 }
 
 export interface AuditClickResponseDto {
   id: number;
   businessId: number;
   ownerId?: number | null;
-  sessionId: string;
+  sessionId: string | null;
   occurredAt: string; // ISO
   deduped: boolean;
 }

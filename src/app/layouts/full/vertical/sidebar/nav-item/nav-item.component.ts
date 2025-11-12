@@ -61,7 +61,7 @@ export class AppNavItemComponent implements OnChanges, OnInit, OnDestroy {
   @Input() depth = 0;
 
   private allowedItems: Record<string, string[]> = {
-    Admin: ['Admin', 'Invoice', 'Document'],
+    Admin: ['Admin', 'Invoice', 'Document','Business Hub'],
     SuperFiler: ['Files', 'Company Details', 'Document Upload', 'EIN Filing'],
     Vendor: ['Consumer'],
     Consumer: ['Dashboard', 'Invoice', 'Document', 'Forum', 'Business Hub'],

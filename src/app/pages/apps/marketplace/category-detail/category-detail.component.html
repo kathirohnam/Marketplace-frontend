@@ -15,8 +15,8 @@
           <div class="divider-vertical"></div>
 
           <div class="brand">
-            <div class="brand-mark">B</div>
-            <h1 class="brand-name">BusinessHub</h1>
+            <div class="brand-mark">M</div>
+            <h1 class="brand-name">Marketplace</h1>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
     </div>
   </header>
 
-  <!-- Search Bar (NEW: compact & centered) -->
+  <!-- Search Bar -->
   <section class="search-bar">
     <div class="container">
       <div class="search-shell">
@@ -46,33 +46,18 @@
 
           <button (click)="onSearch()" class="search-cta">Search</button>
         </div>
-
-        <!-- optional hint -->
         <p class="search-hint">Tip: Try “bookkeeping”, “strategy consulting”, or a ZIP code.</p>
       </div>
     </div>
   </section>
 
   <main class="container page-body">
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <button class="breadcrumb-link">Home</button>
-      <svg class="breadcrumb-sep icon-16" viewBox="0 0 24 24" fill="none">
-        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              d="M9 5l7 7-7 7"></path>
-      </svg>
-      <button class="breadcrumb-link">{{ category() }}</button>
-      <svg class="breadcrumb-sep icon-16" viewBox="0 0 24 24" fill="none">
-        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              d="M9 5l7 7-7 7"></path>
-      </svg>
-      <span class="breadcrumb-current">Business Support Services</span>
-    </nav>
+    <!-- Breadcrumb REMOVED as requested -->
 
     <!-- Page Header -->
     <div class="page-header">
       <div class="page-heading">
-        <h2 class="page-title">Business Support Services</h2>
+        <h2 class="page-title">{{ pageTitle() }}</h2>
 
         <div class="page-stats">
           <div class="stat">
@@ -103,7 +88,7 @@
           </svg>
         </button>
 
-        <div *ngIf="ratingMenuOpen()" class="rating-menu" role="listbox">
+        <div *ngIf="ratingMenuOpen()" class="rating-menu" role="listbox" aria-label="Ratings Filter">
           <button (click)="setRatingFilter('all')" class="menu-item">All Ratings</button>
           <button (click)="setRatingFilter('4.5')" class="menu-item">4.5+</button>
           <button (click)="setRatingFilter('4.0')" class="menu-item">4.0+</button>
@@ -125,7 +110,7 @@
               <div class="card-top">
                 <div class="name-and-verify">
                   <h3 class="biz-name">{{ business.name }}</h3>
-                  <div *ngIf="business.verified" class="verify-badge" aria-label="Verified">
+                  <div *ngIf="business.verified" class="verify-badge">
                     <span class="verify-dot"></span>
                   </div>
                 </div>
