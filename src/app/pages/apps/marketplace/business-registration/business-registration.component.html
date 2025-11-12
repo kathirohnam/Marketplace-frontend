@@ -1,0 +1,225 @@
+<div class="modal-backdrop">
+  <div class="modal-container">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">Join BusinessHub</h2>
+      <button (click)="onClose()" class="close-button" aria-label="Close">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Steps: 1—2—3—4—5 -->
+    <div class="progress-section">
+      <ol class="steps">
+        <li *ngFor="let step of steps; let i = index"
+            class="step"
+            [class.is-done]="currentStep() > i"
+            [class.is-current]="currentStep() === i">
+          <span class="dot">{{ i + 1 }}</span>
+          <span *ngIf="i < steps.length - 1" class="bar" aria-hidden="true"></span>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Content -->
+    <div class="form-content">
+      <!-- Step 0 -->
+      <section *ngIf="currentStep() === 0" class="form-step">
+        <h3 class="step-heading">Account Information</h3>
+        <div class="form-fields">
+          <div class="field-group">
+            <label class="field-label">Email Address *</label>
+            <input type="email" [(ngModel)]="formData.email" class="field-input"
+                   placeholder="Enter your email address" required />
+            <p class="field-helper">We'll use this email to send you updates about your registration.</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Are you a previous user? *</label>
+            <div class="user-check-buttons">
+              <button type="button" class="user-check-btn"
+                      [class.active]="formData.isPreviousUser === true"
+                      (click)="setPreviousUser(true)">
+                <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Yes, I have an account
+              </button>
+              <button type="button" class="user-check-btn"
+                      [class.active]="formData.isPreviousUser === false"
+                      (click)="setPreviousUser(false)">
+                <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                No, I'm a new user
+              </button>
+            </div>
+
+            <p class="field-helper" *ngIf="userChoiceMade() && formData.isPreviousUser">
+              We'll help you link this business to your existing account.
+            </p>
+            <p class="field-helper" *ngIf="userChoiceMade() && !formData.isPreviousUser">
+              We'll create a new account for you with this email.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 1: First/Last -->
+      <section *ngIf="currentStep() === 1" class="form-step">
+        <h3 class="step-heading">Business Owner Information</h3>
+        <div class="form-fields">
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">First Name *</label>
+              <input type="text" [(ngModel)]="formData.firstName" class="field-input"
+                     placeholder="Enter first name" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Last Name *</label>
+              <input type="text" [(ngModel)]="formData.lastName" class="field-input"
+                     placeholder="Enter last name" required />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Phone Number *</label>
+            <input type="tel" [(ngModel)]="formData.phone" class="field-input"
+                   placeholder="(XXX) XXX-XXXX" required />
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2 -->
+      <section *ngIf="currentStep() === 2" class="form-step">
+        <h3 class="step-heading">Business Information</h3>
+        <div class="form-fields">
+          <div class="field-group">
+            <label class="field-label">Business Name *</label>
+            <input type="text" [(ngModel)]="formData.businessName" class="field-input" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Service Type *</label>
+              <select [(ngModel)]="selectedServiceId" class="field-select" required>
+                <option *ngFor="let s of serviceTypes" [ngValue]="s.id">{{ s.name }}</option>
+              </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Business Description</label>
+            <textarea [(ngModel)]="formData.description" rows="3" class="field-textarea"
+                      placeholder="Briefly describe your business and services"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Years of Experience *</label>
+            <select [(ngModel)]="formData.yearsExperience" class="field-select" required>
+              <option value="">Select years of experience</option>
+              <option value="0-1">0-1 years</option>
+              <option value="2-5">2-5 years</option>
+              <option value="6-10">6-10 years</option>
+              <option value="11-20">11-20 years</option>
+              <option value="20+">20+ years</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section *ngIf="currentStep() === 3" class="form-step">
+        <h3 class="step-heading">Location & Contact Details</h3>
+        <div class="form-fields">
+          <div class="field-group">
+            <label class="field-label">Business Address *</label>
+            <input type="text" [(ngModel)]="formData.address" class="field-input" required />
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">City *</label>
+              <input type="text" [(ngModel)]="formData.city" class="field-input" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">ZIP Code *</label>
+              <input type="text" [(ngModel)]="formData.zipCode" class="field-input"
+                     maxlength="5" pattern="[0-9]*" required />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Business Website</label>
+            <input type="url" [(ngModel)]="formData.website" class="field-input" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Business Hours</label>
+            <input type="text" [(ngModel)]="formData.hours" class="field-input"
+                   placeholder="e.g., Mon–Fri 9AM–5PM, Sat 10AM–2PM" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4 -->
+      <section *ngIf="currentStep() === 4" class="form-step">
+        <h3 class="step-heading">Business Images</h3>
+        <div class="form-fields">
+          <div class="field-group">
+            <label class="field-label">Upload Business Photos</label>
+            <p class="field-helper">Add photos that showcase your business.</p>
+            <div class="file-upload-area">
+              <input id="businessImages" class="file-input" type="file"
+                     multiple accept="image/*" (change)="onFileSelected($event)" />
+              <label for="businessImages" class="file-upload-label">
+                <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span class="upload-text">Click to upload images</span>
+                <span class="upload-subtext">PNG, JPG, GIF up to 10MB each</span>
+              </label>
+            </div>
+
+            <div *ngIf="formData.businessImages.length > 0" class="uploaded-images">
+              <h4 class="uploaded-title">Uploaded Images ({{ formData.businessImages.length }})</h4>
+              <div class="image-preview-grid">
+                <div *ngFor="let image of formData.businessImages; let i = index" class="image-preview-item">
+                  <div class="image-preview-container">
+                    <img [src]="getImagePreview(image)" class="image-preview" alt="" />
+                    <button type="button" class="remove-image-btn" (click)="removeImage(i)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                  <p class="image-name">{{ image.name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button *ngIf="currentStep() > 0" (click)="prevStep()" class="btn-secondary">← Previous</button>
+        <div class="flex-spacer"></div>
+        <div class="button-group">
+          <button (click)="onClose()" class="btn-cancel" type="button">Cancel</button>
+          <button *ngIf="currentStep() < steps.length - 1"
+                  (click)="nextStep()" [disabled]="!isCurrentStepValid()" class="btn-primary">
+            Next →
+          </button>
+          <button *ngIf="currentStep() === steps.length - 1"
+                  (click)="submitRegistration()"
+                  [disabled]="isSubmitting() || !isCurrentStepValid()"
+                  class="btn-submit">
+            {{ isSubmitting() ? 'Submitting...' : 'Complete Registration' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,317 @@
+@use 'src/variables' as *;
+html, body { height: 100%;
+overflow-x: hidden; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body, p, h1, h2, h3, h4, h5, h6, span, div, a, li, input, textarea, button, select,.mat-mdc-dialog-content,
+.mat-mdc-dialog-title,
+.mat-mdc-dialog-actions {
+  // font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  //font-family: 'Jost', sans-serif;
+  font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif, 
+             "Apple Color Emoji", "Segoe UI Emoji", 
+             "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+.loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* Slight white overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  .loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+  
+  .spinner-message {
+    margin-top: 16px;  /* Spacing below the spinner */
+    font-size: 1.2rem; /* Adjust as needed */
+    color: #333;       /* Adjust text color as desired */
+    text-align: center;
+  }
+ .mat-snack-bar-container.snackbar-error {
+  background-color: #f44336;
+  color: white;
+}
+
+.mat-snack-bar-container.snackbar-success {
+  background-color: #4caf50;
+  color: white;
+}
+/* Primary action button */
+.button-all,
+.mat-mdc-button-base.button-all {
+  background-color: #EC3252 !important;
+  color: #efeaea !important;
+  border: none;
+  transition: all 0.3s ease;
+
+  &:hover,
+  &.cdk-program-focused, /* keyboard focus */
+  &.mdc-ripple-upgraded--background-focused {
+    background-image: linear-gradient(
+    to right,
+    #f82c28,
+    #f62b34,
+    #f32c3f,
+    #ef2f49,
+    #eb3252
+  );
+  transform: scale(1.05);
+  color: #efeaea !important;
+  box-shadow: 0 6px 12px -2px rgba(236, 50, 82, 0.6),
+              -6px 0 12px -2px rgba(236, 50, 82, 0.4),
+               6px 0 12px -2px rgba(236, 50, 82, 0.4);
+  }
+}
+
+/* Previous/back button (outlined look) */
+.button-prev,
+.mat-mdc-button-base.button-prev {
+  background-color: transparent !important;
+  border: 1px solid #313030 !important;
+  color: #313030 !important;
+
+  &:hover {
+    background-color: rgba(49, 48, 48, 0.06) !important;
+  }
+}
+.mat-mdc-form-field-error {
+  text-align: end !important;
+  width: 100%;
+  display: block;
+  padding-right: 0px;
+}
+/* Final confirmation button */
+.button-allset,
+.mat-mdc-button-base.button-allset {
+  background-color: #051133 !important;
+  color: #efeaea !important;
+  font-weight: 600 !important;
+  border: 1px solid #313030 !important;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    //background-color: #091a4d !important; /* slightly lighter on hover */
+  }
+}
+
+
+.custom-ticket-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.3) !important; // semi-transparent dark
+  backdrop-filter: blur(3px);     // optional blur effect
+}
+
+.cdk-overlay-container.snackbar-active {
+  z-index: 10000 !important;
+}
+
+
+/* === MAT-CHECKBOX GLOBAL STYLE FIX === */
+mat-checkbox .mdc-checkbox__ripple {
+  display: none !important;
+}
+mat-checkbox .mdc-checkbox__background {
+  border-radius: 4px !important;
+  transition: all 0.25s ease-in-out !important;
+}
+mat-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #28a745 !important; /* green */
+  border-color: #28a745 !important;
+}
+mat-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__checkmark {
+  transition: stroke-dashoffset 0.3s ease-in-out !important;
+}
+mat-checkbox:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+mat-checkbox input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* Add application styles & imports to this file! */
+
+/* Image Editor Dialog Styling */
+.image-editor-dialog .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.image-editor-dialog .mat-mdc-dialog-surface {
+  border-radius: 16px;
+}
+
+/* === Angular Material Global Typography Overrides === */
+
+/* Labels inside mat-form-field */
+.mat-mdc-form-field label,
+.mat-mdc-floating-label,
+.mat-mdc-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-label {
+  font-size: $font-size-sm !important;       // use small (14px)
+  font-weight: $font-weight-medium;
+  line-height: $line-height-tight;
+  color: $color-text-muted;
+}
+
+/* Input & Textarea fields */
+.mat-mdc-input-element,
+textarea.mat-mdc-input-element {
+  font-size: $font-size-base !important;     // 16px
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $color-text-main;
+}
+
+/* Select values (dropdown) */
+.mat-mdc-select-value {
+  font-size: $font-size-base !important;     // 16px
+  font-weight: $font-weight-normal;
+  color: $color-text-main;
+}
+
+/* Error messages */
+.mat-mdc-form-field-error {
+  font-size: $font-size-sm !important;       // 14px
+  font-weight: $font-weight-medium;
+  color: $color-error-bg !important;
+}
+
+/* Hint text */
+.mat-mdc-form-field-hint {
+  font-size: $font-size-xs !important;       // 12px
+  font-weight: $font-weight-normal;
+  color: $color-text-muted;
+}
+
+/* Buttons (all variants) */
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button {
+  font-size: $button-font-size !important;   // 18px (md)
+  font-weight: $font-weight-semibold;
+  text-transform: none !important;           // remove caps
+  line-height: $line-height-tight;
+}
+.mat-label {
+  font-size: $font-size-sm !important;
+  font-weight: $font-weight-bold;
+  color: $color-primary-dark;
+}
+
+.mat-input {
+  font-size: $font-size-base !important;
+  color: $color-text-main;
+}
+/* === MAT-CHECKBOX LABEL STYLE === */
+// .mat-mdc-checkbox .mdc-form-field {
+//   font-size: $font-size-base !important;   // same as input text (16px)
+//   font-weight: $font-weight-normal;        // keep consistent with body text
+//   color: $color-text-main;                 // your main text color
+//   line-height: $line-height-normal;
+// }
+
+// /* Optional: make checkbox label smaller (14px) like form labels */
+// .mat-mdc-checkbox.sm-label .mdc-form-field {
+//   font-size: $font-size-base !important;     // 14px
+//   font-weight: $font-weight-medium;
+//   color: $color-text-muted;
+// }
+/* =========================
+   MAT-Table TH / TD Styles
+   ========================= */
+
+/* Header cells */
+th.mat-mdc-header-cell {
+  font-size: $font-size-md !important;       // 14px
+  font-weight: $font-weight-semibold !important;
+  color: $color-primary-dark !important;
+  text-align:start;                      // center align header text
+  padding: 12px 16px !important;
+  border-bottom: 1px solid $color-border;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Body cells */
+td.mat-mdc-cell {
+  font-size: $font-size-base !important;     // 16px
+  font-weight: $font-weight-normal;
+  color: $color-text-main !important;
+  text-align: left;                          // left align by default
+  padding: 12px 16px !important;
+  border-bottom: 1px solid $color-border;
+  vertical-align: middle;
+  word-break: break-word;
+}
+
+mat-checkbox:not(.mat-mdc-checkbox-disabled):hover .mdc-checkbox__background {
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+ 
+/* Keyboard focus (Tab): show the same cue as hover, but only when keyboard-focused */
+mat-checkbox .mdc-checkbox__native-control:focus-visible ~ .mdc-checkbox__background {
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25) !important;
+  outline: 2px solid #0d6efd !important;   /* accessible ring */
+  outline-offset: 2px !important;
+}
+ 
+/* Fallback for Angular CDK focus classes (covers some browsers/tooling) */
+mat-checkbox.cdk-keyboard-focused .mdc-checkbox__background,
+mat-checkbox.cdk-focused.cdk-keyboard-focused .mdc-checkbox__background {
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25) !important;
+}
+ 
+/* (Nice-to-have) Also hint on the label when focused via keyboard (modern browsers) */
+mat-checkbox:has(.mdc-checkbox__native-control:focus-visible) .mdc-form-field > label {
+  text-decoration: underline;
+}
+ 
+mat-checkbox .mdc-checkbox__ripple {
+  display: none !important;
+}
+mat-checkbox .mdc-checkbox__background {
+  border-radius: 4px !important;
+  transition: all 0.25s ease-in-out !important;
+}
+mat-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #28a745 !important; /* green */
+  border-color: #28a745 !important;
+}
+mat-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__checkmark {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  transition: stroke-dashoffset 0.3s ease-in-out !important;
+}
+mat-checkbox:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+mat-checkbox input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+ 

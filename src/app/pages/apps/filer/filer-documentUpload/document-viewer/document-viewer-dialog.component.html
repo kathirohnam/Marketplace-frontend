@@ -1,0 +1,65 @@
+<div class="document-viewer-content">
+  <div class="document-viewer-header">
+    <h2>{{ selectedCompany.company }} Documents</h2>
+    <div class="document-actions">
+      <button
+        mat-icon-button
+        (click)="downloadSelectedDocument()"
+        [disabled]="!selectedDocument"
+        matTooltip="Download"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <!-- <button
+        mat-icon-button
+        (click)="printDocument()"
+        [disabled]="!selectedDocument"
+        matTooltip="Print"
+      >
+        <mat-icon>print</mat-icon>
+      </button> -->
+      <button
+        mat-icon-button
+        (click)="closeDocumentViewer()"
+        matTooltip="Close"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-form-field appearance="outline" class="document-selector">
+  <mat-label>Select Document</mat-label>
+  <mat-select
+    [(value)]="selectedDocumentId"
+    (selectionChange)="onDocumentSelect($event.value)"
+  >
+    <mat-option
+      *ngFor="let doc of filteredDocumentTypes"  
+      [value]="doc.documentTypeId"
+    >
+      {{ doc.typeName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+  <div class="document-viewer-container">
+    <div class="error-message" *ngIf="documentError">
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ documentError }}</p>
+    </div>
+
+    <div class="empty-state" *ngIf="!selectedDocumentId && !isLoadingDocument">
+      <mat-icon>description</mat-icon>
+      <p>Select a document to view</p>
+    </div>
+
+    <app-uploadviewer
+      *ngIf="selectedFile"
+      [file]="selectedFile"
+      [showHeader]="false"
+      style="height: 100%; display: block"
+    ></app-uploadviewer>
+  </div>
+</div>

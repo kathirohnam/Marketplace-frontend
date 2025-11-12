@@ -1,0 +1,70 @@
+<ng-container *ngIf="isAllowed()">
+  <div
+    *ngIf="item.navCap"
+    mat-subheader
+    class="nav-link disabled text-uppercase fs-6 text-muted px-2 py-2"
+  >
+    {{ getNavCap() }}
+  </div>
+
+  <a
+    *ngIf="!item.navCap && !item.external && !item.twoLines"
+    mat-list-item
+    (click)="onItemSelected(item)"
+    [ngClass]="{
+      'mat-toolbar mat-primary activeMenu': item.route
+        ? router.isActive(item.route, true)
+        : false,
+      expanded: expanded,
+      disabled: item.disabled || isProfileIncomplete,
+      'profile-incomplete': isProfileIncomplete
+    }"
+    class="menu-list-item {{ item.bgcolor }}"
+  >
+    <ng-icon
+      class="routeIcon d-flex justify-content-center align-items-center"
+      [name]="item.iconName || ''"
+      matListItemIcon
+    ></ng-icon>
+    <span class="hide-menu d-flex justify-content-center align-items-center">
+      {{ item.displayName || '' | translate }}
+    </span>
+    <span *ngIf="item.children?.length" class="arrow-icon" fxFlex>
+      <span fxFlex></span>
+      <mat-icon [@indicatorRotate]="expanded ? 'expanded' : 'collapsed'">
+        expand_more
+      </mat-icon>
+    </span>
+    <span *ngIf="item.chip">
+      <span
+        class="{{ item.chipClass }} p-x-8 p-y-4 item-chip f-w-500 rounded-pill"
+      >
+        {{ item.chipContent }}
+      </span>
+    </span>
+  </a>
+
+  <mat-list-item
+    *ngIf="!item.navCap && item.external"
+    class="menu-list-item {{ item.bgcolor }}"
+    (click)="openExternal(item.route || '')"
+  >
+    <ng-icon
+      class="routeIcon d-flex justify-content-center align-items-center"
+      [name]="item.iconName || ''"
+      matListItemIcon
+    ></ng-icon>
+    <span class="hide-menu d-flex justify-content-center align-items-center">
+      {{ item.displayName || '' | translate }}
+    </span>
+  </mat-list-item>
+
+  <div *ngIf="expanded">
+    <app-nav-item
+      *ngFor="let child of item.children"
+      [item]="child"
+      [depth]="depth + 1"
+      (click)="onSubItemSelected(child)"
+    ></app-nav-item>
+  </div>
+</ng-container>

@@ -1,0 +1,105 @@
+
+
+// Base colors for statuses
+$success-color: #28a745;  // Green for saved, success
+$warning-color: #ffc107;  // Yellow for reviewed
+$info-color: #17a2b8;     // Blue for ready to file
+$secondary-color: #6c757d; // Grey for filled
+$danger-color: #dc3545;    // Red for fail
+$dark-color: #343a40;      // Dark color for Ein
+
+// Utility classes for status cards
+.bg-light-success {
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.bg-light-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.bg-light-info {
+  background-color: rgba(23, 162, 184, 0.1);
+}
+
+.bg-light-secondary {
+  background-color: rgba(108, 117, 125, 0.1);
+}
+
+.bg-light-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.bg-light-dark {
+  background-color: rgba(52, 58, 64, 0.1);
+}
+
+// Text color classes for different statuses
+.text-success {
+  color: $success-color;
+}
+
+.text-warning {
+  color: $warning-color;
+}
+
+.text-info {
+  color: $info-color;
+}
+
+.text-secondary {
+  color: $secondary-color;
+}
+
+.text-danger {
+  color: $danger-color;
+}
+
+.text-dark {
+  color: $dark-color;
+}
+      /* Container for both filters */
+.state-search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;              // space between the two fields
+  max-width: 0;          // start collapsed
+  overflow: hidden;
+  opacity: 0;
+  transition: 
+    max-width 0.3s ease, 
+    opacity    0.3s ease;
+
+  
+
+  &.show-state-search {
+    max-width: 420px;    // ~ 200px + 200px + 8px gap + padding if any
+    opacity: 1;
+    overflow: visible;
+  }
+}
+
+/* If you still need the search-field transition from before */
+.search-field {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .state-search-container.show-state-search {
+    max-width: 300px;    // shrink for smaller screens
+  }
+
+  .search-field {
+    margin-bottom: 16px;
+  }
+}
+
+/* Rotate icon when active */
+.settings-icon {
+  transition: transform 0.3s ease-in-out;
+
+  &.active {
+    transform: rotate(180deg);
+  }
+}

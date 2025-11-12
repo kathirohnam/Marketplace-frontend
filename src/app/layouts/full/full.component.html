@@ -1,0 +1,280 @@
+<mat-sidenav-container
+  class="mainWrapper"
+  autosize
+  autoFocus
+  [ngClass]="{
+    'sidebarNav-mini':
+      options.sidenavCollapsed &&
+      options.navPos !== 'top' &&
+      !options.horizontal &&
+      !resView,
+    'sidebarNav-horizontal': options.horizontal,
+    cardBorder: options.cardBorder,
+    orange_theme: options.activeTheme == 'orange_theme',
+    blue_theme: options.activeTheme == 'blue_theme',
+    aqua_theme: options.activeTheme == 'aqua_theme',
+    purple_theme: options.activeTheme == 'purple_theme',
+    green_theme: options.activeTheme == 'green_theme',
+    cyan_theme: options.activeTheme == 'cyan_theme'
+  }"
+  [dir]="options.dir!"
+>
+  <!-- ============================================================== -->
+  <!-- Vertical Sidebar -->
+  <!-- ============================================================== -->
+  @if(!options.horizontal) {
+  <mat-sidenav
+    #leftsidenav
+    position="start"
+    [mode]="isOver ? 'over' : 'side'"
+    [opened]="
+      options.navPos === 'side' && options.sidenavOpened && !isOver && !resView
+    "
+    (openedChange)="onSidenavOpenedChange($event)"
+    (closedStart)="onSidenavClosedStart()"
+    class="sidebarNav"
+  >
+    <div class="flex-layout">
+      <app-sidebar
+        (toggleMobileNav)="sidenav.toggle()"
+        [showToggle]="isOver"
+        [collapsed]="options.sidenavCollapsed"
+      >
+      </app-sidebar>
+
+      <ng-scrollbar class="position-relative" style="height: 100%">
+        <mat-nav-list class="sidebar-list">
+          @for(item of navItems; track item) {
+          <app-nav-item [item]="item" (notify)="sidenav.toggle()">
+          </app-nav-item>
+          }
+        </mat-nav-list>
+      </ng-scrollbar>
+      <div class="p-16 m-t-auto profile-bar">
+        <div
+          class="bg-light-primarycolor d-flex align-items-center rounded p-24"
+        >
+          <img [src]="getProfileImageUrl()" class="rounded-circle" width="45" height="45" />
+          <div class="m-l-16">
+            <h5 class="f-s-18 m-0 f-w-600 m-b-4">{{ user.firstName }}</h5>
+            <span class="f-s-14">{{ role }}</span>
+          </div>
+          <div class="m-l-auto">
+            <a
+              mat-icon-button
+              (click)="logout()"
+              class="d-flex justify-content-center text-center"
+            >
+              <ng-icon
+                name="tablerPower"
+                class="text-primarycolor icon-18 d-flex justify-content-center align-items-center"
+              ></ng-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+  }
+
+  <!-- ============================================================== -->
+  <!-- horizontal Sidebar -->
+  <!-- ============================================================== -->
+  @if(resView) {
+  <mat-sidenav
+    #leftsidenav
+    [mode]="'over'"
+    [opened]="options.sidenavOpened && !isTablet"
+    (openedChange)="onSidenavOpenedChange($event)"
+    (closedStart)="onSidenavClosedStart()"
+    class="sidebarNav"
+  >
+    <app-sidebar [collapsed]="false"></app-sidebar>
+    <ng-scrollbar class="position-relative" style="height: 100%">
+      <mat-nav-list class="sidebar-list">
+        @for(item of navItems; track item) {
+        <app-nav-item [item]="item" (notify)="sidenav.toggle()"> </app-nav-item>
+        }
+      </mat-nav-list>
+    </ng-scrollbar>
+    <div class="p-24 m-t-auto profile-bar">
+      <div class="bg-light-primarycolor d-flex align-items-center rounded p-16">
+        <img
+          src="/assets/images/profile/user-1.jpg"
+          class="rounded-circle"
+          width="40"
+        />
+        <div class="m-l-16">
+          <h5 class="mat-subtitle-2 f-w-600">Mathew</h5>
+          <span class="f-s-12">Designer</span>
+        </div>
+        <div class="m-l-auto">
+          <a
+            mat-icon-button
+            [routerLink]="['/authentication/login']"
+            class="d-flex justify-content-center text-center"
+          >
+            <ng-icon
+              name="tablerPower"
+              class="text-primarycolor icon-18 d-flex justify-content-center align-items-center"
+            ></ng-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+  }
+
+  <!-- ============================================================== -->
+  <!-- Main Content -->
+  <!-- ============================================================== -->
+  <mat-sidenav-content
+    class="contentWrapper"
+    [ngClass]="{ 'p-l-24 p-r-24': !options.horizontal }"
+    #content
+  >
+    <!-- horizontal header -->
+    @if(options.horizontal) {
+    <app-horizontal-header
+      (toggleMobileNav)="sidenav.toggle()"
+      (toggleMobileFilterNav)="filterNavRight.toggle()"
+    ></app-horizontal-header>
+    } @if(options.horizontal) {
+    <ng-container>
+      <app-horizontal-sidebar></app-horizontal-sidebar>
+    </ng-container>
+    }
+
+    <main
+      class="pageWrapper"
+      [ngClass]="{
+        maxWidth: options.boxed
+      }"
+    >
+      <!-- ============================================================== -->
+      <!-- VerticalHeader -->
+      <!-- ============================================================== -->
+      @if(!options.horizontal) {
+      <ng-container>
+        <app-header
+          [showToggle]="!isOver"
+          (toggleCollapsed)="toggleCollapsed()"
+          (toggleMobileNav)="sidenav.toggle()"
+          (toggleMobileFilterNav)="filterNavRight.toggle()"
+        ></app-header>
+      </ng-container>
+      }
+
+      <div class="m-t-30" [ngClass]="{ 'p-l-24 p-r-24': options.horizontal }">
+        <app-breadcrumb></app-breadcrumb>
+        <!-- ============================================================== -->
+        <!-- Outlet -->
+        <!-- ============================================================== -->
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- ------------------------------------------------------------------
+  Mobile Apps Sidebar
+  ------------------------------------------------------------------ -->
+<mat-drawer #filterNavRight mode="over" position="end" class="filter-sidebar">
+  <div>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="branding">
+        @if(options.theme === 'light') {
+        <a href="/">
+          <img
+            src="./assets/images/logos/dark-logo.svg"
+            class="align-middle m-2"
+            alt="logo"
+          />
+        </a>
+        } @else {
+        <a href="/">
+          <img
+            src="./assets/images/logos/light-logo.svg"
+            class="align-middle m-2"
+            alt="logo"
+          />
+        </a>
+        }
+      </div>
+      <button
+        mat-icon-button
+        (click)="filterNavRight.toggle()"
+        class="d-flex justify-content-center"
+      >
+        <ng-icon name="tablerX" class="icon-18 d-flex"></ng-icon>
+      </button>
+    </div>
+
+    <mat-accordion>
+      <mat-expansion-panel class="shadow-none">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="f-s-16 f-w-500"> Apps </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <div class="row">
+            @for(appdd of apps; track appdd.img) {
+            <div class="col-12 text-hover-primary">
+              <a
+                [routerLink]="['/']"
+                class="d-flex align-items-center text-decoration-none m-b-24 gap-16"
+              >
+                <button
+                  mat-mini-fab
+                  class="text-primarycolor bg-light-primarycolor shadow-none rounded"
+                >
+                  <img [src]="appdd.img" width="20" />
+                </button>
+
+                <div>
+                  <h5
+                    class="f-s-14 f-w-600 m-0 text-primarycolor mat-body-1 hover-text"
+                  >
+                    {{ appdd.title }}
+                  </h5>
+                  <span class="mat-body-1 f-s-12">{{ appdd.subtitle }}</span>
+                </div>
+              </a>
+            </div>
+            }
+          </div>
+          <h4 class="f-s-18 f-w-600 mat-subtitle-1 m-b-16">Quick Links</h4>
+          @for(quicklink of quicklinks; track quicklink.title) {
+          <div class="text-hover-primary">
+            <a
+              [routerLink]="['quicklink.link']"
+              class="hover-text text-decoration-none mat-body-1 f-w-600 d-block p-y-8"
+              >{{ quicklink.title }}</a
+            >
+          </div>
+          }
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="p-x-24">
+      <a
+        [routerLink]="['/']"
+        class="d-flex align-items-center text-decoration-none mat-body-1 p-y-16 gap-8"
+      >
+        <span class="f-s-15 f-w-500 m-l-8">Calendar</span>
+      </a>
+      <a
+        [routerLink]="['/']"
+        class="d-flex align-items-center text-decoration-none mat-body-1 p-y-16"
+      >
+        <span class="f-s-15 f-w-500 m-l-8">Chat</span>
+      </a>
+      <a
+        [routerLink]="['/']"
+        class="d-flex align-items-center text-decoration-none mat-body-1 p-y-16 gap-8"
+      >
+        <span class="f-s-15 f-w-500 m-l-8">Email</span>
+      </a>
+    </div>
+  </div>
+</mat-drawer>

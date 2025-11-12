@@ -1,0 +1,98 @@
+<section id="features" class="features-section section-padding">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-lg-8">
+        <h2 class="section-title mb-4">
+          Everything You Need to
+          <span class="gradient-text">Start & Grow</span> Your Business
+        </h2>
+        <p class="section-subtitle">
+          Our comprehensive LLC formation service includes everything you need
+          to get started, plus ongoing support to keep your business compliant
+          and growing.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let feature of features">
+        <div class="feature-card card-custom h-100">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle mx-auto mb-3">
+              <mat-icon>{{ feature.icon }}</mat-icon>
+            </div>
+            <h4 class="feature-title mb-3">{{ feature.title }}</h4>
+            <p class="feature-description mb-4">{{ feature.description }}</p>
+            <div class="feature-highlights">
+              <div
+                class="highlight-item"
+                *ngFor="let highlight of feature.highlights"
+              >
+                <mat-icon class="check-icon">check_circle</mat-icon>
+                <span>{{ highlight }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Benefits Section -->
+    <!-- <div class="benefits-section mt-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="benefits-content">
+            <h3 class="mb-4">Why Choose ClearIncorp?</h3>
+            <div class="benefit-list">
+              <div class="benefit-item">
+                <mat-icon class="benefit-icon">star</mat-icon>
+                <div>
+                  <h5>Industry Leading Success Rate</h5>
+                  <p>99.9% of our LLC formations are approved on the first try</p>
+                </div>
+              </div>
+              <div class="benefit-item">
+                <mat-icon class="benefit-icon">shield</mat-icon>
+                <div>
+                  <h5>Money-Back Guarantee</h5>
+                  <p>If we can't form your LLC, we'll refund 100% of your money</p>
+                </div>
+              </div>
+              <div class="benefit-item">
+                <mat-icon class="benefit-icon">people</mat-icon>
+                <div>
+                  <h5>Trusted by 100,000+ Businesses</h5>
+                  <p>Join thousands of successful entrepreneurs who chose us</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="benefits-visual">
+            <div class="success-card">
+              <div class="success-header">
+                <mat-icon class="success-icon">check_circle</mat-icon>
+                <span>LLC Formation Complete</span>
+              </div>
+              <div class="success-details">
+                <div class="detail-row">
+                  <span class="label">State:</span>
+                  <span class="value">Delaware</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Processing Time:</span>
+                  <span class="value">1 Business Day</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Status:</span>
+                  <span class="value status-approved">Approved</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>

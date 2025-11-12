@@ -1,0 +1,130 @@
+<section id="pricing" class="pricing-section section-padding">
+  <div class="container">
+    <!-- Header Section -->
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-lg-8">
+        <h2 class="section-title mb-4">
+          Simple, <span class="gradient-text">Transparent Pricing</span>
+        </h2>
+        <p class="section-subtitle">
+          Choose the package that's right for your business. No hidden fees, 
+          no surprises. All plans include our 100% satisfaction guarantee.
+        </p>
+      </div>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="row g-4 mb-5 justify-content-center">
+      <div class="col-lg-4 col-md-6" *ngFor="let plan of pricingPlans; let i = index">
+        <div class="pricing-card" [class.popular]="plan.popular" [class.scale-center]="plan.popular">
+          <!-- Popular Badge -->
+          <div class="popular-badge" *ngIf="plan.badge">
+            <span>{{ plan.badge }}</span>
+          </div>
+          
+          <!-- Card Header -->
+          <div class="card-header">
+            <h3 class="plan-name">{{ plan.name }}</h3>
+            <div class="price-container">
+              <div class="current-price">
+                <span class="currency">$</span>
+                <span class="amount">{{ plan.price }}</span>
+                <span class="period">+ state fee</span>
+              </div>
+              <div class="original-price" *ngIf="plan.originalPrice && plan.originalPrice > plan.price">
+                <span>Was ${{ plan.originalPrice }}</span>
+              </div>
+            </div>
+            <p class="plan-description">{{ plan.description }}</p>
+          </div>
+          
+          <!-- Card Body - Features -->
+          <div class="card-body">
+            <div class="features-list">
+              <div class="feature-item" *ngFor="let feature of plan.features">
+                <div class="feature-icon">
+                  <mat-icon>check</mat-icon>
+                </div>
+                <span class="feature-text">{{ feature }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <button class="btn-cta" [class.btn-primary]="plan.popular" [class.btn-outline]="!plan.popular">
+              <span>{{ plan.ctaText }}</span>
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+            <div class="guarantee-text">
+              <mat-icon>verified_user</mat-icon>
+              <span>100% Money-Back Guarantee</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- State Fees Information -->
+    <!-- <div class="state-fees-section">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="state-fees-card">
+            <div class="row align-items-center">
+              <div class="col-lg-8 col-md-7">
+                <div class="fees-content">
+                  <h4 class="fees-title">About State Filing Fees</h4>
+                  <p class="fees-description">
+                    State filing fees are mandatory government charges that vary by state, 
+                    ranging from $40 to $500. These fees are paid directly to your state government.
+                  </p>
+                  <div class="popular-states">
+                    <span class="state-fee">Delaware: $90</span>
+                    <span class="state-fee">Wyoming: $100</span>
+                    <span class="state-fee">Nevada: $75</span>
+                    <span class="state-fee">Texas: $300</span>
+                    <span class="state-fee">California: $70</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-5">
+                <div class="fees-icon-section">
+                  <div class="info-icon">
+                    <mat-icon>info_outline</mat-icon>
+                  </div>
+                  <p class="info-text">We'll show you exact fees for your state before you pay</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Trust Indicators -->
+    <!-- <div class="trust-section">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          <div class="trust-indicators">
+            <div class="trust-item">
+              <mat-icon>security</mat-icon>
+              <span>Secure & Encrypted</span>
+            </div>
+            <div class="trust-item">
+              <mat-icon>support_agent</mat-icon>
+              <span>Expert Support</span>
+            </div>
+            <div class="trust-item">
+              <mat-icon>verified</mat-icon>
+              <span>100% Accuracy Guarantee</span>
+            </div>
+            <div class="trust-item">
+              <mat-icon>schedule</mat-icon>
+              <span>Fast Processing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>

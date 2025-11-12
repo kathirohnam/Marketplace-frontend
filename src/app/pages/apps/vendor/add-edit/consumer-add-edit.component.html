@@ -1,0 +1,37 @@
+<!-- src/app/pages/apps/consumer/consumer-add-edit.component.html -->
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+      <h2 class="form-header">
+        {{ editMode ? 'Edit Consumer Account' : 'Add New Consumer Account' }}
+      </h2>
+  
+      <form [formGroup]="consumerForm" (ngSubmit)="onSubmit()">
+        <!-- Role Selection -->
+        <mat-form-field appearance="outline" class="w-100 mb-4">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="Consumer">Consumer</mat-option>
+          </mat-select>
+          <mat-error *ngIf="consumerForm.get('role')?.hasError('required')">
+            Role is required
+          </mat-error>
+        </mat-form-field>
+  <!-- Shared Contact Info -->
+      <app-user-contact-info [formGroup]="consumerForm"></app-user-contact-info>
+  
+       
+            <h3 class="sub-header mb-3">Profile Image Upload</h3>
+  
+           <app-profile-upload></app-profile-upload>
+      
+  
+        <div class="d-flex justify-content-end gap-16 mt-4">
+          <button mat-button type="button"  class="button-prev" (click)="navigateToConsumerList()">Cancel</button>
+          <button mat-flat-button class="button-all" type="submit">
+            {{ editMode ? 'Update Consumer' : 'Add Consumer' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  

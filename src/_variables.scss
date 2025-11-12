@@ -1,0 +1,94 @@
+/* src/styles/_variables.scss */
+// Consumer wizard variables
+$title-color: #ec3252; // title color
+$description-color: #5a5a5a; // description color
+$subtitle-color: #121b33; // subtitle color
+
+// Filer wizard variables
+$filer-title-color: #ec3252; // title color
+$filer-description-color: #5a5a5a; // description color
+$filer-subtitle-color: #121b33; // subtitle color
+
+//Profile settings variables
+$profile-title-color: #ec3252; // title color
+$profile-description-color: #5a5a5a; // description color
+$profile-subtitle-color: #121b33; // subtitle color
+
+$primary-color: #ec3252; // main brand reddish-pink
+
+$secondary-color: #ffd1dc; // soft blush pink (pairs well as overlay/highlight without overpowering)
+
+$primary-hover-color: linear-gradient(
+  to right,
+  #ff5c8a,
+  #ff4f70,
+  #ec3252,
+  #d62d48,
+  #b71c3b
+); // smooth bold-to-dark gradient
+
+ // Darker shade for hover effects
+
+ // Dashboard variables
+$color-primary-dark: #000000;     // Gradient text, banner headings, progress labels, sidebar CTA text
+$color-primary-soft-1: #dbeafe;   // Progress-banner bg (left), active tab count badge bg
+$color-primary-soft-2: #bfdbfe;   // Progress-banner bg (right), sidebar CTA border
+$color-primary-soft-3: #93c5fd;   // Progress-banner border
+
+/* ⚓ Secondary / Accent */
+$color-secondary: #051133;        // Reserved navy (brand sections if needed)
+$color-accent: #10b981;           // Benefit icons, trust indicator icons
+$color-error-bg:#f87a65;
+$color-text-main: #1a202c;        // Headings, company names, progress %, quick-action titles
+$color-text-muted: #64748b;       // Subtitles, descriptions, company status, inactive tabs
+$color-text-muted-2: #475569;     // Secondary btn text, inactive tab count badge
+/* 📏 Borders & Backgrounds */
+$color-border: #f1f5f9;           // Default card borders (companies, sidebar, quick actions)
+$color-border-2: #e2e8f0;         // Hover borders, secondary button hover
+$color-bg-white: #ffffff;         // Main card/container bg
+$color-bg-light: #f8fafc;         // Active tab bg, next-step box, secondary btn bg
+$color-bg-scrollbar-track: #f1f5f9;   // Custom scrollbar track
+$color-bg-scrollbar-thumb: #cbd5e1;   // Custom scrollbar thumb
+$color-bg-scrollbar-thumb-hover: #94a3b8; // Scrollbar hover state
+
+
+/* ✅ Status Colors */
+$color-success-bg: #dcfce7;       // Success badge bg
+$color-success-text: #166534;     // Success badge text, benefit text
+
+/* 🏷️ Chips & Pills */
+$color-chip-state-bg: #f1f5f9;    // State badge bg
+$color-chip-state-text: #475569;  // State badge text
+$color-progress-pill-bg: #e3e2e2; // Progress indicator bg
+$color-progress-pill-text: $color-primary-dark; // Progress indicator text
+
+
+/* 📏 Font Sizes */
+$font-size-xxl: 2.25rem;   // 36px - Hero titles, banners
+$font-size-xl: 1.75rem;    // 28px - Section titles, dashboard headings
+$font-size-lg: 1.35rem;     // 24px - Subheadings, form titles
+$font-size-md: 1.125rem;   // 18px - Card titles, button labels (default large)
+$font-size-base: 1rem;     // 16px - Body text, normal paragraphs
+$font-size-sm: 0.875rem;   // 14px - Descriptions, muted text
+$font-size-xs: 0.75rem;    // 12px - Captions, labels, helper text
+
+/* 📏 Line Heights */
+$line-height-tight: 1.5;   // Headings
+$line-height-normal: 1.75;  // Body text
+$line-height-relaxed: 2;// Long descriptions
+
+/* 🏷️ Font Weights */
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+/* 🎯 Perspective-specific Usage */
+$title-font-size: $font-size-xl;         // Titles (forms, wizard headers)
+$subtitle-font-size: $font-size-lg;     // Subtitles, section headers
+$description-font-size: $font-size-base;  // Descriptions, helper text
+$caption-font-size: $font-size-xs;      // Tiny labels, notes
+$button-font-size: $font-size-md;       // Buttons, CTAs
+$dashboard-heading-font-size: $font-size-xxl; // Dashboard panels

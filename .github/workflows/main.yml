@@ -1,0 +1,94 @@
+name: Angular CI/CD Deployment
+
+on:
+  push:
+    branches: [develop, uat, production]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '19'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine deployment targets
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          echo "Deploying branch: $BRANCH"
+          case "$BRANCH" in
+            develop)
+              echo "BUCKET_NAME=llcweb-develop" >> $GITHUB_ENV
+              echo "CLOUDFRONT_DISTRIBUTION_ID=E3EDAES9CBVH0T" >> $GITHUB_ENV
+              echo "ROLE_TO_ASSUME=arn:aws:iam::340752807059:role/gha-develop-deploy" >> $GITHUB_ENV
+              echo "NG_CONFIG=development" >> $GITHUB_ENV
+              ;;
+            uat)
+              echo "BUCKET_NAME=llcweb-uat" >> $GITHUB_ENV
+              echo "CLOUDFRONT_DISTRIBUTION_ID=E2ATJHK6EGSKT0" >> $GITHUB_ENV
+              echo "ROLE_TO_ASSUME=arn:aws:iam::340752807059:role/gha-uat-deploy" >> $GITHUB_ENV
+              echo "NG_CONFIG=test" >> $GITHUB_ENV    # <-- matches angular.json
+              ;;
+            production)
+              echo "BUCKET_NAME=llcweb-production" >> $GITHUB_ENV
+              echo "CLOUDFRONT_DISTRIBUTION_ID=E3TEM94ECN0FWT" >> $GITHUB_ENV
+              echo "ROLE_TO_ASSUME=arn:aws:iam::340752807059:role/gha-prod-deploy" >> $GITHUB_ENV
+              echo "NG_CONFIG=production" >> $GITHUB_ENV
+              ;;
+            *)
+              echo "Unsupported branch: $BRANCH" >&2
+              exit 1
+              ;;
+          esac
+          echo "Using Angular config: $NG_CONFIG"
+          echo "Target bucket: $BUCKET_NAME"
+
+      - name: Build (Angular)
+        run: npx ng build --configuration="${{ env.NG_CONFIG }}"
+
+      - name: Resolve build output folder
+        run: |
+          set -euo pipefail
+          CANDIDATES=( "dist/Spike/browser" "dist/Spike" "dist/browser" "dist" )
+          FOUND=""
+          for p in "${CANDIDATES[@]}"; do
+            if [ -d "$p" ] && [ -f "$p/index.html" ]; then FOUND="$p"; break; fi
+          done
+          if [ -z "$FOUND" ]; then
+            FIRST_INDEX="$(find dist -type f -name index.html -print -quit || true)"
+            if [ -n "$FIRST_INDEX" ]; then FOUND="$(dirname "$FIRST_INDEX")"; fi
+          fi
+          if [ -z "$FOUND" ]; then echo "❌ No index.html under dist/"; exit 1; fi
+          echo "BUILD_DIR=$FOUND" >> $GITHUB_ENV
+          echo "Resolved BUILD_DIR=$FOUND"
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Who am I?
+        run: aws sts get-caller-identity
+
+      - name: Deploy to S3
+        run: aws s3 sync "$BUILD_DIR" "s3://${{ env.BUCKET_NAME }}" --delete --only-show-errors
+
+      - name: Invalidate CloudFront
+        if: env.CLOUDFRONT_DISTRIBUTION_ID != ''
+        run: aws cloudfront create-invalidation --distribution-id "${{ env.CLOUDFRONT_DISTRIBUTION_ID }}" --paths "/*"

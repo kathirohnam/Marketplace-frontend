@@ -1,0 +1,195 @@
+<mat-horizontal-stepper>
+  <mat-step label="Business Details">
+    <div class="container py-5">
+      <!-- Business Details -->
+       <h3 class="fw-bold  text-center">
+        Business Name:
+        <span class="text-successcolor">
+          {{ companyDetails.step2.companyName }}
+        </span>
+      </h3>
+      <h3 class="fw-bold  view-title">Business Details</h3>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block mb-1">State</strong>
+          {{ companyDetails.step1 }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Formation Date</strong>
+          {{ companyDetails.step3 | date }}
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Trade Name</strong>
+          {{ companyDetails.step4.tradeName }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Principal Activity</strong>
+          {{ companyDetails.step4.principalActivity }}
+        </div>
+      </div>
+
+      <!-- Primary Contact -->
+      <h3 class="fw-bold  view-title">Primary Contact</h3>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block mb-1">First Name</strong>
+          {{ companyDetails.step5.firstName }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Last Name</strong>
+          {{ companyDetails.step5.lastName }}
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Email</strong>
+          {{ companyDetails.step5.email }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Phone Number</strong>
+          {{ companyDetails.step5.phoneNumber }}
+        </div>
+      </div>
+
+      <!-- Registered Agent -->
+      <h3 class="fw-bold view-title">Registered Agent</h3>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Address</strong>
+          {{ companyDetails.step6.streetAddress1 }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block mb-1">City</strong>
+          {{ companyDetails.step6.city }}
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block mb-1">State</strong>
+          {{ companyDetails.step6.state }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block mb-1">Zip Code</strong>
+          {{ companyDetails.step6.zipCode }}
+        </div>
+      </div>
+      <br>
+      <div class="d-flex justify-content-end">
+        <button mat-button class="button-all" matStepperNext>Next</button>
+      </div>
+    </div>
+  </mat-step>
+
+  <mat-step label="Management Cycle">
+    <div class="container py-5">
+      <!-- Management Style -->
+      <h3 class="fw-bold  text-center">
+        Management Style:
+        <span class="text-successcolor">
+         {{ companyDetails.managementStyle === 'manager' ? 'Manager' : 'Member' }}
+
+        </span>
+      </h3>
+
+      <!-- Manager-Managed Section -->
+      <ng-container *ngIf="(companyDetails.step13a?.length ?? 0) > 0">
+        <h3 class="fw-bold  view-title">Managers</h3>
+        <div [ngClass]="{'scroll-container': (companyDetails.step13a?.length ?? 0) > 1}">
+          <div *ngFor="let manager of companyDetails.step13a; let i = index" class="data-box">
+            <strong class="d-block text-successcolor">Manager {{ i + 1 }}</strong>
+            <div class="row">
+              <div class="col-md-6">
+                <strong class="d-block">First Name</strong>
+                {{ manager.firstName }}
+              </div>
+              <div class="col-md-6">
+                <strong class="d-block">Last Name</strong>
+                {{ manager.lastName }}
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-md-6">
+                <strong class="d-block">Email</strong>
+                {{ manager.email }}
+              </div>
+              <div class="col-md-6">
+                <strong class="d-block">Phone Number</strong>
+                {{ manager.phoneNumber }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Ownership Members Section -->
+      <h3 class="fw-bold  view-title">Ownership Members</h3>
+      <div [ngClass]="{'scroll-container-member': (companyDetails.step13b?.length ?? 0) > 1}">
+        <div *ngFor="let member of companyDetails.step13b; let i = index" class="data-box">
+          <strong class="d-block text-successcolor">Member {{ i + 1 }}</strong>
+          <div class="row">
+            <div class="col-md-6">
+              <strong class="d-block">First Name</strong>
+              {{ member.firstName }}
+            </div>
+            <div class="col-md-6">
+              <strong class="d-block">Last Name</strong>
+              {{ member.lastName }}
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <strong class="d-block">Email</strong>
+              {{ member.email }}
+            </div>
+            <div class="col-md-6">
+              <strong class="d-block">Phone Number</strong>
+              {{ member.phoneNumber }}
+            </div>
+          </div>
+           <div class="row mt-2">
+            <div class="col-md-6">
+              <strong class="d-block">Ownership Percentage</strong>
+              {{ member.ownership }}%
+            </div>
+            <div class="col-md-6" *ngIf="member.isEinResponsibleParty">
+              <strong class="d-block">SSN/ITIN/EIN</strong>
+              {{ companyDetails.einDetailsDto?.ssnId }}
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Business Address -->
+      <h3 class="fw-bold view-title">Business Address</h3>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block">Address Line 1</strong>
+          {{ companyDetails.step14?.streetAddress1 }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block">City</strong>
+          {{ companyDetails.step14?.city }}
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong class="d-block">State</strong>
+          {{ companyDetails.step1 }}
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block">ZIP Code</strong>
+          {{ companyDetails.step14?.zipCode }}
+        </div>
+      </div>
+      <br>
+
+      <div class="d-flex justify-content-between">
+        <button mat-button matStepperPrevious class="button-prev">Back</button>
+        <button mat-button class="button-all" (click)="closeDialog()">Close</button>
+      </div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

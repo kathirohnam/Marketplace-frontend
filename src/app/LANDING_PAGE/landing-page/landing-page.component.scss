@@ -1,0 +1,192 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root {
+  --primary-red: #ec3252;
+  --secondary-red: #c41e3a;
+  --light-red: #fde2e7;
+  --accent-red: #f06179;
+  --text-dark: #2a0d15;
+  --text-light: #6b7280;
+  --white: #ffffff;
+  --light-gray: #f8fafc;
+  --border-light: #e5e7eb;
+  --success-green: #10b981;
+  --warning-orange: #f59e0b;
+  --error-red: #dc2626;
+  --info-blue: #0ea5e9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  background-color: var(--white);
+}
+
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(236, 50, 82, 0.3);
+  background: linear-gradient(135deg, var(--secondary-red) 0%, var(--primary-red) 100%);
+}
+
+.btn-outline-custom {
+  border: 2px solid var(--primary-red);
+  color: var(--primary-red);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.btn-outline-custom:hover {
+  background: var(--primary-red);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(236, 50, 82, 0.2);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-padding {
+  padding: 80px 0;
+}
+
+.card-custom {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  background: var(--white);
+}
+
+.card-custom:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.icon-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--light-red) 0%, #fecaca 100%);
+  color: var(--primary-red);
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 60px 0;
+  }
+  
+  h1 {
+    font-size: 2.5rem !important;
+  }
+  
+  h2 {
+    font-size: 2rem !important;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-red);
+  line-height: 1;
+}
+
+.testimonial-card {
+  background: linear-gradient(135deg, var(--white) 0%, var(--light-gray) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  border: 1px solid var(--border-light);
+  position: relative;
+}
+
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 4rem;
+  color: var(--light-red);
+  line-height: 1;
+}
+
+.price-badge {
+  background: linear-gradient(135deg, var(--success-green) 0%, #059669 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.faq-item {
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional classes for your corporate theme */
+.corporate-accent {
+  color: var(--accent-red);
+}
+
+.corporate-bg {
+  background-color: var(--light-red);
+}
+
+.corporate-border {
+  border-color: var(--primary-red);
+}

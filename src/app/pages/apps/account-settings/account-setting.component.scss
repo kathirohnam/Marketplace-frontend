@@ -1,0 +1,260 @@
+@use 'src/variables' as *;
+
+/* Shell & remove real tab header (we draw our own) */
+.no-tab-header ::ng-deep .mat-mdc-tab-header { display: none !important; }
+
+/* Header */
+.screen-header { padding: 32px 32px 0 32px; }
+.title-wrap { display: flex; align-items: center; gap: 12px; }
+
+.title {
+  margin: 0;
+  font-size: $font-size-lg;             // 24px -> variable
+  font-weight: $font-weight-bold;       // 700 -> variable
+  color: $profile-subtitle-color;
+  line-height: $line-height-tight;
+}
+
+.subtitle {
+  margin: 2px 0 0 0;
+  color: $profile-description-color;
+  font-size: $description-font-size;    // 15px -> use description token
+  line-height: $line-height-normal;
+}
+
+/* Main content */
+.content-wrap { padding: 24px 32px 0 32px; }
+
+/* Info card styling */
+.info-card {
+  border: 1px solid $color-border-2;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.upload-card {
+  border: 1px solid $color-border-2;
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: $font-size-md;             // 18px -> variable
+  font-weight: $font-weight-bold;       // 700 -> variable
+  color: $profile-subtitle-color;
+  margin: 0 0 6px;
+  line-height: $line-height-tight;
+}
+
+.section-help {
+  color: $profile-description-color;
+  font-size: $description-font-size;    // 14px -> variable
+  margin: 0 0 20px;
+  line-height: $line-height-relaxed;
+}
+
+/* Labels & fields */
+.form-label {
+  display: block;
+  font-weight: $font-weight-semibold;   // 600 -> variable
+  color: $profile-subtitle-color;
+  margin-bottom: 8px;
+  font-size: $font-size-sm;             // 14px -> variable
+  line-height: $line-height-normal;
+}
+
+.mat-mdc-form-field { width: 100%; margin-bottom: 16px; }
+
+/* readonly email visual */
+.readonly-field input[matinput][readonly] {
+  color: $color-text-muted !important;
+  cursor: not-allowed;
+}
+.muted-hint { color: $color-text-muted !important; font-size: $caption-font-size; }
+
+/* Profile Image Display */
+.image-display { display: flex; justify-content: center; margin: 0 0 24px; }
+
+.image-frame {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: $primary-color; border: 3px solid $primary-color;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 25px rgba($primary-color, 0.15);
+  transition: all 0.3s ease; cursor: pointer;
+}
+
+.image-frame:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba($primary-color, 0.2); }
+
+.profile-image { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+
+.image-overlay {
+  position: absolute; inset: 0; background: $color-bg-light;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; color: $color-text-muted;
+  
+}
+
+/* Use typography tokens for icon font-size (width/height remain as layout) */
+.overlay-icon {
+  font-size: $font-size-xxl !important; // ~36px instead of raw 60px
+  width: 60px !important; height: 60px !important;
+  color: $color-text-muted;
+}
+
+/* Edit Overlay */
+.edit-overlay {
+  position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; transition: all 0.3s ease; cursor: pointer; color: white;
+
+  &.show { opacity: 1; }
+  &:hover { background: rgba(0, 0, 0, 0.8); }
+}
+
+.edit-icon {
+  font-size: $font-size-xl !important;  // 28px -> variable
+  width: 28px !important; height: 28px !important;
+  margin-bottom: 4px; color: white;
+}
+
+.edit-text {
+  font-size: $caption-font-size;        // 12px -> variable
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase; letter-spacing: 0.5px; color: white;
+}
+
+/* Upload Actions */
+.upload-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; }
+
+.upload-btn {
+  background: $primary-color; color: white; border: none; border-radius: 8px;
+  padding: 12px 24px; font-weight: $font-weight-semibold;
+  font-size: $button-font-size;         // was 14px -> use button token
+  transition: all 0.3s ease; box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+
+  &:hover {
+    background: darken($primary-color, 10%); transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+  }
+}
+
+.reset-btn {
+  border: 2px solid $color-border-2; color: $color-text-muted; background: transparent;
+  border-radius: 8px; padding: 12px 24px; font-weight: $font-weight-semibold;
+  font-size: $button-font-size;         // was 14px
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) { border-color: $primary-color; color: $primary-color; background: $color-bg-light; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+/* Upload Description */
+.upload-description {
+  text-align: center; color: $color-text-muted;
+  font-size: $font-size-sm;             // 14px -> variable
+  line-height: $line-height-normal;
+  font-weight: $font-weight-medium;     // 500 -> variable
+  margin: 0 0 5px;
+}
+
+/* Error Messages */
+.upload-errors {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: $color-error-bg; border: 1px solid lighten($color-error-bg, 20%);
+  border-radius: 8px; padding: 12px 16px; margin-top: 16px;
+}
+
+.error-icon {
+  color: #dc2626;
+  font-size: $font-size-md !important;  // 18px -> variable
+  width: 18px !important; height: 18px !important;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: $font-size-sm;             // 14px -> variable
+  font-weight: $font-weight-medium;     // 500 -> variable
+}
+
+/* File Info */
+.file-info {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: $color-success-bg; border: 1px solid lighten($color-success-bg, 10%);
+  border-radius: 8px; padding: 12px 16px; margin-top: 16px;
+}
+
+.info-icon {
+  color: $color-success-text;
+  font-size: $font-size-md !important;  // 18px -> variable
+  width: 18px !important; height: 18px !important;
+}
+
+.info-text {
+  color: $color-success-text;
+  font-size: $font-size-sm;             // 14px -> variable
+  font-weight: $font-weight-medium;     // 500 -> variable
+}
+
+/* Form Field Styling */
+::ng-deep .mat-mdc-form-field {
+  .mdc-outlined-field__outline { border-color: $color-border-2; }
+  &.mat-focused .mdc-outlined-field__outline { border-color: $primary-color; }
+  .mdc-text-field--outlined .mdc-floating-label { color: $color-text-muted; }
+}
+
+/* Keep your form errors alignment */
+.cardWithShadow { flex: 1; }
+
+/* Footer */
+.footer-actions {
+  display: flex; justify-content: flex-end; align-items: center; gap: 16px;
+  padding: 24px 32px 32px 32px; margin-top: 20px;
+}
+
+button[disabled] {
+  background-color: #d6dbdf !important; color: #99a3a4 !important;
+  cursor: none; opacity: 0.6; box-shadow: none !important;
+}
+
+/* Responsive tweaks */
+@media (max-width: 991.98px) {
+  .screen-header { padding: 24px 24px 0 24px; }
+  .content-wrap { padding: 16px 24px 0 24px; }
+  .footer-actions { padding: 24px 24px 32px 24px; }
+
+  .upload-actions { flex-direction: column; gap: 12px; }
+  .upload-btn, .reset-btn { width: 100%; padding: 14px 24px; }
+  .info-card, .upload-card { margin-bottom: 16px; }
+}
+
+@media (max-width: 576px) {
+  .screen-header { padding: 20px 16px 0 16px; }
+  .content-wrap { padding: 16px 16px 0 16px; }
+
+  .footer-actions {
+    padding: 20px 16px 24px 16px;
+    flex-direction: column-reverse; gap: 12px;
+  }
+
+  .update-btn, .cancel-btn { width: 100%; padding: 14px 24px; }
+
+  .image-frame { width: 120px; height: 120px; }
+
+  .overlay-icon {
+    font-size: $font-size-xl !important;  // mobile: smaller, still via variable
+    width: 50px !important; height: 50px !important;
+  }
+
+  .info-card, .upload-card { padding: 20px; }
+
+  .title { font-size: $font-size-md; }   // 20px -> nearest token
+  .edit-overlay {
+    .edit-icon { font-size: $font-size-lg !important; width: 24px !important; height: 24px !important; }
+    .edit-text { font-size: $caption-font-size; }
+  }
+}

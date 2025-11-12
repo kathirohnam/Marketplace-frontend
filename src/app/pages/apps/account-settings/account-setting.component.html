@@ -1,0 +1,227 @@
+<mat-card class="profile-shell cardWithShadow">
+  <mat-card-content class="p-0">
+    <mat-tab-group
+      mat-stretch-tabs="false"
+      animationDuration="0ms"
+      class="no-tab-header"
+    >
+      <mat-tab>
+        <form [formGroup]="profileForm">
+          <!-- Header -->
+          <div class="screen-header">
+            <div class="title-wrap">
+              <div class="d-flex align-items-center">
+                <div
+                  class="bg-light-infocolor rounded-circle d-flex justify-content-center align-items-center me-3 m-r-8"
+                  style="width: 60px; height: 60px"
+                >
+                  <mat-icon class="text-primarycolor fs-4">account_circle</mat-icon>
+                </div>
+                <div class="title-text">
+                  <h2 class="title mb-1">Account Settings</h2>
+                  <p class="subtitle mb-0">
+                    Manage your personal details and profile image
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main two-column layout -->
+          <div class="content-wrap">
+            <div class="row g-4">
+              <!-- RIGHT: Profile Picture Upload -->
+              <div class="col-12 col-lg-6">
+                <section class="upload-card">
+                  <h3 class="section-title">Profile Picture</h3>
+                  <p class="section-help">
+                    Upload a .jpg or .png image (max 5MB).
+                  </p>
+
+                  <!-- Profile Image Display -->
+                  <div class="image-display">
+                    <div
+                      class="image-frame"
+                      (mouseenter)="showEditOverlay = !!profileImageUrl"
+                      (mouseleave)="showEditOverlay = false"
+                    >
+                      <img
+                        *ngIf="profileImageUrl"
+                        [src]="profileImageUrl"
+                        class="profile-image"
+                        alt="Profile Picture"
+                        (error)="onImageError()"
+                      />
+                      <div class="image-overlay" *ngIf="!profileImageUrl">
+                        <img [src]="defaultProfileImage" alt="Default Profile Avatar" class="profile-image">
+                      </div>
+
+                      <!-- Edit Overlay -->
+                      <div
+                        class="edit-overlay"
+                        [class.show]="showEditOverlay"
+                        (click)="onEditClick()"
+                      >
+                        <mat-icon class="edit-icon">edit</mat-icon>
+                        <span class="edit-text">Edit</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Upload Actions -->
+                  <div class="upload-actions">
+                    <button
+                      mat-flat-button
+                      class="button-all"
+                      type="button"
+                      (click)="uploadImage()"
+                    >
+                      <mat-icon class="mi">cloud_upload</mat-icon>
+                      Upload Image
+                    </button>
+                    <button
+                      mat-stroked-button
+                      class="button-prev"
+                      type="button"
+                      (click)="resetProfileImage()"
+                      [disabled]="!profileImageUrl"
+                    >
+                      <mat-icon class="mi">refresh</mat-icon>
+                      Reset
+                    </button>
+                    <input
+                      #fileInputRef
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      (change)="onFilePicked($event)"
+                      hidden
+                    />
+                  </div>
+
+                  <!-- Upload Description -->
+                  <p class="upload-description">
+                    {{
+                      profileImageUrl
+                        ? "Click the image to edit or reset to remove it."
+                        : "Upload a new profile image."
+                    }}
+                  </p>
+
+                  <!-- Error Messages -->
+                  <div class="upload-errors" *ngIf="uploadError">
+                    <mat-icon class="error-icon">error</mat-icon>
+                    <span class="error-text">{{ uploadError }}</span>
+                  </div>
+                </section>
+              </div>
+              <!-- LEFT: Profile Information -->
+              <div class="col-12 col-lg-6">
+                <section class="info-card">
+                  <h3 class="section-title">Personal Information</h3>
+                  <p class="section-help">
+                    Keep your details up to date. Your email is used for account
+                    and notifications.
+                  </p>
+
+                  <div class="row">
+                    <!-- First Name -->
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">First Name</label>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="firstName"
+                          placeholder="Jane"
+                          maxlength="60"
+                        />
+                        <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">
+                          First name is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Last Name</label>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="lastName"
+                          placeholder="Doe"
+                          maxlength="60"
+                        />
+                        <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">
+                          Last name is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- Email (readonly) -->
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Email Address</label>
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 readonly-field"
+                      >
+                        <input
+                          matInput
+                          type="email"
+                          formControlName="email"
+                          readonly
+                          placeholder="jane.doe@example.com"
+                        />
+                        <mat-hint class="muted-hint">This email cannot be changed</mat-hint>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Phone</label>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="phoneNumber"
+                          mask="(000) 000-0000"
+                          [dropSpecialCharacters]="false"
+                          placeholder="(123) 456-7890"
+                        />
+                         <mat-hint class="muted-hint">Format: (123) 456-7890</mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Actions -->
+          <div class="footer-actions">
+            <button
+              *ngIf="isCancelVisible()"
+              mat-stroked-button
+              class="button-prev"
+              (click)="back()"
+            >
+              <mat-icon class="mi">close</mat-icon>
+              Cancel
+            </button>
+
+            <button
+              mat-flat-button
+              class="button-all"
+              (click)="saveProfile()"
+              [disabled]="!profileForm.valid"
+            >
+              <mat-icon class="mi">save</mat-icon>
+              Save Profile
+            </button>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
+

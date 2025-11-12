@@ -1,0 +1,130 @@
+<div class="image-editor-shell">
+  <!-- Header -->
+  <div class="editor-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>photo_camera</mat-icon>
+    </div>
+    <div class="header-text-wrapper">
+      <h2 mat-dialog-title class="editor-title">Profile Image Editor</h2>
+      <p mat-dialog-content class="editor-subtitle">
+        Upload a new photo and adjust the crop, rotation, and style.
+      </p>
+    </div>
+    <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="editor-content">
+    <!-- Uploader View (when no image is loaded) -->
+    <div class="uploader-view" *ngIf="!hasImage">
+      <div class="upload-area" (click)="triggerFileUpload()" (dragover)="$event.preventDefault()" (drop)="fileChangeEvent($event)">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+        <h3 class="upload-title">Upload an Image</h3>
+        <p class="upload-description">Click to browse or drag & drop</p>
+        <p class="upload-constraints">JPG or PNG, max 5MB</p>
+      </div>
+    </div>
+    
+    <!-- Hidden file input -->
+    <input
+        id="fileInput" type="file" accept=".jpg,.jpeg,.png"
+        (change)="fileChangeEvent($event)" style="display: none"
+    />
+
+    <!-- Main Editor View (when image is loaded) -->
+    <div class="main-editor-view" *ngIf="hasImage && showCropper">
+      <div class="cropper-wrapper" [ngClass]="activeFilter">
+        <image-cropper
+          [imageURL]="imageUrl"
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="aspectRatio"
+          [resizeToWidth]="resizeToWidth"
+          [cropperMinWidth]="cropperMinWidth"
+          [onlyScaleDown]="onlyScaleDown"
+          [roundCropper]="roundCropper"
+          [transform]="transform"
+          [backgroundColor]="backgroundColor"
+          [imageQuality]="imageQuality"
+          (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded($event)"
+          (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()"
+          class="cropper">
+        </image-cropper>
+      </div>
+
+      <!-- Controls Panel -->
+      <div class="controls-panel">
+        <!-- Transform -->
+        <div class="control-group">
+            <h4 class="control-group-title">Transform</h4>
+            <div class="control-grid">
+                <button mat-stroked-button (click)="rotateLeft()"><mat-icon>rotate_left</mat-icon></button>
+                <button mat-stroked-button (click)="rotateRight()"><mat-icon>rotate_right</mat-icon></button>
+                <button mat-stroked-button (click)="flipHorizontal()"><mat-icon>flip</mat-icon></button>
+                <button mat-stroked-button (click)="flipVertical()"><mat-icon style="transform: rotate(90deg);">flip</mat-icon></button>
+            </div>
+        </div>
+
+        <!-- Zoom -->
+        <div class="control-group">
+            <h4 class="control-group-title">Zoom</h4>
+            <div class="zoom-controls">
+                <mat-icon>zoom_out</mat-icon>
+                <mat-slider class="zoom-slider" [min]="0.5" [max]="3" [step]="0.05" discrete>
+                    <input matSliderThumb [value]="transform.scale || 1" (valueChange)="onZoom($event)" />
+                </mat-slider>
+                <mat-icon>zoom_in</mat-icon>
+            </div>
+        </div>
+
+        <!-- Shape -->
+        <div class="control-group">
+            <h4 class="control-group-title">Shape</h4>
+            <div class="shape-controls">
+                <button mat-stroked-button [class.active]="!roundCropper" (click)="toggleRoundCropper(false)">
+                    <mat-icon>check_box_outline_blank</mat-icon> Square
+                </button>
+                <button mat-stroked-button [class.active]="roundCropper" (click)="toggleRoundCropper(true)">
+                    <mat-icon>radio_button_unchecked</mat-icon> Circle
+                </button>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="action-controls-wrapper">
+            <button class="action-button" (click)="resetImage()">
+                <mat-icon>refresh</mat-icon> Reset Edits
+            </button>
+            <button class="action-button" (click)="triggerFileUpload()">
+                <mat-icon>upload</mat-icon> New Image
+            </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error/Loading States -->
+    <div class="status-overlay" *ngIf="isLoading || uploadError">
+      <div *ngIf="isLoading" class="status-box">
+          <mat-progress-spinner mode="indeterminate" [diameter]="40"></mat-progress-spinner>
+          <span>Loading Image...</span>
+      </div>
+      <div *ngIf="uploadError" class="status-box error-box">
+          <mat-icon>error</mat-icon>
+          <span>{{ uploadError }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="editor-actions" mat-dialog-actions>
+    <button mat-stroked-button class="button-prev" (click)="onCancel()"><mat-icon class="mi">close</mat-icon>Cancel</button>
+    <button mat-flat-button class="button-all" (click)="onSave()" [disabled]="!croppedImageBlob || isLoading">
+      Save and Apply
+    </button>
+  </div>
+</div>
+

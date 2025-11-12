@@ -1,0 +1,228 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div *ngIf="invoice(); else noInvoice">
+      <form #invoiceForm="ngForm" (ngSubmit)="saveInvoice($event)">
+        <div class="row m-b-24">
+          <div class="col-sm-4 d-flex align-items-center">
+            <h4 class="mat-subtitle-2 f-s-18 f-w-600">
+              #<span name="id" [(ngModel)]="invoice()!.id" ngDefaultControl>{{
+                invoice()!.id
+              }}</span>
+            </h4>
+          </div>
+          <div class="col-sm-8 text-right">
+            <a
+              routerLink="/apps/invoice"
+              mat-stroked-button
+              color="warn"
+              class="m-r-10"
+              >Cancel</a
+            >
+            <button
+              mat-flat-button
+              color="primary"
+              type="submit"
+              [disabled]="invoiceForm.invalid || addForm.invalid"
+            >
+              Save Invoice
+            </button>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="row p-y-24 justify-content-between">
+          <div class="col-sm-4">
+            <span class="f-w-600 f-s-15 mat-body-1 d-block m-b-8"
+              >Order Status:</span
+            >
+            <mat-form-field appearance="outline" class="w-100 theme-select">
+              <mat-label>Status</mat-label>
+              <mat-select
+                name="status"
+                [(ngModel)]="invoice()!.status"
+                required
+              >
+                <mat-option value="Pending">Pending</mat-option>
+                <mat-option value="Shipped">Shipped</mat-option>
+                <mat-option value="succeeded">Success</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 d-flex align-items-center justify-content-end">
+            <div class="text-right">
+              <span class="f-w-600 f-s-15 mat-body-1 d-block m-b-8"
+                >Order Date</span
+              >
+              <h6
+                name="date"
+                class="m-t-5 m-b-0 f-w-500 f-s-14 mat-body-2"
+                [(ngModel)]="invoice()!.orderDate"
+                ngDefaultControl
+              >
+                {{ invoice()!.orderDate | date : "dd-MM-yyyy" }}
+              </h6>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="row m-y-24 p-t-24">
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Bill From</mat-label>
+              <input
+                matInput
+                placeholder="Bill From"
+                name="from"
+                [(ngModel)]="invoice()!.billFrom"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Bill To</mat-label>
+              <input
+                matInput
+                placeholder="Bill To"
+                name="to"
+                [(ngModel)]="invoice()!.billTo"
+                required
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>From Address</mat-label>
+              <input
+                matInput
+                placeholder="Enter From Address"
+                name="fromAddress"
+                [(ngModel)]="invoice()!.billFromAddress"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>To Address</mat-label>
+              <input
+                matInput
+                placeholder="Enter To Address"
+                name="toAddress"
+                [(ngModel)]="invoice()!.billToAddress"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+
+      <form [formGroup]="addForm" class="edit-invoice-list">
+        <div class="table-responsive">
+          <table
+            id="tblAdd"
+            class="table table-hover b-1 no-wrap w-100 rounded text-left"
+          >
+            <thead>
+              <tr>
+                <th class="p-16">#</th>
+                <th class="p-16">Item Name</th>
+                <th class="p-16">Unit Price</th>
+                <th class="p-16">Units</th>
+                <th class="p-16">Unit Total Price</th>
+                <th class="p-16"></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="item">
+              <tr
+                *ngFor="let item of items.controls; let i = index"
+                [formGroupName]="i"
+              >
+                <td class="p-16">{{ i + 1 }}</td>
+                <td class="p-16">
+                  <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <input
+                      matInput
+                      type="text"
+                      [id]="'txtNameControl' + i"
+                      placeholder="Enter Item Name"
+                      formControlName="itemName"
+                      (input)="updateTotals()"
+                    />
+                  </mat-form-field>
+                </td>
+                <td class="p-16">
+                  <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <input
+                      matInput
+                      type="number"
+                      [id]="'txtCostControl' + i"
+                      placeholder="Enter Item Price"
+                      formControlName="itemCost"
+                      (input)="updateTotals()"
+                    />
+                  </mat-form-field>
+                </td>
+                <td class="p-16">
+                  <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <input
+                      matInput
+                      type="number"
+                      [id]="'txtTotalControl' + i"
+                      placeholder="Enter Units"
+                      formControlName="itemSold"
+                      (input)="updateTotals()"
+                    />
+                  </mat-form-field>
+                </td>
+                <td class="p-16">
+                  <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <input
+                      matInput
+                      type="number"
+                      formControlName="itemTotal"
+                      [id]="'txtitemTotalControl' + i"
+                      [value]="item.value.itemCost * item.value.itemSold"
+                      [disabled]="true"
+                    />
+                  </mat-form-field>
+                </td>
+                <td class="p-16">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="addItem()"
+                    [disabled]="items.invalid"
+                    class="d-flex justify-content-center icon-38 p-8"
+                  >
+                    <ng-icon
+                      name="tablerCirclePlus"
+                      class="icon-18 d-flex"
+                    ></ng-icon>
+                  </button>
+                  <button
+                    *ngIf="items.length > 1"
+                    mat-icon-button
+                    color="warn"
+                    (click)="removeItem(i)"
+                    class="d-flex justify-content-center icon-38 p-8"
+                  >
+                    <ng-icon name="tablerTrash" class="icon-18 d-flex"></ng-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-right m-t-30">
+          <h3 class="m-b-0 p-t-20 f-s-18">Grand Total: ${{ grandTotal() }}</h3>
+        </div>
+      </form>
+    </div>
+    <ng-template #noInvoice>
+      <p class="p-24 mat-body-1">Invoice not found</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

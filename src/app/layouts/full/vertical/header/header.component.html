@@ -1,0 +1,123 @@
+<mat-toolbar class="topbar">
+  <!-- --------------------------------------------------------------- -->
+  <!-- Desktop Menu -->
+  @if(showToggle) {
+  <button
+    mat-icon-button
+    (click)="toggleCollapsed.emit()"
+    class="d-flex justify-content-center"
+    [disabled]="isToggleDisabled"
+  >
+    <ng-icon name="tablerAlignLeft" class="icon-20 d-flex"></ng-icon>
+  </button>
+  }
+
+  <!-- Mobile Menu -->
+  @if(!showToggle) {
+  <button
+    mat-icon-button
+    (click)="toggleMobileNav.emit()"
+    class="d-flex justify-content-center"
+  >
+    <ng-icon name="tablerAlignLeft" class="icon-20 d-flex"></ng-icon>
+  </button>
+  }
+
+  <!-- --------------------------------------------------------------- -->
+
+  <span class="flex-1-auto"></span>
+
+  <!-- --------------------------------------------------------------- -->
+  <!-- profile Dropdown -->
+  <!-- --------------------------------------------------------------- -->
+  <button
+    mat-fab
+    extended
+    color="inherit"
+    [matMenuTriggerFor]="profileMenu"
+    aria-label="Notifications"
+  >
+    <div class="d-flex align-items-center">
+      <img
+        [src]="getProfileImageUrl()"
+        class="rounded-circle object-cover"
+        width="40"
+        height="40"
+      />
+
+      <div class="m-l-16 text-left d-none d-lg-flex">
+        <div>
+          <h5 class="f-s-16">{{ user.firstName }}</h5>
+          <span class="f-s-14 mat-body-1">{{ role }}</span>
+        </div>
+      </div>
+    </div>
+  </button>
+  <mat-menu
+    #profileMenu="matMenu"
+    xPosition="before"
+    class="topbar-dd cardWithShadow"
+  >
+    <ng-scrollbar class="position-relative" style="height: 495px">
+      <div class="p-x-32 p-y-16">
+        <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">User Profile</h6>
+
+        <div class="d-flex align-items-center p-b-24 b-b-1 m-t-16">
+          <img [src]="getProfileImageUrl()" class="rounded-circle" width="95" height="95" />
+          <div class="m-l-16">
+            <h6 class="f-s-16 f-w-600 m-0 mat-subtitle-1">
+              {{ user.firstName }}
+            </h6>
+            <span class="f-s-14 mat-body-1 d-block m-b-4">{{ role }}</span>
+            <span class="d-flex align-items-center">
+              <ng-icon name="tablerMail" class="icon-15 m-r-4"></ng-icon>
+              {{ user.email }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="p-x-32">
+        @for(profile of profiledd; track profile.title) {
+        <a
+          class="p-y-16 text-decoration-none d-block text-hover-primary"
+          [class.disabled-link]="!profile.link"
+          [routerLink]="profile.link || null"
+          (click)="!profile.link && $event.preventDefault()"
+        >
+          <div class="d-flex align-items-center">
+            <span
+              class="text-{{
+                profile.color
+              }} bg-light-infocolor icon-50 d-flex align-items-center justify-content-center shadow-none rounded"
+            >
+              <mat-icon
+                class="icon-30 d-flex justify-content-center align-items-center"
+                >{{ profile.img }}</mat-icon
+              >
+            </span>
+
+            <div class="m-l-16">
+              <h5
+                class="f-s-14 f-w-600 m-0 text-primarycolor mat-subtitle-1 hover-text"
+              >
+                {{ profile.title }}
+              </h5>
+              <span class="mat-body-1">{{ profile.subtitle }}</span>
+            </div>
+          </div>
+        </a>
+        }
+      </div>
+
+      <div class="p-y-12 p-x-32">
+        <button
+          (click)="ClearLocalStorage()"
+          mat-flat-button
+          class="button-all w-100"
+        >
+          Logout
+        </button>
+      </div>
+    </ng-scrollbar>
+  </mat-menu>
+</mat-toolbar>

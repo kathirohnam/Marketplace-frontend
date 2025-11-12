@@ -1,0 +1,441 @@
+<!-- Mobile layout: visible only on screens smaller than large (d-lg-none) -->
+<div class="d-lg-none">
+  <div class="container">
+    <div class="row g-3">
+      <!-- Saved -->
+      <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('saved')"
+          >
+            <h3 class="f-s-18 text-primarycolor f-w-600 m-0 m-b-2">
+              {{ statusCounts["saved"] || 0 }}
+            </h3>
+            <h6 class="f-w-600 m-0 f-s-14">For review</h6>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Reviewed -->
+      <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('reviewed')"
+          >
+            <h3 class="f-s-18 text-warning f-w-600 m-0 m-b-2">
+              {{ statusCounts["reviewed"] || 0 }}
+            </h3>
+            <h6 class="f-w-600 m-0 f-s-14">Reviewed</h6>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Ready to File -->
+      <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('ready to file')"
+          >
+            <h3 class="f-s-18 text-info f-w-600 m-0 m-b-2">
+              {{ statusCounts["ready to file"] || 0 }}
+            </h3>
+            <h6 class="f-w-600 m-0 f-s-14">Ready to File</h6>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Filled -->
+      <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('filed')"
+          >
+            <h3 class="f-s-18 text-secondary f-w-600 m-0 m-b-2">
+              {{ statusCounts["filed"] || 0 }}
+            </h3>
+            <h6 class="f-w-600 m-0 f-s-14">Filed</h6>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Success -->
+      <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('success')"
+          >
+            <h3 class="f-s-18 text-success f-w-600 m-0 m-b-2">
+              {{ statusCounts["success"] || 0 }}
+            </h3>
+            <h6 class="f-w-600 m-0 f-s-14">Success</h6>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Fail -->
+      <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('failure')"
+          >
+            <h3 class="f-s-18 text-danger f-w-600 m-0 m-b-2">
+              {{ statusCounts["failure"] || 0 }}
+            </h3>
+            <h6 class="f-w-600 m-0 f-s-14">Failure</h6>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Ein -->
+      <!-- <div class="col-12">
+        <mat-card class="shadow-none">
+          <div
+            class="p-15 bg-light-dark text-center cursor-pointer rounded"
+            (click)="btnCategoryClick('ein')"
+          >
+            <h3 class="f-s-18 text-dark f-w-600 m-0 m-b-2">
+              {{ statusCounts["saved"] || 0 }}
+            </h3>
+            <h6 class="text-dark f-w-600 m-0 f-s-14">Ein</h6>
+          </div>
+        </mat-card>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Desktop layout: visible on screens larger than large (d-none d-lg-flex) -->
+<div
+  class="d-none d-lg-flex flex-row justify-content-center"
+  style="gap: 10px; overflow-x: auto"
+>
+  <!-- Saved -->
+  <div style="flex: 0 0 auto; min-width: 225px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('saved')"
+      >
+        <h3 class="f-s-18 text-accentcolor f-w-600 m-0 m-b-2">
+          {{ statusCounts["saved"] || 0 }}
+        </h3>
+        <h6 class="f-w-600 m-0 f-s-14">For review</h6>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Reviewed -->
+  <div style="flex: 0 0 auto; min-width: 225px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('reviewed')"
+      >
+        <h3 class="f-s-18 text-warning f-w-600 m-0 m-b-2">
+          {{ statusCounts["reviewed"] || 0 }}
+        </h3>
+        <h6 class="f-w-600 m-0 f-s-14">Reviewed</h6>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Ready to File -->
+  <div style="flex: 0 0 auto; min-width: 225px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('ready to file')"
+      >
+        <h3 class="f-s-18 text-info f-w-600 m-0 m-b-2">
+          {{ statusCounts["ready to file"] || 0 }}
+        </h3>
+        <h6 class="f-w-600 m-0 f-s-14">Ready to File</h6>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Filled -->
+  <div style="flex: 0 0 auto; min-width: 225px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('filed')"
+      >
+        <h3 class="f-s-18 text-secondary f-w-600 m-0 m-b-2">
+          {{ statusCounts["filed"] || 0 }}
+        </h3>
+        <h6 class="f-w-600 m-0 f-s-14">Filed</h6>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Success -->
+  <div style="flex: 0 0 auto; min-width: 225px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('success')"
+      >
+        <h3 class="f-s-18 text-success f-w-600 m-0 m-b-2">
+          {{ statusCounts["success"] || 0 }}
+        </h3>
+        <h6 class="f-w-600 m-0 f-s-14">Success</h6>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Fail -->
+  <div style="flex: 0 0 auto; min-width: 225px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('failure')"
+      >
+        <h3 class="f-s-18 text-danger f-w-600 m-0 m-b-2">
+          {{ statusCounts["failure"] || 0 }}
+        </h3>
+        <h6 class="f-w-600 m-0 f-s-14">Failure</h6>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Ein -->
+  <!-- <div style="flex: 0 0 auto; min-width: 190px">
+    <mat-card class="shadow-none">
+      <div
+        class="p-15 bg-light-dark text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('ein')"
+      >
+        <h3 class="f-s-18 text-dark f-w-600 m-0 m-b-2">
+          {{ statusCounts["ein"] || 0 }}
+        </h3>
+        <h6 class="text-dark f-w-600 m-0 f-s-14">Ein</h6>
+      </div>
+    </mat-card>
+  </div> -->
+</div>
+
+<!-- Add and search fillers -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="row justify-content-between align-items-center">
+      <div class="col-sm-4">
+        <mat-form-field appearance="outline" class="hide-hint">
+          <input
+            matInput
+            [(ngModel)]="searchValue"
+            (keydown.enter)="onSearch()"
+            placeholder="Search Company Name"
+          />
+          <mat-icon matSuffix>
+            <ng-icon name="tablerSearch" class="icon-26 d-flex justify-content-center align-items-center"></ng-icon>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div
+        class="col-sm-12 col-md-8 d-flex align-items-center justify-content-end"
+      >
+        <!-- toggle-wrapper -->
+        <div
+          class="state-search-container d-flex align-items-center"
+          [class.show-state-search]="showStateSearch"
+        >
+          <!-- state autocomplete -->
+          <mat-form-field
+            appearance="outline"
+            floatLabel="auto"
+            class="hide-hint"
+          >
+            <mat-label>State / Jurisdiction</mat-label>
+            <input
+              matInput
+              [formControl]="stateControl"
+              [matAutocomplete]="auto"
+              placeholder="Search..."
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="onStateSelected($event.option.value)"
+            >
+              <mat-option
+                *ngFor="let state of filteredStates | async"
+                [value]="state"
+              >
+                {{ state }}
+              </mat-option>
+            </mat-autocomplete>
+            <button
+              *ngIf="stateControl.value"
+              matSuffix
+              mat-icon-button
+              (click)="clearState()"
+            >
+              <ng-icon name="tablerX" class="icon-24 d-flex justify-content-center align-items-center"></ng-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <!-- Filter Icon (Toggles State Search) -->
+        <button
+          mat-icon-button
+          (click)="toggleStateSearch()"
+          matTooltip="Filter"
+          aria-label="Toggle state filter"
+        >
+          <ng-icon
+            name="tablerFilterPlus"
+            class="icon-26 d-flex justify-content-center align-items-center settings-icon"
+            [class.active]="showStateSearch"
+          ></ng-icon>
+        </button>
+      </div>
+
+      <!-- <div class="col-sm-4 d-flex justify-content-end align-items-center">
+        <button mat-flat-button color="primary">Add Filler</button>
+      </div> -->
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<!-- Table -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100 f-w-500 no-wrap">
+        <!-- Company Column -->
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Company
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex align-items-center">
+              <div class="m-l-16">
+                <p
+                  class="f-w-600 mat-subtitle-1 f-s-16 m-t-0 d-flex align-items-center"
+                >
+                  <span
+                    *ngIf="element.isExpeditedServiceSelected"
+                    class="expedited-badge"
+                    style="margin-right: 5px"
+                    matTooltip="Expedited Service - Priority Processing"
+                  >
+                    <mat-icon style="color: gold">star</mat-icon>
+                  </span>
+                  {{ element.company }}
+                </p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <!-- State Column -->
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            State
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.state }}</td>
+        </ng-container>
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Date</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.date | date }}
+          </td>
+        </ng-container>
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              class="bg-light mat-body-2 f-w-500 p-x-8 p-y-4 rounded-pill f-s-12"
+              [ngClass]="{
+                'bg-light-warning': element.status === 'reviewed',
+                'bg-light-primarycolor': element.status === 'saved',
+                'bg-light-info': element.status === 'ready to file',
+                'bg-light-gray': element.status === 'filed',
+                'bg-light-successcolor': element.status === 'success',
+                'bg-light-danger': element.status === 'failure'
+              }"
+            >
+              {{ element.status }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="process">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Process
+          </th>
+          <td mat-cell *matCellDef="let e">
+            <!-- Success: green check_circle -->
+            <mat-icon
+              *ngIf="e.status.toLowerCase() === 'success'"
+              color="primary"
+              aria-label="Completed"
+            >
+              check_circle
+            </mat-icon>
+
+            <!-- Failure: red highlight_off -->
+            <!-- <mat-icon
+              *ngIf="e.status.toLowerCase() === 'failure'"
+              color="warn"
+              aria-label="Failed"
+            >
+              highlight_off
+            </mat-icon> -->
+
+            <!-- Others: arrow_forward in a button -->
+            <button
+              *ngIf="
+                e.status.toLowerCase() !== 'success' ||
+                e.status.toLowerCase() === 'failure'
+              "
+              mat-icon-button
+              (click)="openViewDetails(e.id)"
+              aria-label="View details"
+            >
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td
+            class="mat-cell p-24 text-center"
+            [attr.colspan]="displayedColumns.length"
+          >
+            <div class="empty-state">
+              <mat-icon color="warn">info</mat-icon>
+              <div class="f-s-14 m-t-8">
+                <ng-container
+                  *ngIf="searchValue || stateControl.value; else noRecords"
+                >
+                  No companies match your search or filter criteria.
+                </ng-container>
+                <ng-template #noRecords>
+                  No company records are available at the moment.
+                </ng-template>
+              </div>
+              <button
+                *ngIf="searchValue || stateControl.value || selectedStatus"
+                mat-stroked-button
+                color="primary"
+                class="m-t-12"
+                (click)="clearFilters()"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="totalItems"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </mat-card-content>
+</mat-card>

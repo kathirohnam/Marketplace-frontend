@@ -1,0 +1,469 @@
+<!-- Company Tabs -->
+<div class="company-tab-main" *ngIf="!isAdmin">
+  <div class="row">
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="company-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab === 'All' }"
+        (click)="handleTabClick('All')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerListDetails"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">All Documents</h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countCompaniesByType("All") }} companies
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="company-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab === 'Articles of Organization' }"
+        (click)="handleTabClick('Articles of Organization')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerFileText"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">
+              Articles of Organization
+            </h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countCompaniesByType("Articles of Organization") }} companies
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="company-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab === 'Formation Document' }"
+        (click)="handleTabClick('Formation Document')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerFileCheck"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">
+              Formation Document
+            </h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countCompaniesByType("Formation Document") }} companies
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="company-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab === 'Ein Document' }"
+        (click)="handleTabClick('Ein Document')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerLicense"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">Ein Documents</h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countCompaniesByType("Ein Document") }} companies
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- Main Card for Search and Actions -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="row justify-content-between align-items-center">
+      <!-- Search Input (Left) -->
+      <div class="col-sm-12 col-md-4 search-field">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <mat-label>Search Company</mat-label>
+          <input
+            matInput
+            placeholder="Search Company"
+            [(ngModel)]="searchValue"
+            (keydown.enter)="isAdmin ? onSearch() : null"
+            (keyup)="!isAdmin ? onSearch() : null"
+            aria-label="Search companies"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            aria-label="Search"
+            (click)="isAdmin ? onSearch() : null"
+          >
+            <ng-icon
+              name="tablerSearch"
+              class="icon-24 d-flex justify-content-center align-items-center"
+            ></ng-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div
+        class="col-sm-12 col-md-8 d-flex align-items-center justify-content-end"
+      >
+        <!-- toggle-wrapper -->
+        <div
+          class="state-search-container d-flex align-items-center"
+          [class.show-state-search]="showStateSearch"
+        >
+          <!-- document type -->
+          <mat-form-field
+            *ngIf="isAdmin"
+            appearance="outline"
+            class="hide-hint"
+            floatLabel="auto"
+          >
+            <mat-label>Document Type</mat-label>
+            <mat-select
+              [formControl]="documentTypeControl"
+              placeholder="All Types"
+              (selectionChange)="applyFilters()"
+            >
+              <mat-option value="">All Types</mat-option>
+              <mat-option
+                *ngFor="let docType of documentTypes"
+                [value]="docType.typeName"
+              >
+                {{ docType.typeName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- state autocomplete -->
+          <mat-form-field
+            appearance="outline"
+            class="hide-hint"
+            floatLabel="auto"
+          >
+            <mat-label>State / Jurisdiction</mat-label>
+            <input
+              matInput
+              [formControl]="stateControl"
+              [matAutocomplete]="auto"
+              placeholder="Search..."
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="onStateSelected($event.option.value)"
+            >
+              <mat-option
+                *ngFor="let state of filteredStates | async"
+                [value]="state"
+              >
+                {{ state }}
+              </mat-option>
+            </mat-autocomplete>
+            <button
+              *ngIf="stateControl.value"
+              matSuffix
+              mat-icon-button
+              (click)="clearState()"
+            >
+              <ng-icon
+                name="tablerX"
+                class="icon-20 d-flex justify-content-center align-items-center"
+              ></ng-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <!-- Filter Icon (Toggles State Search) -->
+        <button
+          *ngIf="isAdmin"
+          mat-icon-button
+          (click)="toggleStateSearch()"
+          matTooltip="Filter"
+          aria-label="Toggle state filter"
+        >
+          <ng-icon
+            name="tablerFilterPlus"
+            class="icon-24 d-flex justify-content-center align-items-center settings-icon"
+            [class.active]="showStateSearch"
+          ></ng-icon>
+        </button>
+
+        <!-- Refresh Button -->
+        <!-- <button
+          mat-icon-button
+          *ngIf="!isAdmin"
+          (click)="refreshCompanies()"
+          matTooltip="Refresh Company details"
+          aria-label="Refresh company list"
+        >
+          <ng-icon name="refresh" class="icon-20"></ng-icon>
+        </button> -->
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<!-- Table Card -->
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive" [ngClass]="{ disabled: isLoading }">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+        <!-- Company Name Column -->
+        <ng-container matColumnDef="companyName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Company
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex align-items-center">
+              <div class="m-l-16">
+                <p class="f-w-600 mat-subtitle-1 f-s-16 m-t-0">
+                  {{ element.companyName }}
+                </p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Jurisdiction Column -->
+        <ng-container matColumnDef="jurisdiction">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Jurisdiction
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.jurisdiction }}
+          </td>
+        </ng-container>
+
+        <!-- Uploaded On Column -->
+        <ng-container matColumnDef="uploadedOn">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Uploaded On
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.uploadedOn | date : "fullDate" }}
+          </td>
+        </ng-container>
+
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Type</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.type }}
+          </td>
+        </ng-container>
+
+        <!-- Action Column (Admin Only) -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              *ngIf="isAdmin"
+              class="m-r-10 cursor-pointer"
+              aria-label="Edit company"
+            >
+              <ng-icon name="tablerEdit" class="icon-18"></ng-icon>
+            </a>
+            <a
+              *ngIf="isAdmin"
+              class="m-r-10 cursor-pointer"
+              aria-label="Delete company"
+            >
+              <ng-icon name="tablerTrash" class="icon-18"></ng-icon>
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- View Column (Non-Admin Only) -->
+        <ng-container matColumnDef="view">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">View</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            <button
+              *ngIf="!isAdmin"
+              mat-icon-button
+              (click)="openDocument(element)"
+              matTooltip="View Document"
+              aria-label="View document"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Status Column (Non-Admin Only) -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            <span
+              [ngClass]="element.viewStatus ? 'status-viewed' : 'status-view'"
+            >
+              {{ element.viewStatus ? "Viewed" : "Not Viewed" }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <ng-template [ngIf]="isAdmin">
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell p-24 text-center"
+              [attr.colspan]="displayedColumns.length"
+            >
+              <div class="empty-state">
+                <!-- Info Icon for No Data -->
+                <mat-icon color="warn">info</mat-icon>
+
+                <div class="f-s-14 m-t-8">
+                  <!-- Conditional Message for State Search, Document Type, and Search -->
+                  <ng-container
+                    *ngIf="
+                      searchValue ||
+                        stateControl.value ||
+                        documentTypeControl.value;
+                      else noRecords
+                    "
+                  >
+                    <ng-container *ngIf="searchValue">
+                      No companies match your search or filter criteria.
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="
+                        stateControl.value &&
+                        !documentTypeControl.value &&
+                        !searchValue
+                      "
+                    >
+                      No companies found for the selected state.
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="
+                        documentTypeControl.value &&
+                        !stateControl.value &&
+                        !searchValue
+                      "
+                    >
+                      No companies found for the selected document type.
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="
+                        stateControl.value &&
+                        documentTypeControl.value &&
+                        !searchValue
+                      "
+                    >
+                      No companies found for the selected state and document
+                      type.
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noRecords>
+                    No company records are available at the moment.
+                  </ng-template>
+                </div>
+
+                <!-- Clear Filters Button (only shows if filters are applied) -->
+                <button
+                  *ngIf="
+                    searchValue ||
+                    stateControl.value ||
+                    documentTypeControl.value
+                  "
+                  mat-stroked-button
+                  color="primary"
+                  class="m-t-12"
+                  (click)="clearFilters()"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <!-- Non-Admin No Data Row -->
+        <ng-template [ngIf]="!isAdmin">
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell p-24 text-center"
+              [attr.colspan]="displayedColumns.length"
+            >
+              <div
+                class="align-items-center justify-content-center one d-lg-flex flex-column text-center"
+                style="margin-top: 30px; padding: 0"
+              >
+                <h4
+                  class="fw-bold"
+                  style="margin: 0; padding: 0; line-height: 1.5"
+                >
+                  No Data Found
+                </h4>
+                <p
+                  class="text-primary"
+                  style="margin: 0; padding: 0; line-height: 1"
+                >
+                  There is no data to show you right now
+                </p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </table>
+      <mat-paginator
+        *ngIf="isAdmin"
+        [length]="totalItems"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+
+      <!-- non-admin: client-side paging via dataSource.paginator -->
+      <mat-paginator
+        *ngIf="!isAdmin"
+        [length]="dataSource.data.length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

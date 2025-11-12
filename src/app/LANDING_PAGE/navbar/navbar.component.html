@@ -1,0 +1,110 @@
+<mat-toolbar class="navbar" [class.scrolled]="isScrolled">
+  <div class="navbar-container">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#home">
+      <div class="logo">
+        <img
+          src="assets/cic-logo.jpg"
+          alt="CIC brand logo for LLC registration platform"
+          class="logo-img"
+        />
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="navbar-nav desktop-nav">
+      <button mat-button (click)="scrollToSection('home')">Home</button>
+      <button mat-button (click)="scrollToSection('services')">Services</button>
+      <button mat-button (click)="scrollToSection('features')">Features</button>
+      <button mat-button (click)="scrollToSection('how-it-works')">
+        How It Works
+      </button>
+      <button mat-button (click)="scrollToSection('pricing')">Pricing</button>
+      <!-- <button mat-button (click)="scrollToSection('testimonials')">Reviews</button>
+      <button mat-button (click)="scrollToSection('faq')">FAQ</button> -->
+    </nav>
+
+    <!-- Desktop CTA -->
+    <div class="navbar-actions desktop-actions">
+      <div class="navbar-actions d-flex align-items-center">
+        <button
+          class="btn btn-primary-custom"
+          [routerLink]="'authentication/login'"
+          style="color: var(--white);"
+        >
+          <mat-icon class="btn-icon">rocket_launch</mat-icon>
+          Get Started
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button
+      mat-icon-button
+      class="mobile-menu-toggle"
+      (click)="toggleMobileMenu()"
+    >
+      <mat-icon>{{ isMobileMenuOpen ? "close" : "menu" }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav d-lg-none" [class.open]="isMobileMenuOpen">
+    <div class="mobile-nav-content">
+      <button
+        mat-button
+        (click)="scrollToSection('home')"
+        class="mobile-nav-item"
+      >
+        Home
+      </button>
+      <button
+        mat-button
+        (click)="scrollToSection('services')"
+        class="mobile-nav-item"
+      >
+        Services
+      </button>
+      <button
+        mat-button
+        (click)="scrollToSection('features')"
+        class="mobile-nav-item"
+      >
+        Features
+      </button>
+      <button
+        mat-button
+        (click)="scrollToSection('how-it-works')"
+        class="mobile-nav-item"
+      >
+        How It Works
+      </button>
+      <button
+        mat-button
+        (click)="scrollToSection('pricing')"
+        class="mobile-nav-item"
+      >
+        Pricing
+      </button>
+      <button
+        mat-button
+        (click)="scrollToSection('testimonials')"
+        class="mobile-nav-item"
+      >
+        Reviews
+      </button>
+      <button
+        mat-button
+        (click)="scrollToSection('faq')"
+        class="mobile-nav-item"
+      >
+        FAQ
+      </button>
+      <div class="mobile-nav-actions">
+        <button mat-raised-button color="primary" class="get-started-btn">
+          Get Started
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

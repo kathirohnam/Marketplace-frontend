@@ -1,0 +1,41 @@
+<div class="dialog-wrapper" (click)="onNext()" [@fadeSlideIn]>
+  <!-- <h2 class="dialog-header">Success! Your Dream Name Is Available</h2> -->
+
+  <div class="ticket-card" (click)="onNext()">
+    <div class="year-strip">
+     <div class="year-stripinner">
+      <span class="year-top">{{ firstPart }}</span>
+      <span class="year-bottom">{{ secondPart }}</span>
+      </div>
+      <div class="logo">
+        <img src="/assets/cic-logo.jpg" class="rotated-icon" alt="CIC brand logo for LLC registration platform" />
+      </div>
+    </div>
+
+    <div class="ticket-content">
+      <h1 class="ticket-title">{{ data.name }}</h1>
+      <div class="ticket-subinfo">
+        <div class="left-info">
+          <div class="label">State</div>
+          <div class="value">{{ data.state }}</div>
+        </div>
+        <div class="right-info">
+          <div class="label">Entity</div>
+          <div class="value">{{ data.entity }}</div>
+        </div>
+      </div>
+      <div class="ticket-note">
+       It’s Official ✨ 
+        <p class="description">Your business name is available. Click the ticket to lock it in and start your journey.</p>
+      </div>
+      
+    </div>
+    
+  </div>
+ 
+
+  <!-- <div class="actions">
+    
+    <button mat-flat-button class="button-all"  (click)="onNext()">Next ›</button>
+  </div> -->
+</div>

@@ -1,0 +1,12 @@
+<div *ngIf="isVisible$ | async">
+  <div *ngIf="companyName && companyState" class="breadcrumb-container">
+    <div class="rounded bg-whitecolor p-y-30 p-x-24 m-b-30 overflow-hidden">
+      <div class="d-flex align-items-center">
+        <h4 class="page-title m-0 f-s-20 f-w-600 ">
+          {{ companyName }} ({{ companyState }})
+        </h4>
+       
+      </div>
+    </div>
+  </div>
+</div>

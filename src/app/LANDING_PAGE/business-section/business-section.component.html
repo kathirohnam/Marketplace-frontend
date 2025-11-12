@@ -1,0 +1,99 @@
+<section id="services" class="business-section">
+  <div class="container">
+    <!-- Services Overview -->
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="section-content">
+          <h2 class="section-title">
+            Professional Business
+            <span class="gradient-text">Formation Services</span>
+          </h2>
+          <p class="section-subtitle">
+            We provide comprehensive business formation services to help entrepreneurs 
+            start and grow their businesses with confidence. Our expert team handles 
+            all the paperwork so you can focus on what matters most.
+          </p>
+          
+          <div class="stats-grid">
+            <div class="stat-item">
+              <h3>100,000+</h3>
+              <p>Businesses Formed</p>
+            </div>
+            <div class="stat-item">
+              <h3>50 States</h3>
+              <p>We File Anywhere</p>
+            </div>
+            <div class="stat-item">
+              <h3>4.9★</h3>
+              <p>Customer Rating</p>
+            </div>
+            <div class="stat-item">
+              <h3>24/7</h3>
+              <p>Support Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="image-container">
+          <img 
+            src="assets/modernoffice.jpg" 
+            alt="Modern office workspace for forming a new LLC" 
+            class="img-fluid"
+          >
+        </div>
+      </div>
+    </div>
+    
+    <!-- Services Cards -->
+    <!-- <div class="services-grid">
+      <h3 class="services-title">Our Business Formation Services</h3>
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngFor="let service of services">
+          <mat-card class="service-card">
+            <mat-card-header>
+              <div class="service-icon">
+                <mat-icon>{{ service.icon }}</mat-icon>
+              </div>
+              <mat-card-title>{{ service.title }}</mat-card-title>
+              <mat-card-subtitle>Starting at {{ service.price }}</mat-card-subtitle>
+            </mat-card-header>
+            
+            <mat-card-content>
+              <p>{{ service.description }}</p>
+              
+              <ul class="feature-list">
+                <li *ngFor="let feature of service.features">
+                  <mat-icon>check</mat-icon>
+                  {{ feature }}
+                </li>
+              </ul>
+            </mat-card-content>
+            
+            <mat-card-actions>
+              <button mat-raised-button color="primary">Get Started</button>
+              <button mat-button>Learn More</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div> -->
+    
+    <!-- Benefits Section -->
+    <div class="benefits-section">
+      <h3 class="benefits-title">Why Choose Business Formation?</h3>
+      <div class="row">
+        <div class="col-lg-3 col-md-6" *ngFor="let benefit of benefits">
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <mat-icon>{{ benefit.icon }}</mat-icon>
+            </div>
+            <h4>{{ benefit.title }}</h4>
+            <p>{{ benefit.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

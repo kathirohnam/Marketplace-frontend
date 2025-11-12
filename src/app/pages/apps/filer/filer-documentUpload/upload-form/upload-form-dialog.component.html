@@ -1,0 +1,97 @@
+<div class="upload-form">
+  <div class="upload-form-header">
+    <h2 class="m-0">Upload Documents - {{ companyName }}</h2>
+    <button mat-icon-button (click)="closeUploadForm()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="upload-form-content">
+    <!-- 1. Document Type Selection -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Document Type</mat-label>
+      <mat-select [(value)]="selectedDocumentType" (selectionChange)="onDocumentTypeChange($event.value)">
+        <mat-option *ngFor="let type of filteredDocumentTypes" [value]="type.typeName">
+          {{ type.typeName }}
+        </mat-option>
+      </mat-select>
+      <!-- Uncomment this part if you want to show a description for the selected document type -->
+      <!-- <mat-hint *ngIf="selectedDocumentType">
+    {{ getDocumentDescription() }}
+  </mat-hint> -->
+    </mat-form-field>
+
+    <!-- 2. File Drop Area -->
+    <div *ngIf="selectedDocumentType && uploadFiles.length === 0" class="file-drop-area" (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)" [class.dragover]="isDragOver" (dragenter)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)">
+      <div class="text-center">
+        <mat-icon style="font-size: 48px; width: 48px; height: 48px; margin-bottom: 16px;">cloud_upload</mat-icon>
+
+        <h3>Drag and drop your {{ selectedDocumentType }} PDF here</h3>
+        <p>or</p>
+
+        <button mat-raised-button class="button-all" (click)="fileInput.click()">
+          Select File
+        </button>
+
+        <!-- PDF only -->
+        <input #fileInput type="file" style="display: none" (change)="onFileSelected($event)" accept=".pdf" />
+
+        <!-- Updated helper text -->
+        <p class="mt-2">Max file size: 5MB</p>
+        <p>Allowed file type: PDF only</p>
+      </div>
+    </div>
+
+
+    <!-- 3. File Preview List -->
+    <div class="file-preview-list" *ngIf="uploadFiles.length > 0">
+      <h3>Selected Files ({{ selectedDocumentType }})</h3>
+      <div class="file-preview-item" *ngFor="let file of uploadFiles; let i = index">
+        <mat-icon *ngIf="file.preview">description</mat-icon>
+        <span class="file-name">{{ file.file.name }}</span>
+        <mat-progress-bar *ngIf="file.progress !== undefined" [value]="file.progress"
+          mode="determinate"></mat-progress-bar>
+        <div class="file-actions">
+          <button mat-icon-button color="primary" (click)="openDocumentViewer(data.companyId, file.file)"
+            *ngIf="!isUploading" matTooltip="View document">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="removeFile(i)" *ngIf="!isUploading" matTooltip="Remove file">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload-form-footer">
+    <mat-checkbox *ngIf="uploadFiles.length > 0" [(ngModel)]="isConfirmed" color="primary" [disabled]="isUploading"
+      class="confirmation-checkbox">
+      I confirm that this {{ uploadFiles.length === 1 ? "file" : "files" }} are
+      correct {{ selectedDocumentType }} document{{
+      uploadFiles.length > 1 ? "s" : ""
+      }}
+    </mat-checkbox>
+
+    <div class="button-group">
+      <button mat-button (click)="closeUploadForm()" class="button-prev" [disabled]="isUploading">
+        Cancel
+      </button>
+      <button mat-raised-button class="button-all" [disabled]="
+          !selectedDocumentType ||
+          uploadFiles.length === 0 ||
+          isUploading ||
+          !isConfirmed
+        " (click)="uploadDocuments()">
+        <mat-icon *ngIf="isUploading">
+          <mat-spinner diameter="20"></mat-spinner>
+        </mat-icon>
+        <span *ngIf="!isUploading">Upload</span>
+        <span *ngIf="isUploading">Uploading...</span>
+      </button>
+    </div>
+  </div>
+</div>
+

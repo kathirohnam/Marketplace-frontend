@@ -1,0 +1,321 @@
+.how-it-works-section {
+  background: linear-gradient(
+    135deg,
+    var(--light-gray) 0%,
+    var(--white) 50%,
+    var(--light-red) 100%
+  );
+  position: relative;
+
+  .section-title {
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  .steps-timeline {
+    margin: 60px 0;
+
+    .timeline-container {
+      position: relative;
+
+      .timeline-line {
+        position: absolute;
+        top: 120px;
+        left: 12.5%;
+        right: 12.5%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-red) 0%,
+          var(--accent-red) 50%,
+          var(--border-light) 100%
+        );
+        border-radius: 2px;
+        z-index: 1;
+      }
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 30px 20px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      transition: all 0.3s ease;
+      height: 100%;
+      z-index: 2;
+
+      &:hover,
+      &.active {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(37, 99, 235, 0.15);
+
+        .step-number {
+          background: linear-gradient(
+            135deg,
+            var(--primary-red) 0%,
+            var(--accent-red) 100%
+          );
+          color: white;
+          transform: scale(1.1);
+        }
+
+        .step-icon {
+          background: var(--primary-red);
+          color: white;
+        }
+      }
+
+      .step-number {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: var(--border-light);
+        color: var(--text-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.125rem;
+        transition: all 0.3s ease;
+        z-index: 3;
+      }
+
+      .step-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--light-red);
+        color: var(--primary-red);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px auto 20px;
+        transition: all 0.3s ease;
+
+        mat-icon {
+          font-size: 36px;
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      .step-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 15px;
+        line-height: 1.4;
+      }
+
+      .step-description {
+        color: var(--text-light);
+        line-height: 1.6;
+        margin-bottom: 25px;
+      }
+
+      .step-details {
+        text-align: left;
+
+        .detail-item {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          font-size: 0.9rem;
+
+          .detail-icon {
+            color: var(--success-green);
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            flex-shrink: 0;
+          }
+
+          span {
+            color: var(--text-dark);
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .video-section {
+    margin-bottom: 80px;
+
+    .video-content {
+      padding-right: 2rem;
+
+      h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .video-stats {
+        display: flex;
+        gap: 2rem;
+
+        .stat {
+          text-align: center;
+
+          strong {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1976d2;
+          }
+
+          span {
+            font-size: 0.9rem;
+            color: #666;
+          }
+        }
+      }
+    }
+
+    .video-placeholder {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: var(--primary-red);
+        color: white;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+
+        mat-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2.5rem;
+          margin-left: 4px;
+          color: var(--white); // icon will be white
+        }
+      }
+
+      &:hover {
+        img {
+          transform: scale(1.05);
+        }
+
+        .play-button {
+          background: var(--accent-red);
+          transform: translate(-50%, -50%) scale(1.1);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .how-it-works-section {
+    .section-title {
+      font-size: 2.25rem;
+    }
+
+    .steps-timeline {
+      .timeline-container .timeline-line {
+        display: none;
+      }
+
+      .step-card {
+        margin-bottom: 30px;
+      }
+    }
+
+    .cta-section .cta-card {
+      padding: 40px 30px;
+
+      .cta-title {
+        font-size: 1.875rem;
+      }
+    }
+    .video-content {
+      padding-right: 0;
+      margin-bottom: 3rem;
+
+      .video-stats {
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .how-it-works-section {
+    .section-title {
+      font-size: 1.875rem;
+    }
+
+    .cta-section .cta-card {
+      padding: 30px 20px;
+
+      .cta-actions {
+        flex-direction: column;
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+      .video-content h3 {
+        font-size: 1.5rem;
+      }
+
+      .video-stats {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .guarantee-text {
+        flex-direction: column;
+        text-align: center;
+
+        mat-icon {
+          margin: 0 0 5px 0;
+        }
+      }
+    }
+  }
+}

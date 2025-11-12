@@ -1,0 +1,254 @@
+<div class="blank-layout-container justify-content-center">
+  <div class="auth-wrapper">
+    <div class="position-relative">
+      <div class="w-100 position-relative rounded bg-white auth-card">
+        <div class="auth-body">
+          @if(options.theme === 'light') {
+          <a class="m-t-10 d-flex">
+            <img
+              src="./assets/cic-logo.jpg"
+              width="200"
+              class="align-middle m-2 elegant-hover-img"
+              alt="CIC brand logo for LLC registration platform"
+            />
+          </a>
+          } @if(options.theme === 'dark') {
+          <a class="m-t-20 d-flex">
+            <img
+              src="./assets/cic-logo.jpg"
+              class="align-middle m-2"
+              alt="logo"
+            />
+          </a>
+          }
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div
+                class="align-items-center justify-content-center d-none d-lg-flex"
+              >
+                <img
+                  src="/assets/llc-logins.jpg"
+                  alt="Multiple secure logins to register your LLC"
+                  class="img-fluid shadow rounded-4 border elegant-hover-img"
+                  style="max-width: 500px; object-fit: cover; margin-top: 10px"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div
+                class="d-flex align-items-start align-items-lg-center justify-content-center"
+              >
+                <div class="row justify-content-center w-100">
+                  <div class="col-lg-11">
+                    <h2
+                      class="fw-bold mt-3 mb-0 lh-base font-poppins"
+                      style="font-size: 32px; color: #000000"
+                    >
+                      Start Your Business in Minutes!
+                    </h2>
+                    <form
+                      class="m-t-30"
+                      [formGroup]="form"
+                      (ngSubmit)="onButtonClick()"
+                      novalidate
+                    >
+                      <!-- Email Input with Reload Icon -->
+                      <mat-label
+                        class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                        >Email</mat-label
+                      >
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100"
+                        color="primary"
+                      >
+                        <input
+                          matInput
+                          formControlName="email"
+                          type="email"
+                          required
+                          [readonly]="otpSent"
+                          placeholder="Your email..."
+                          aria-describedby="email-error"
+                          autocomplete="email"
+                          [errorStateMatcher]="errorStateMatcher"
+                        />
+
+                        <!-- Success Icon -->
+                        <mat-icon
+                          matSuffix
+                          class="success-icon"
+                          *ngIf="
+                            f['email'].valid  && !otpSent
+                          "
+                          aria-label="Valid email"
+                        >
+                          check_circle
+                        </mat-icon>
+
+                        <!-- 🔄 Reload Icon -->
+                        <button
+                          *ngIf="!reload && otpSent"
+                          mat-icon-button
+                          matSuffix
+                          (click)="resetEmail($event)"
+                          type="button"
+                          aria-label="Reset email"
+                        >
+                          <mat-icon color="primary">refresh</mat-icon>
+                        </button>
+                        <!-- Validation Messages -->
+                        <mat-error *ngIf="f['email'].errors?.['required']">
+  Email is required.
+</mat-error>
+
+<mat-error *ngIf="f['email'].errors?.['email'] || f['email'].errors?.['pattern']">
+  Invalid email format.
+</mat-error>
+
+                      </mat-form-field>
+
+                      <!-- "Remember Me" Checkbox -->
+                      <div
+                        class="d-block d-lg-flex align-items-center m-b-12"
+                        *ngIf="!showotp"
+                      >
+                        <mat-checkbox
+                          color="primary"
+                          formControlName="rememberMe"
+                          (change)="handleRememberMe()"
+                          
+                        >
+                          Remember this Device
+                        </mat-checkbox>
+                      </div>
+
+                      <!-- OTP Input Field -->
+                      <div *ngIf="showotp && !otpexpired">
+                        <div class="d-flex justify-content-between align-items-center m-b-12">
+                          <mat-label class="mat-subtitle-2 f-s-14 f-w-600">Enter OTP</mat-label>
+                          <!-- Countdown Timer -->
+                          <div class="countdown-timer-container" *ngIf="timerActive">
+                            <span 
+                              class="countdown-timer"
+                              [class.warning]="timeRemaining <= 120 && timeRemaining > 60"
+                              [class.danger]="timeRemaining <= 60"
+                            >
+                              {{ formatTime(timeRemaining) }}
+                            </span>
+                          </div>
+                        </div>
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100"
+                          color="primary"
+                        >
+                          <input
+                            matInput
+                            formControlName="otp"
+                            type="text"
+                            maxlength="6"
+                            mask="000000"
+                            [dropSpecialCharacters]="false"
+                            placeholder="Enter the verification code..."
+                            aria-describedby="otp-help"
+                            autocomplete="one-time-code"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+
+                          <!-- OTP Success Icon -->
+                          <mat-icon
+                            matSuffix
+                            class="success-icon"
+                            *ngIf="f['otp'].value?.length === 6"
+                            aria-label="Complete code"
+                          >
+                            check_circle
+                          </mat-icon>
+                          <!-- Error messages -->
+                          <mat-error
+                            *ngIf="
+                              f['otp'].touched && f['otp'].hasError('required')
+                            "
+                          >
+                            OTP is required.
+                          </mat-error>
+
+                          <!-- <mat-error *ngIf="f['otp'].touched && f['otp'].hasError('pattern')">
+    Invalid OTP format.
+  </mat-error> -->
+
+                          <mat-error
+                            *ngIf="
+                              f['otp'].invalid && f['otp'].hasError('minlength')
+                            "
+                          >
+                            Please enter a valid 6-digit verification code
+                          </mat-error>
+                        </mat-form-field>
+
+                        <!-- OTP Help Text -->
+                        <!-- <div id="otp-help" class="help-text">
+                          Check your email for the 6-digit verification code
+                        </div> -->
+
+                        <!-- OTP Validation Messages -->
+                        <!-- <div
+                          class="validation-message"
+                          *ngIf="otpInvalid"
+                          role="alert"
+                          aria-live="polite"
+                        >
+                          <div class="text-error">
+                            Please enter a valid 6-digit verification code
+                          </div>
+                        </div> -->
+                      </div>
+
+                      <!-- Error/Success Messages -->
+                      <div class="m-t-10 text-center" *ngIf="message">
+                        <span
+                          [ngClass]="{
+                            'text-success': !error,
+                            'text-error': error
+                          }"
+                        >
+                          {{ message }}
+                        </span>
+                      </div>
+
+                      <!-- Circular Loading Button -->
+                      <div class="button-container m-t-20">
+                        <button
+                          type="submit"
+                          mat-flat-button
+                          class="loading-button"
+                          [class.loading]="loading"
+                          [class.disabled]="!canProceed()"
+                          [disabled]="loading || !canProceed()"
+                          [attr.aria-label]="buttonText"
+                        >
+                          <span class="button-text" *ngIf="!loading">{{
+                            buttonText
+                          }}</span>
+                          <mat-spinner
+                            *ngIf="loading"
+                            diameter="24"
+                            strokeWidth="3"
+                            class="button-spinner"
+                          >
+                          </mat-spinner>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

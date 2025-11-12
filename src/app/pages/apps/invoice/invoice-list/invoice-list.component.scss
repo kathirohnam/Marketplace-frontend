@@ -1,0 +1,662 @@
+@use 'src/variables' as *;
+
+// ==============================================
+// BASE STYLES & DESKTOP LAYOUT (DEFAULT)
+// ==============================================
+
+// Invoice Tabs Container
+.invoice-tab-main {
+  margin-bottom: 24px;
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+
+  .col-sm-6.col-lg-3 {
+    flex: 0 0 calc(25% - 16px);
+    max-width: calc(25% - 16px);
+    display: flex;
+  }
+}
+
+// Invoice Tab Cards
+.invoice-tab {
+  cursor: pointer;
+  padding: 16px 10px 16px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  flex: 1;
+  min-height: 80px;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: $primary-color;
+    background: #f9f9f9;
+  }
+
+  mat-card-content {
+    padding: 6px 12px 6px 12px !important;
+    width: 100%;
+  }
+
+  .icon {
+    flex-shrink: 0;
+  }
+
+  .info {
+    flex: 1;
+    min-width: 0;
+
+    h5 {
+      margin: 0;
+      word-wrap: break-word;
+      line-height: 1.2;
+    }
+  }
+}
+
+.active-tab {
+  background: #f8fafc !important;
+  border-color: $primary-color;
+}
+
+// Search Card
+.search-card {
+  margin-bottom: 24px;
+
+  .search-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .search-field {
+    flex: 1;
+    max-width: 400px;
+  }
+}
+
+// Table Card
+.table-card {
+  .table-responsive {
+    overflow-x: auto;
+    
+    &.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+
+  .desktop-table {
+    min-width: 900px;
+  }
+}
+
+// Mobile Invoice View (Hidden by default)
+.mobile-invoice-view {
+  display: none;
+}
+
+// Pagination Container
+.pagination-container {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+// Status Styles
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mobile-status {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+// Empty State
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  color: #666;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+}
+
+// ==============================================
+// TABLET RESPONSIVE (768px - 1023px)
+// ==============================================
+@media (max-width: 1023px) and (min-width: 768px) {
+  // Invoice Tabs - 2 per row on tablet
+  .invoice-tab-main {
+    .col-sm-6.col-lg-3 {
+      flex: 0 0 calc(50% - 10px);
+      max-width: calc(50% - 10px);
+    }
+
+    .row {
+      gap: 16px;
+    }
+  }
+
+  // Search adjustments
+  .search-card {
+    .search-field {
+      max-width: 350px;
+    }
+  }
+}
+
+// ==============================================
+// MOBILE RESPONSIVE (320px - 767px)
+// ==============================================
+@media (max-width: 767px) {
+  // Invoice Tabs - 2 per row on mobile
+  .invoice-tab-main {
+    margin-bottom: 16px;
+
+    .row {
+      gap: 12px;
+      margin: 0 -6px;
+    }
+
+    .col-sm-6.col-lg-3 {
+      flex: 0 0 calc(50% - 6px);
+      max-width: calc(50% - 6px);
+      padding: 0 6px;
+    }
+  }
+
+  // Invoice Tab Cards - Smaller on mobile
+  .invoice-tab {
+    padding: 12px 8px;
+    margin-bottom: 0;
+    min-height: 70px;
+
+    mat-card-content {
+      padding: 8px !important;
+
+      .gap-16 {
+        gap: 8px !important;
+      }
+    }
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+
+      .icon-24 {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .info {
+      h5 {
+        font-size: 12px !important;
+        line-height: 1.1;
+
+        &.f-s-14 {
+          font-size: 11px !important;
+        }
+      }
+    }
+  }
+
+  // Search Card - Full width
+  .search-card {
+    margin-bottom: 16px;
+
+    .search-container {
+      justify-content: stretch;
+    }
+
+    .search-field {
+      max-width: none;
+      width: 100%;
+    }
+  }
+
+  // Hide desktop table, show mobile cards
+  .desktop-table {
+    display: none !important;
+  }
+
+  .mobile-invoice-view {
+    display: block;
+  }
+
+  // Mobile Invoice Cards
+  .mobile-invoice-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .mobile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .invoice-header-left {
+      flex: 1;
+
+      .invoice-id {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+        color: #1976d2;
+        line-height: 1.2;
+      }
+
+      .invoice-company {
+        font-size: 14px;
+        color: #666;
+        font-weight: 500;
+        display: block;
+      }
+    }
+
+    .invoice-header-right {
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+  }
+
+  .mobile-card-body {
+    margin-bottom: 16px;
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 6px 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .info-label {
+        font-size: 13px;
+        color: #666;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+
+      .info-value {
+        font-size: 14px;
+        color: #333;
+        text-align: right;
+        flex: 1;
+        margin-left: 12px;
+        font-weight: 500;
+
+        &.total-amount {
+          color: #1976d2;
+          font-weight: 700;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+
+  .mobile-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+
+      .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.edit-btn {
+          background-color: #e3f2fd;
+          color: #1976d2;
+
+          &:hover {
+            background-color: #bbdefb;
+          }
+        }
+
+        &.view-btn {
+          background-color: #e8f5e8;
+          color: #2e7d32;
+
+          &:hover {
+            background-color: #c8e6c8;
+          }
+        }
+
+        &.delete-btn {
+          background-color: #ffebee;
+          color: #d32f2f;
+
+          &:hover {
+            background-color: #ffcdd2;
+          }
+        }
+
+        .icon-18 {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    .user-actions {
+      .view-invoice-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        text-transform: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .icon-16 {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+
+  // Mobile Empty State
+  .mobile-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-message {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .clear-search-btn {
+      margin-top: 12px;
+    }
+
+    .user-empty-state {
+      h4 {
+        margin: 0 0 8px 0;
+        font-size: 18px;
+        color: #333;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+      }
+    }
+  }
+
+  // Mobile pagination
+  .pagination-container {
+    margin-top: 20px;
+    
+    ::ng-deep .mat-mdc-paginator {
+      .mat-mdc-paginator-range-label {
+        font-size: 12px;
+      }
+      
+      .mat-mdc-paginator-page-size-select {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+// ==============================================
+// EXTRA SMALL MOBILE (320px - 479px)
+// ==============================================
+@media (max-width: 479px) {
+  // Invoice Tabs - Single column on very small screens
+  .invoice-tab-main {
+    .col-sm-6.col-lg-3 {
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    .row {
+      gap: 8px;
+      margin: 0;
+    }
+  }
+
+  // Invoice Tab Cards - Even smaller
+  .invoice-tab {
+    padding: 10px;
+    min-height: 65px;
+
+    mat-card-content {
+      padding: 6px !important;
+    }
+
+    .icon {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+
+      .icon-24 {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .info {
+      h5 {
+        font-size: 11px !important;
+
+        &.f-s-14 {
+          font-size: 10px !important;
+        }
+      }
+    }
+  }
+
+  // Search Card - Smaller padding
+  .search-card {
+    mat-card-content {
+      padding: 16px !important;
+    }
+  }
+
+  // Mobile Cards - Smaller padding
+  .mobile-invoice-card {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    .invoice-header-left {
+      .invoice-id {
+        font-size: 16px;
+      }
+
+      .invoice-company {
+        font-size: 13px;
+      }
+    }
+
+    .invoice-header-right {
+      margin-left: 0;
+      align-self: flex-end;
+    }
+  }
+
+  .mobile-card-body {
+    .info-row {
+      .info-label,
+      .info-value {
+        font-size: 12px;
+      }
+
+      .info-value.total-amount {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .mobile-card-actions {
+    .admin-actions {
+      gap: 8px;
+
+      .action-btn {
+        width: 36px;
+        height: 36px;
+
+        .icon-18 {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .user-actions {
+      .view-invoice-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+// ==============================================
+// LARGE SCREENS (1200px+)
+// ==============================================
+@media (min-width: 1200px) {
+  // Invoice Tabs - More space on large screens
+  .invoice-tab-main {
+    .row {
+      gap: 24px;
+    }
+
+    .col-sm-6.col-lg-3 {
+      flex: 0 0 calc(25% - 18px);
+      max-width: calc(25% - 18px);
+    }
+  }
+
+  // Search Field - Better spacing
+  .search-card {
+    .search-field {
+      max-width: 450px;
+    }
+  }
+}
+
+// ==============================================
+// UTILITY CLASSES
+// ==============================================
+
+// Hide elements responsively
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
+
+  .show-mobile-only {
+    display: none !important;
+  }
+}
+
+// Responsive text sizes
+.responsive-text {
+  @media (max-width: 767px) {
+    font-size: 14px !important;
+  }
+
+  @media (max-width: 479px) {
+    font-size: 13px !important;
+  }
+}
+
+// Responsive spacing
+.responsive-padding {
+  @media (max-width: 767px) {
+    padding: 12px !important;
+  }
+
+  @media (max-width: 479px) {
+    padding: 8px !important;
+  }
+}
+

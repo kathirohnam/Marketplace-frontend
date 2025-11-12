@@ -1,0 +1,279 @@
+@use 'src/variables' as *;
+@use 'sass:color';
+
+:host {
+  display: block;
+  background-color: $color-bg-white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.image-editor-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// -- Header --
+.editor-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid $color-border-2;
+  flex-shrink: 0;
+
+  .header-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon { font-size: 24px; width: 24px; height: 24px; }
+  }
+
+  .header-text-wrapper {
+    flex-grow: 1;
+  }
+
+  .editor-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $color-text-main;
+  }
+
+  .editor-subtitle {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: $color-text-muted;
+  }
+
+  .close-button {
+    color: $color-text-muted;
+  }
+}
+
+// -- Main Content Area --
+.editor-content {
+  padding: 24px;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: $color-bg-light;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+// Uploader View
+.uploader-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  min-height: 400px;
+}
+.upload-area {
+  border: 2px dashed $color-border-2;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    border-color: $primary-color;
+    background: $color-bg-white;
+  }
+  .upload-icon {
+    color: $primary-color;
+    font-size: 48px; width: 48px; height: 48px;
+    margin-bottom: 12px;
+  }
+  .upload-title { font-size: 1.1rem; font-weight: 600; margin: 0 0 4px; }
+  .upload-description { font-size: 0.9rem; color: $color-text-muted; margin: 0 0 8px; }
+  .upload-constraints { font-size: 0.8rem; color: color.adjust($color-text-muted, $lightness: 10%); margin: 0; }
+}
+
+
+// Main Editor View
+.main-editor-view {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  flex-grow: 1;
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cropper-wrapper {
+  background: $color-bg-white;
+  border: 1px solid $color-border-2;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 450px; /* Set a fixed height for the container */
+  overflow: hidden;
+
+  // CSS Filters
+  &.filter-vivid { filter: saturate(1.5) contrast(1.1); }
+  &.filter-grayscale { filter: grayscale(100%); }
+  &.filter-sepia { filter: sepia(100%); }
+  &.filter-vintage { filter: sepia(0.5) contrast(1.2) brightness(0.9); }
+}
+
+.cropper {
+  width: 100%;  /* Make the cropper fill the width of the wrapper */
+  height: 100%; /* Make the cropper fill the height of the wrapper */
+}
+
+
+// Controls Panel
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 8px; // For scrollbar
+}
+
+.control-group {
+  .control-group-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $color-text-main;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 10px 0;
+  }
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: $color-text-muted;
+  .zoom-slider { flex-grow: 1; }
+}
+
+.shape-controls, .filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-controls button, .shape-controls button {
+    flex-grow: 1;
+}
+
+.action-controls-wrapper {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid $color-border-2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+        width: 100%;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: $color-text-muted;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: $color-bg-white;
+            color: $color-text-main;
+            border-color: $color-border-2;
+        }
+    }
+}
+
+
+// Shared button styles
+.shape-controls, .control-grid, .filter-controls {
+    button {
+        &.active {
+            background: rgba($primary-color, 0.1);
+            color: $primary-color;
+            border-color: transparent;
+        }
+    }
+}
+
+// -- Status Overlays (Loading/Error) --
+.status-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($color-bg-light, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10;
+}
+.status-box {
+  background: $color-bg-white;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 500;
+  color: $color-text-main;
+  &.error-box {
+    background: rgba(#dc3545, 0.1);
+    color: #dc3545;
+  }
+}
+
+
+// -- Footer Actions --
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid $color-border-2;
+  flex-shrink: 0;
+  background-color: $color-bg-white;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .main-editor-view {
+        grid-template-columns: 1fr;
+    }
+    .editor-header, .editor-actions {
+        padding: 16px;
+    }
+    .editor-content {
+        padding: 16px;
+    }
+}
+

@@ -1,0 +1,2386 @@
+// /* ------- Theme Variables ------- */
+// @use 'src/variables' as *;
+// @use 'src/assets/scss/variables' as *;
+
+
+// /* ------- Base / Reset bits ------- */
+// body {
+//   // font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+//   line-height: 1.6;
+// }
+
+// /* Card shell */
+// .cardWithShadow {
+//   width: auto;
+//   height: auto;
+//   overflow-x: auto; /* Enables horizontal scrolling if needed */
+// }
+
+// .fixed-wrapper {
+//   min-width:$boxedWidth; /* Adjust based on actual content width */
+// }
+
+
+// /* ------- Formation Hub Root ------- */
+// .formation-hub {
+//   font-family: 'Plus Jakarta Sans', sans-serif;
+//   background-color: $color-bg-white;
+//   min-height: 70vh;
+//   padding: 2px;
+// }
+
+// /* ------- Header ------- */
+// .header-section {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-start;
+//   margin-bottom: 8px;
+//   padding: 16px 0;
+// }
+
+// .welcome-section {
+//   .dashboard-title {
+//     font-size: 32px !important;
+//     font-weight: 700 !important;
+//     color: $color-text-main !important;
+//     margin: 0 0 8px 0;
+//     background: $secondary-color;
+//     // -webkit-background-clip: text;
+//     // -webkit-text-fill-color: transparent;
+//     background-clip: text;
+//     margin-bottom: 24px;
+//   }
+
+//   .dashboard-subtitle {
+//     font-size: 16px !important;
+//     color: $color-text-muted !important;
+//     margin: 0;
+//     font-weight: 400;
+//   }
+// }
+
+// .create-company-btn {
+//   background: $primary-color;
+//   color: $color-bg-white;
+//   font-weight: 600;
+//   padding: 16px 24px;
+//   border-radius: 12px;
+//   text-transform: none;
+//   box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+//   border: none;
+//   font-size: 15px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   gap: 4px;
+//   min-width: 160px;
+
+//   .btn-subtitle {
+//     font-size: 12px;
+//     font-weight: 400;
+//     opacity: 0.9;
+//   }
+
+//   &:hover {
+//     background: $primary-hover-color;
+//   }
+// }
+
+// /* ------- Progress Banner ------- */
+// .progress-banner {
+//   background: $secondary-color;
+//   border: 1px solid $color-primary-soft-3;
+//   border-radius: 12px;
+//   padding: 16px 20px;
+//   margin-bottom: 24px;
+
+//   .banner-content {
+//     display: flex;
+//     align-items: center;
+//     gap: 16px;
+//   }
+
+//   .banner-icon {
+//     background: $primary-color;
+//     color: $color-bg-white;
+//     width: 48px;
+//     height: 48px;
+//     border-radius: 12px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+
+//     mat-icon {
+//       font-size: 24px;
+//       width: 24px;
+//       height: 24px;
+//     }
+//   }
+
+//   .banner-text {
+//     h3 {
+//       font-size: 18px;
+//       font-weight: 600;
+//       color: $color-primary-dark;
+//       margin: 0 0 4px 0;
+//     }
+
+//     p {
+//       font-size: 14px;
+//       color: $color-primary-dark;
+//       margin: 0;
+//       opacity: 0.8;
+//     }
+//   }
+// }
+
+// /* ------- Main Layout ------- */
+// .main-layout {
+//   display: flex;
+//   gap: 32px;
+//   align-items: flex-start;
+// }
+
+// /* ------- Section Headers ------- */
+// .section-header {
+//   margin-bottom: 8px;
+
+//   .section-title {
+//     font-size: 24px !important;
+//     font-weight: 600 !important;
+//     color: $color-text-main !important;
+//     margin: 0 0 2px 0;
+//   }
+
+//   .section-description {
+//     font-size: 14px !important;
+//     color: $color-text-muted !important;
+//     margin: 0;
+//   }
+// }
+
+// /* ------- Sidebar ------- */
+// .sidebar {
+//   width: 310px;
+//   min-height: auto;
+//   height: 500px;
+//   background: $color-bg-white;
+//  padding: 24px 24px 0px 24px;
+//   border-radius: 16px;
+//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+//   flex-shrink: 0;
+//   border: 1px solid $color-border;
+
+//   display: flex;
+//   flex-direction: column;
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   position: sticky;
+//   top: 0; 
+  
+// }
+
+// .sidebar-header {
+//   margin-bottom: 8px;
+// }
+
+// .sidebar-title {
+//   font-size: 20px !important;
+//   font-weight: 700 !important;
+//   color: $color-text-main !important;
+//   margin: 0 0 8px 0;
+//   text-align: center;
+
+//   overflow-wrap: break-word;  
+//   overflow-wrap: anywhere;   
+//   word-break: break-word;    
+//   hyphens: auto;
+// }
+
+// .sidebar-subtitle {
+//   font-size: 14px !important;
+//   color: $color-text-muted !important;
+//   margin: 0;
+//   line-height: 1.4;
+// }
+
+// /* ------- Progress Circle ------- */
+// .progress-container {
+//   display: flex;
+//   justify-content: center;
+//   margin-bottom: 8px;
+// }
+
+// .progress-circle {
+//   position: relative;
+//   width: 140px;
+//   height: 140px;
+// }
+
+// .progress-svg {
+//   width: 100%;
+//   height: 100%;
+//   transform: rotate(-90deg);
+// }
+
+// .progress-background {
+//   color: $color-border;
+// }
+
+// .progress-foreground {
+//   color: $primary-color;
+//   transition: stroke-dasharray 0.3s ease;
+// }
+
+// .progress-content {
+//   position: absolute;
+//   inset: 0;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .progress-percentage {
+//   font-size: 28px !important;
+//   font-weight: 700 !important;
+//   color: $color-text-main !important;
+//   line-height: 1;
+// }
+
+// .progress-label {
+//   font-size: 12px !important;
+//   color: $color-text-muted !important;
+//   font-weight: 500;
+//   margin-top: 4px;
+// }
+
+// /* ------- Progress Steps ------- */
+// .progress-steps {
+//   margin-bottom: 20px;
+
+//   h4 {
+//     font-size: 16px;
+//     font-weight: 600;
+//     color: $color-text-main;
+//     margin: 0 0 16px 0;
+//   }
+
+//   .step-list {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 4px;
+//   }
+
+//   .step {
+//     display: flex;
+//     align-items: center;
+//     flex-direction: row;
+//     gap: 12px;
+//     padding: 8px;
+
+//     border-radius: 8px;
+//     transition: all 0.2s ease;
+
+//     &.completed {
+//       background: $color-chip-state-bg;
+
+//       .step-icon {
+//         color: $primary-color;
+//       }
+
+//       span {
+//         color: $color-primary-dark;
+//         font-weight: 500;
+//       }
+//     }
+
+//     .step-icon {
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
+//       font-size: 18px;
+//       color: #cbd5e1;
+//     }
+
+//     span {
+//       font-size: 14px;
+//       color: $color-text-muted;
+//     }
+//   }
+// }
+
+// .progress-description {
+//   .current-step {
+//     background: $color-bg-light;
+//     padding: 16px;
+//     border-radius: 12px;
+//     border: 1px solid $color-border-2;
+
+//     h4 {
+//       font-size: 14px;
+//       font-weight: 600;
+//       color: $color-text-main;
+//       margin: 0 0 8px 0;
+//       text-transform: uppercase;
+//       letter-spacing: 0.5px;
+//     }
+
+//     p {
+//       font-size: 14px;
+//       margin: 0 0 8px 0;
+
+//       &.step-detail {
+//         color: $color-text-muted;
+//         margin: 0;
+//         font-size: 13px;
+//       }
+//     }
+//   }
+// }
+
+// .sidebar-cta {
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+//   .cta-content {
+//     text-align: center;
+//     padding: 20px;
+//     background: linear-gradient(135deg, #f0f9ff 0%, $color-primary-soft-1 100%);
+//     border-radius: 16px;
+//     border: 1px solid $color-primary-soft-2;
+
+//     mat-icon {
+//       font-size: 32px;
+//       color: $primary-color;
+//       margin-bottom: 12px;
+//     }
+
+//     h4 {
+//       font-size: 16px;
+//       font-weight: 600;
+//       color: $color-primary-dark;
+//       margin: 0 0 8px 0;
+//     }
+
+//     p {
+//       font-size: 13px;
+//       color: $color-primary-dark;
+//       margin: 0 0 16px 0;
+//       opacity: 0.8;
+//     }
+
+//     .cta-button-small {
+//       background: $primary-color;
+//       color: $color-bg-white;
+//       font-weight: 600;
+//       padding: 8px 16px;
+//       border-radius: 8px;
+//       text-transform: none;
+//       font-size: 13px;
+
+//       &:hover {
+//         background: $primary-hover-color;
+//       }
+//     }
+//   }
+// }
+
+// /* ------- Main Content ------- */
+// .main-content {
+//   flex: 1;
+//   min-width: 0;
+// }
+
+// /* ------- Companies Section ------- */
+// .companies-section {
+//   background: $color-bg-white;
+//   padding: 32px;
+//   border-radius: 16px;
+//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+//   margin-bottom: 32px;
+//   border: 1px solid $color-border;
+//   height: 500px;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// /* ------- Tabs ------- */
+// .tabs-container {
+//   display: flex;
+//   border-bottom: 2px solid $color-border;
+//   margin-bottom: 24px;
+//   align-items: center;
+//   gap: 8px;
+// }
+
+// .tab-button {
+//   font-size: 16px;
+ 
+//   font-weight: 600;
+//   color: $color-text-muted;
+//   padding: 16px 24px;
+//   background: none;
+//   border: none;
+//   cursor: pointer;
+//   border-bottom: 3px solid transparent;
+//   margin-bottom: -2px;
+//   display: flex;
+//   align-items: center;
+//   flex-direction: row;
+//   gap: 8px;
+//   border-radius: 8px 8px 0 0;
+
+//   &.active-tab {
+//     border-bottom-color: $primary-color;
+//     color: $primary-color;
+//     background: $color-bg-light;
+
+//     mat-icon {
+//       color: $primary-color;
+//     }
+//   }
+
+//   &:hover:not(.active-tab) {
+//     color: $color-text-main;
+//     background: $color-bg-light;
+//   }
+
+//   mat-icon {
+//     display: flex;       /* center the icon */
+//     align-items: center;
+//     justify-content: center;
+//     font-size: 18px;
+//     color: #94a3b8;
+//   }
+// }
+
+// .tab-count {
+//   display: inline-flex;  /* makes the badge align well */
+//   align-items: center;
+//   justify-content: center;
+//   background: #e2e8f0;
+//   color: $color-text-muted-2;
+//   padding: 4px 8px;
+//   border-radius: 12px;
+//   font-size: 12px;
+//   font-weight: 600;
+//   margin-left: 8px;
+// }
+
+// .active-tab + .tab-count {
+//   background: $color-primary-soft-1;
+//   color: $color-primary-dark;
+// }
+
+// /* ------- Tab Content ------- */
+// .tab-content {
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   overflow: hidden;
+//   min-height: 240px;
+// }
+
+// /* ------- Companies Grid ------- */
+// .companies-grid-container {
+//   flex: 1;
+//   overflow: hidden;
+// }
+
+// .companies-grid {
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   gap: 20px;
+//   height: 100%;
+//   overflow-y: auto;
+//   padding-right: 8px;
+
+//   /* Custom scrollbar */
+//   &::-webkit-scrollbar {
+//     width: 6px;
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: $color-bg-scrollbar-track;
+//     border-radius: 3px;
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background: $color-bg-scrollbar-thumb;
+//     border-radius: 3px;
+
+//     &:hover {
+//       background: $color-bg-scrollbar-thumb-hover;
+//     }
+//   }
+// }
+
+// /* ------- Company Cards ------- */
+// .company-card {
+//   background: $color-bg-white;
+//   border: 2px solid $color-border;
+//   border-radius: 16px;
+//   padding: 24px;
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 270px;
+//   transition: all 0.3s ease;
+//   position: relative;
+//   overflow: hidden;
+
+//   &:hover {
+//     border-color: $color-border-2;
+//     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+//     transform: translateY(-4px);
+//   }
+
+//   &.suggested-company {
+//     border-color: $primary-color;
+//     background: linear-gradient(135deg, $color-bg-white 0%, $color-bg-light 100%);
+//     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+//   }
+
+//   &.completed {
+//     border-color: $color-bg-white;
+//     border: 2px solid $color-border;
+//     border-radius: 16px;
+
+//     &:hover {
+//       border-color: $color-border-2;
+//       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+//       transform: translateY(-4px);
+//     }
+//   }
+// }
+
+// .card-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-start;
+//   margin-bottom: 16px;
+// }
+
+// .state-badge {
+//   background: $color-chip-state-bg;
+//   color: $color-chip-state-text;
+//   padding: 6px 12px;
+//   border-radius: 20px;
+//   font-size: 12px;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   letter-spacing: 0.5px;
+// }
+
+// .progress-indicator {
+//   background: $color-progress-pill-bg;
+//   color: $color-progress-pill-text;
+//   padding: 6px 12px;
+//   border-radius: 20px;
+//   font-size: 12px;
+//   font-weight: 600;
+
+//   .progress-text {
+//     font-weight: 700;
+//   }
+// }
+
+
+// .success-badge {
+//   background: $color-success-bg;
+//   color: $color-success-text;
+//   padding: 6px 12px;
+//   border-radius: 20px;
+//   font-size: 12px;
+//   font-weight: 600;
+//   display: flex;
+//   align-items: center;
+//   gap: 4px;
+//   text-transform: uppercase;
+//   letter-spacing: 0.5px;
+
+//   mat-icon {
+//     font-size: 16px;
+//     width: 16px;
+//     height: 16px;
+//   }
+
+//   // Override colors based on status classes
+//   &.status-draft {
+//     background: #fef3c7;
+//     color: #92400e;
+//   }
+
+//   &.status-reviewed {
+//     background: #dbeafe;
+//     color: #1d4ed8;
+//   }
+
+//   &.status-ready {
+//     background: #e9d5ff;
+//     color: #7c3aed;
+//   }
+
+//   &.status-filed {
+//     background: #cffafe;
+//     color: #0d9488;
+//   }
+
+//   &.status-success {
+//     background: #d1fae5;
+//     color: #065f46;
+//   }
+
+//   &.status-failure {
+//     background: #fee2e2;
+//     color: #dc2626;
+//   }
+
+//   &.status-pending {
+//     background: #f3f4f6;
+//     color: #6b7280;
+//   }
+// }
+
+// .completion-date {
+//   font-size: 12px;
+//   color: $color-text-muted;
+//   font-weight: 500;
+// }
+
+// .suggested-tag {
+//   position: absolute;
+//   top: 16px;
+//   right: 16px;
+//   background: $secondary-color;
+//   color: $color-bg-white;
+//   padding: 8px 12px;
+//   border-radius: 20px;
+//   font-size: 11px;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   letter-spacing: 0.5px;
+//   display: flex;
+//   align-items: center;
+//   gap: 4px;
+//   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+
+//   mat-icon {
+//     font-size: 14px;
+//     width: 14px;
+//     height: 14px;
+//   }
+// }
+
+// .company-info {
+//   flex: 1;
+//   margin-bottom: 15px;
+
+//   .company-name {
+//     font-size: 20px;
+//     font-weight: 700;
+//     color: $color-text-main;
+//     margin: 0 0 8px 0;
+//     line-height: 1.3;
+//   }
+
+//   .company-status {
+//     font-size: 14px;
+//     color: $color-text-muted;
+//     margin: 0 0 12px 0;
+//     line-height: 1.4;
+//   }
+
+//   .next-step {
+//     display: flex;
+//     align-items: center;
+//     gap: 2px;
+//     padding: 2px;
+//     background: $color-bg-light;
+//     border-radius: 8px;
+//     border-left: 4px solid $primary-color;
+
+//     .step-icon {
+//       display: flex;         /* keeps icon centered */
+//       align-items: center;
+//       justify-content: center;
+//       color: $primary-color;
+//       font-size: 18px;
+//     }
+
+//     span {
+//       font-size: 13px;
+//       color: $color-primary-dark;
+//       font-weight: 500;
+//     }
+//   }
+
+//   .benefits-list {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 8px;
+//     margin-top: 12px;
+
+//     .benefit {
+//       display: flex;
+//       align-items: center;
+//       gap: 8px;
+//       font-size: 13px;
+//       color: $color-success-text;
+
+//       mat-icon {
+//         font-size: 16px;
+//         width: 16px;
+//         height: 16px;
+//         color: $color-accent;
+//       }
+//     }
+//   }
+// }
+
+// .card-actions {
+//   display: flex;
+//   gap: 12px;
+//   align-items: center;
+// }
+
+// .continue-btn,
+// .view-btn {
+//   background: $primary-color;
+//   color: $color-bg-white;
+//   font-size: 14px;
+//   font-weight: 600;
+//   padding: 12px 20px;
+//   border-radius: 10px;
+//   border: none;
+//   cursor: pointer;
+//   text-transform: none;
+//   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     background: $primary-hover-color;
+//     transform: translateY(-1px);
+//   }
+
+//   mat-icon {
+//     font-size: 18px;
+//     width: 18px;
+//     height: 18px;
+//   }
+// }
+
+// .secondary-btn {
+//   background: $color-bg-light;
+//   color: $color-text-muted-2;
+//   font-size: 14px;
+//   font-weight: 500;
+//   padding: 12px 16px;
+//   border-radius: 10px;
+//   border: 1px solid $color-border-2;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     background: $color-border-2;
+//     color: $color-text-main;
+//   }
+
+//   mat-icon {
+//     font-size: 16px;
+//     width: 16px;
+//     height: 16px;
+//   }
+// }
+
+// /* ------- Quick Actions Section ------- */
+// .quick-actions-section {
+//   background: $color-bg-white;
+//   padding: 32px;
+//   border-radius: 16px;
+//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+//   border: 1px solid $color-border;
+//   width: $quickviewwidth;
+//   height: 350px;
+// }
+
+
+// /* ------- Quick Actions Grid ------- */
+// .quick-actions-grid {
+//   display: flex;
+//   gap: 20px;
+//   justify-content: space-between;
+// }
+
+// /* ------- Quick Action Cards ------- */
+// .quick-action-card {
+//   background: $color-bg-white;
+//   border: 2px solid $color-border;
+//   border-radius: 16px;
+//   padding: 24px;
+//   display: flex;
+//   flex-direction: column;
+//   height: 220px;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+//   position: relative;
+//   overflow: hidden;
+//   flex: 1;
+//   max-width: none;
+
+//   &:hover {
+//     border-color: $color-border-2;
+//     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+//     transform: translateY(-4px);
+//   }
+
+//   &.primary {
+//     border-color: $primary-color;
+//     background: linear-gradient(135deg, $color-bg-white 0%, $color-bg-light 100%);
+
+//     &:hover {
+//       border-color: $primary-hover-color;
+//       box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+//     }
+
+//     .action-icon {
+//       background: $primary-color;
+
+//       mat-icon {
+//         color: $color-bg-white;
+//       }
+//     }
+
+//     .go-btn {
+//       background: $secondary-color;
+
+//       &:hover {
+//         background: $primary-hover-color;
+//       }
+//     }
+//   }
+
+//   .action-icon {
+//     background: $color-bg-light;
+//     padding: 16px;
+//     border-radius: 16px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-bottom: 16px;
+//     width: 64px;
+//     height: 64px;
+
+//     mat-icon {
+//       color: $primary-color;
+//       font-size: 28px;
+//       width: 28px;
+//       height: 28px;
+//     }
+//   }
+
+//   .action-content {
+//     flex: 1;
+//     margin-bottom: 20px;
+
+//     .action-title {
+//       font-size: 18px;
+//       font-weight: 700;
+//       color: $color-text-main;
+//       margin: 0 0 8px 0;
+//       line-height: 1.3;
+//     }
+
+//     .action-description {
+//       font-size: 14px;
+//       color: $color-text-muted;
+//       margin: 0;
+//       line-height: 1.4;
+//     }
+//   }
+
+//   .go-btn {
+//     background: $primary-color;
+//     color: $color-bg-white;
+//     font-size: 14px;
+//     font-weight: 600;
+//     padding: 12px 24px;
+//     border-radius: 10px;
+//     border: none;
+//     cursor: pointer;
+//     transition: all 0.2s ease;
+//     align-self: flex-start;
+
+//     &:hover {
+//       background: $primary-hover-color;
+//       transform: translateY(-1px);
+//     }
+//   }
+// }
+
+// /* ------- Empty States ------- */
+// .empty-state {
+//   text-align: center;
+//   padding: 40px 20px;
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+
+//   .empty-icon {
+//     margin-bottom: 24px;
+
+//     mat-icon {
+//       font-size: 64px;
+//       width: 64px;
+//       height: 64px;
+//       color: #cbd5e1;
+//     }
+//   }
+
+//   h3 {
+//     font-size: 24px;
+//     font-weight: 600;
+//     color: $color-text-main;
+//     margin: 0 0 12px 0;
+//   }
+
+//   p {
+//     font-size: 16px;
+//     color: $color-text-muted;
+//     margin: 0 0 32px 0;
+//     max-width: 400px;
+//     margin-left: auto;
+//     margin-right: auto;
+//     line-height: 1.5;
+//   }
+
+//   .trust-indicators {
+//     display: flex;
+//     justify-content: center;
+//     gap: 32px;
+//     margin-top: 24px;
+
+//     .indicator {
+//       display: flex;
+//       align-items: center;
+//       gap: 8px;
+//       color: $color-text-muted;
+//       font-size: 14px;
+//       font-weight: 500;
+
+//       mat-icon {
+//         font-size: 18px;
+//         width: 18px;
+//         height: 18px;
+//         color: $color-accent;
+//       }
+//     }
+//   }
+// }
+
+// /* ------- Drag and Drop ------- */
+// .cdk-drag-preview {
+//   box-sizing: border-box;
+//   border-radius: 16px;
+//   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+// }
+
+// .cdk-drag-placeholder {
+//   opacity: 0.4;
+// }
+
+// .cdk-drag-animating {
+//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
+
+// /* ================== MOBILE RESPONSIVE BREAKPOINTS ================== */
+
+// /* Tablet and Large Mobile Devices */
+// @media screen and (max-width: 1024px) {
+//   .fixed-wrapper {
+//     min-width: unset;
+//     padding: 12px;
+//   }
+
+//   .formation-hub {
+//     padding: 0;
+//   }
+
+//   /* Main Layout adjustments for tablet */
+//   .main-layout {
+//     gap: 24px;
+//   }
+
+//   .sidebar {
+//     width: 280px;
+//     height: auto;
+//     min-height: 400px;
+//   }
+
+//   .companies-section {
+//     padding: 24px;
+//     height: auto;
+//     min-height: 450px;
+//   }
+
+//   .quick-actions-section {
+//     padding: 24px;
+//     height: auto;
+//     width: auto;
+//   }
+
+//   .quick-actions-grid {
+//     flex-wrap: wrap;
+//     gap: 16px;
+//   }
+
+//   .quick-action-card {
+//     flex: 1;
+//     min-width: calc(50% - 8px);
+//     height: 200px;
+//   }
+// }
+
+// /* Mobile Devices - Primary Breakpoint */
+// @media screen and (max-width: 768px) {
+//   .cardWithShadow {
+//     overflow-x: visible;
+//   }
+
+//   .fixed-wrapper {
+//     min-width: unset;
+//     padding: 8px;
+//   }
+
+//   .formation-hub {
+//     padding: 0;
+//     min-height: auto;
+//   }
+
+//   /* Header Mobile Adaptations */
+//   .header-section {
+//     flex-direction: column;
+//     gap: 16px;
+//     align-items: stretch;
+//     padding: 12px 0;
+//     margin-bottom: 16px;
+//   }
+
+//   .welcome-section {
+//     .dashboard-title {
+//       font-size: 24px !important;
+//       margin-bottom: 8px;
+//       text-align: center;
+//     }
+
+//     .dashboard-subtitle {
+//       font-size: 14px !important;
+//       text-align: center;
+//     }
+//   }
+
+//   .create-company-btn {
+//     width: 100%;
+//     min-width: unset;
+//     padding: 14px 20px;
+//     font-size: 16px;
+//     justify-content: center;
+//   }
+
+//   /* Main Layout - Stack vertically */
+//   .main-layout {
+//     flex-direction: column;
+//     gap: 20px;
+//   }
+
+//   /* Main content ordering for mobile */
+//   .main-content {
+//     display: flex;
+//     flex-direction: column;
+//   }
+
+//   .companies-section {
+//     order: 1;
+//   }
+
+//   .quick-actions-section {
+//     order: 3;
+//   }
+
+//   /* Sidebar positioned between companies and quick actions */
+//   .sidebar {
+//     width: 100%;
+//     height: auto;
+//     min-height: auto;
+//     padding: 20px;
+//     position: static;
+//     order: 2; /* Move sidebar between companies and quick actions */
+//   }
+
+//   .sidebar-title {
+//     font-size: 18px !important;
+//   }
+
+//   .progress-circle {
+//     width: 120px;
+//     height: 120px;
+//   }
+
+//   .progress-percentage {
+//     font-size: 24px !important;
+//   }
+
+//   /* Companies Section Mobile */
+//   .companies-section {
+//     padding: 20px;
+//     height: auto;
+//     min-height: auto;
+//     max-height: 70vh; /* Limit height to make content scrollable */
+//   }
+
+//   /* Make company containers scrollable */
+//   .companies-grid-container {
+//     max-height: 50vh; /* Ensure scrollable area */
+//     overflow-y: auto;
+//     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+//   }
+
+//   .section-header {
+//     .section-title {
+//       font-size: 20px !important;
+//     }
+//   }
+
+//   /* Tabs Mobile */
+//   .tabs-container {
+//     gap: 4px;
+//     overflow-x: auto;
+//     -webkit-overflow-scrolling: touch;
+//   }
+
+//   .tab-button {
+//     padding: 12px 16px;
+//     font-size: 14px;
+//     white-space: nowrap;
+//     flex-shrink: 0;
+
+//     .tab-text {
+//       display: none; /* Hide text on small screens, keep icons */
+//     }
+//   }
+
+//   /* Companies Grid - Single column */
+//   .companies-grid {
+//     grid-template-columns: 1fr;
+//     gap: 16px;
+//     padding-right: 0;
+//   }
+
+//   .company-card {
+//     padding: 20px;
+//     min-height: auto;
+//   }
+
+//   .suggested-tag {
+//     position: static;
+//     margin-bottom: 12px;
+//     align-self: flex-start;
+//   }
+
+//   .card-actions {
+//     flex-direction: column;
+//     gap: 8px;
+
+//     .continue-btn,
+//     .view-btn,
+//     .secondary-btn {
+//       width: 100%;
+//       justify-content: center;
+//       padding: 12px;
+//     }
+
+//     .btn-text {
+//       display: inline; /* Ensure button text is visible */
+//     }
+//   }
+
+//   /* Quick Actions Mobile */
+//   .quick-actions-section {
+//     padding: 20px;
+//     height: auto;
+//     width: auto;
+//   }
+
+//   .quick-actions-grid {
+//     display: grid;
+//     grid-template-columns: repeat(2, 1fr);
+//     gap: 12px;
+//   }
+
+//   .quick-action-card {
+//     height: 180px;
+//     padding: 16px;
+
+//     .action-icon {
+//       width: 48px;
+//       height: 48px;
+//       padding: 12px;
+//       margin-bottom: 12px;
+
+//       mat-icon {
+//         font-size: 24px;
+//         width: 24px;
+//         height: 24px;
+//       }
+//     }
+
+//     .action-content {
+//       margin-bottom: 12px;
+
+//       .action-title {
+//         font-size: 16px;
+//       }
+
+//       .action-description {
+//         font-size: 12px;
+//         display: -webkit-box;
+//         -webkit-line-clamp: 2;
+//         -webkit-box-orient: vertical;
+//         overflow: hidden;
+//       }
+//     }
+//   }
+
+//   /* Empty State Mobile */
+//   .empty-state {
+//     padding: 30px 16px;
+
+//     .empty-icon mat-icon {
+//       font-size: 48px;
+//       width: 48px;
+//       height: 48px;
+//     }
+
+//     h3 {
+//       font-size: 20px;
+//     }
+
+//     p {
+//       font-size: 14px;
+//       margin: 0 0 24px 0;
+//     }
+
+//     .trust-indicators {
+//       flex-direction: column;
+//       gap: 16px;
+//     }
+//   }
+
+//   /* Progress Steps Mobile */
+//   .progress-steps {
+//     .step {
+//       padding: 6px;
+//       gap: 8px;
+
+//       span {
+//         font-size: 13px;
+//       }
+//     }
+//   }
+// }
+
+// /* Small Mobile Devices */
+// @media screen and (max-width: 480px) {
+//   .fixed-wrapper {
+//     padding: 4px;
+//   }
+
+//   .header-section {
+//     padding: 8px 0;
+//   }
+
+//   .welcome-section {
+//     .dashboard-title {
+//       font-size: 20px !important;
+//     }
+
+//     .dashboard-subtitle {
+//       font-size: 13px !important;
+//     }
+//   }
+
+//   .create-company-btn {
+//     padding: 12px 16px;
+//     font-size: 14px;
+//   }
+
+//   .companies-section,
+//   .quick-actions-section,
+//   .sidebar {
+//     padding: 16px;
+//   }
+
+//   .company-card {
+//     padding: 16px;
+//   }
+
+//   .progress-circle {
+//     width: 100px;
+//     height: 100px;
+//   }
+
+//   .progress-percentage {
+//     font-size: 20px !important;
+//   }
+
+//   /* Single column quick actions for very small screens */
+//   .quick-actions-grid {
+//     grid-template-columns: 1fr;
+//   }
+
+//   .quick-action-card {
+//     height: 140px;
+//     padding: 12px;
+
+//     .action-icon {
+//       width: 40px;
+//       height: 40px;
+//       padding: 8px;
+
+//       mat-icon {
+//         font-size: 20px;
+//         width: 20px;
+//         height: 20px;
+//       }
+//     }
+
+//     .action-content {
+//       .action-title {
+//         font-size: 14px;
+//       }
+
+//       .action-description {
+//         font-size: 11px;
+//         -webkit-line-clamp: 1;
+//       }
+//     }
+//   }
+
+//   /* Tab buttons - icon only */
+//   .tab-button {
+//     padding: 10px 12px;
+    
+//     .tab-count {
+//       margin-left: 4px;
+//       padding: 2px 6px;
+//       font-size: 10px;
+//     }
+//   }
+
+//   /* Company card mobile optimizations */
+//   .company-info {
+//     .company-name {
+//       font-size: 18px;
+//     }
+
+//     .next-step span {
+//       font-size: 12px;
+//     }
+//   }
+
+//   .suggested-tag {
+//     font-size: 10px;
+//     padding: 6px 10px;
+
+//     .suggested-tag-text {
+//       display: none; /* Hide text, keep icon only on very small screens */
+//     }
+//   }
+// }
+
+// /* Extra Small Mobile - Ultra compact */
+// @media screen and (max-width: 360px) {
+//   .welcome-section {
+//     .dashboard-title {
+//       font-size: 18px !important;
+//     }
+//   }
+
+//   .section-header {
+//     .section-title {
+//       font-size: 18px !important;
+//     }
+//   }
+
+//   .progress-circle {
+//     width: 80px;
+//     height: 80px;
+//   }
+
+//   .progress-percentage {
+//     font-size: 18px !important;
+//   }
+
+//   .progress-label {
+//     font-size: 10px !important;
+//   }
+
+//   .tab-button {
+//     padding: 8px 10px;
+//     font-size: 12px;
+//   }
+
+//   .companies-section,
+//   .quick-actions-section,
+//   .sidebar {
+//     padding: 12px;
+//   }
+
+//   .company-card {
+//     padding: 12px;
+//   }
+// }
+/* ------- Theme Variables ------- */
+/* ------- Theme Variables ------- */
+@use 'src/variables' as *;
+@use 'src/assets/scss/variables' as *;
+
+/* ------- Base / Reset bits ------- */
+body {
+  // font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: $line-height-normal;
+}
+
+/* Card shell */
+.cardWithShadow {
+  width: auto;
+  height: auto;
+  overflow-x: auto; /* Enables horizontal scrolling if needed */
+}
+
+.fixed-wrapper { min-width: $boxedWidth; }
+
+/* ------- Formation Hub Root ------- */
+.formation-hub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: $color-bg-white;
+  min-height: 70vh;
+  padding: 2px;
+}
+
+/* ------- Header ------- */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2px;
+  padding: 16px 0;
+}
+
+.welcome-section {
+  .dashboard-title {
+    font-size: $font-size-xxl !important;         // was 32px
+    font-weight: $font-weight-bold !important;   // 700
+    color: $color-text-main !important;
+    margin: 0 0 8px 0;
+    background: $secondary-color;
+    background-clip: text;
+    margin-bottom: 24px;
+  }
+
+  .dashboard-subtitle {
+    font-size: $font-size-base !important;       // 16px
+    color: $color-text-muted !important;
+    margin: 0;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-normal;
+  }
+}
+
+.create-company-btn {
+  background: $primary-color;
+  color: $color-bg-white;
+  font-weight: $font-weight-semibold;            // 600
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-transform: none;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+  border: none;
+  font-size: $button-font-size;                  // tokenized
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 160px;
+
+  .btn-subtitle {
+    font-size: $caption-font-size;               // 12px
+    font-weight: $font-weight-normal;
+    opacity: 0.9;
+  }
+
+  &:hover { background: $primary-hover-color; }
+}
+
+/* ------- Progress Banner ------- */
+.progress-banner {
+  background: $secondary-color;
+  border: 1px solid $color-primary-soft-3;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .banner-icon {
+    background: $primary-color;
+    color: $color-bg-white;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: $font-size-lg;  // 24px
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .banner-text {
+    h3 {
+      font-size: $font-size-md;               // 18px
+      font-weight: $font-weight-semibold;     // 600
+      color: $color-primary-dark;
+      margin: 0 0 4px 0;
+      line-height: $line-height-tight;
+    }
+
+    p {
+      font-size: $font-size-sm;               // 14px
+      color: $color-primary-dark;
+      margin: 0;
+      opacity: 0.8;
+      line-height: $line-height-normal;
+    }
+  }
+}
+
+/* ------- Main Layout ------- */
+.main-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* ------- Section Headers ------- */
+.section-header {
+  margin-bottom: 8px;
+
+  .section-title {
+    font-size: $font-size-lg !important;        // 24px
+    font-weight: $font-weight-semibold !important; // 600
+    color: $color-text-main !important;
+    margin: 0 0 2px 0;
+    line-height: $line-height-tight;
+  }
+
+  .section-description {
+    font-size: $font-size-sm !important;        // 14px
+    color: $color-text-muted !important;
+    margin: 0;
+    line-height: $line-height-normal;
+  }
+}
+
+/* ------- Sidebar ------- */
+.sidebar {
+  width: 310px;
+  min-height: auto;
+  height: 500px;
+  background: $color-bg-white;
+  padding: 24px 24px 0px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  border: 1px solid $color-border;
+
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar-header { margin-bottom: 8px; }
+
+.sidebar-title {
+  font-size: $font-size-md !important;          // ~18px (closest to 20px)
+  font-weight: $font-weight-bold !important;    // 700
+  color: $color-text-main !important;
+  margin: 0 0 8px 0;
+  text-align: center;
+
+  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.sidebar-subtitle {
+  font-size: $font-size-sm !important;          // 14px
+  color: $color-text-muted !important;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ------- Progress Circle ------- */
+.progress-container { display: flex; justify-content: center; margin-bottom: 8px; }
+.progress-circle { position: relative; width: 140px; height: 140px; }
+.progress-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.progress-background { color: $color-border; }
+.progress-foreground { color: $primary-color; transition: stroke-dasharray 0.3s ease; }
+
+.progress-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+.progress-percentage {
+  font-size: $font-size-xl !important;          // 28px
+  font-weight: $font-weight-bold !important;    // 700
+  color: $color-text-main !important;
+  line-height: 1;
+}
+
+.progress-label {
+  font-size: $caption-font-size !important;     // 12px
+  color: $color-text-muted !important;
+  font-weight: $font-weight-medium;
+  margin-top: 4px;
+}
+
+/* ------- Progress Steps ------- */
+.progress-steps {
+  margin-bottom: 20px;
+
+  h4 {
+    font-size: $font-size-base;                 // 16px
+    font-weight: $font-weight-semibold;         // 600
+    color: $color-text-main;
+    margin: 0 0 16px 0;
+  }
+
+  .step-list { display: flex; flex-direction: column; gap: 4px; }
+
+  .step {
+    display: flex; align-items: center; flex-direction: row;
+    gap: 12px; padding: 8px;
+    border-radius: 8px; transition: all 0.2s ease;
+
+    &.completed {
+      background: $color-chip-state-bg;
+
+      .step-icon { color: $primary-color; }
+
+      span {
+        color: $color-primary-dark;
+        font-weight: $font-weight-medium;      // 500
+      }
+    }
+
+    .step-icon {
+      display: flex; align-items: center; justify-content: center;
+      font-size: $font-size-md;                // 18px
+      color: $color-bg-scrollbar-thumb;
+    }
+
+    span {
+      font-size: $font-size-sm;                // 14px
+      color: $color-text-muted;
+      line-height: $line-height-normal;
+    }
+  }
+}
+
+.progress-description {
+  .current-step {
+    background: $color-bg-light;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid $color-border-2;
+
+    h4 {
+      font-size: $font-size-sm;                // 14px
+      font-weight: $font-weight-semibold;      // 600
+      color: $color-text-main;
+      margin: 0 0 8px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      font-size: $font-size-sm;                // 14px
+      margin: 0 0 8px 0;
+      line-height: $line-height-normal;
+
+      &.step-detail {
+        color: $color-text-muted;
+        margin: 0;
+        font-size: $caption-font-size;         // 12px (closest to 13px)
+      }
+    }
+  }
+}
+
+.sidebar-cta {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .cta-content {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, $color-primary-soft-1 100%);
+    border-radius: 16px;
+    border: 1px solid $color-primary-soft-2;
+
+    mat-icon {
+      font-size: $font-size-xl;                // ~28px (closest to 32px)
+      color: $primary-color;
+      margin-bottom: 12px;
+    }
+
+    h4 {
+      font-size: $font-size-base;              // 16px
+      font-weight: $font-weight-semibold;      // 600
+      color: $color-primary-dark;
+      margin: 0 0 8px 0;
+      line-height: $line-height-tight;
+    }
+
+    p {
+      font-size: $caption-font-size;           // 12-13px target
+      color: $color-primary-dark;
+      margin: 0 0 16px 0;
+      opacity: 0.8;
+      line-height: $line-height-normal;
+    }
+
+    .cta-button-small {
+      background: $primary-color;
+      color: $color-bg-white;
+      font-weight: $font-weight-semibold;      // 600
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-transform: none;
+      font-size: $caption-font-size;           // ~13px
+      &:hover { background: $primary-hover-color; }
+    }
+  }
+}
+
+/* ------- Main Content ------- */
+.main-content { flex: 1; min-width: 0; }
+
+/* ------- Companies Section ------- */
+.companies-section {
+  background: $color-bg-white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-bottom: 32px;
+  border: 1px solid $color-border;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------- Tabs ------- */
+.tabs-container {
+  display: flex;
+  border-bottom: 2px solid $color-border;
+  margin-bottom: 24px;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button {
+  font-size: $font-size-base;                   // 16px
+  font-weight: $font-weight-semibold;           // 600
+  color: $color-text-muted;
+  padding: 16px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+  border-radius: 8px 8px 0 0;
+
+  &.active-tab {
+    border-bottom-color: $primary-color;
+    color: $primary-color;
+    background: $color-bg-light;
+
+    mat-icon { color: $primary-color; }
+  }
+
+  &:hover:not(.active-tab) {
+    color: $color-text-main;
+    background: $color-bg-light;
+  }
+
+  mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-md;                   // 18px
+    color: $color-text-muted;
+  }
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-border-2;
+  color: $color-text-muted-2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: $caption-font-size;                // 12px
+  font-weight: $font-weight-semibold;           // 600
+  margin-left: 8px;
+}
+
+.active-tab + .tab-count {
+  background: $color-primary-soft-1;
+  color: $color-primary-dark;
+}
+
+/* ------- Tab Content ------- */
+.tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 240px;
+}
+
+/* ------- Companies Grid ------- */
+.companies-grid-container { flex: 1; overflow: hidden; }
+
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: $color-bg-scrollbar-track; border-radius: 3px; }
+  &::-webkit-scrollbar-thumb {
+    background: $color-bg-scrollbar-thumb;
+    border-radius: 3px;
+    &:hover { background: $color-bg-scrollbar-thumb-hover; }
+  }
+}
+
+/* ------- Company Cards ------- */
+.company-card {
+  background: $color-bg-white;
+  border: 2px solid $color-border;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 270px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    border-color: $color-border-2;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+  }
+
+  &.suggested-company {
+    border-color: $primary-color;
+    background: linear-gradient(135deg, $color-bg-white 0%, $color-bg-light 100%);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+  }
+
+  &.completed {
+    border-color: $color-bg-white;
+    border: 2px solid $color-border;
+    border-radius: 16px;
+
+    &:hover {
+      border-color: $color-border-2;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+    }
+  }
+
+  // =========================================================
+  // ============ NEW STYLES FOR IN-PROGRESS CARD ============
+  // =========================================================
+
+  &.card-side {
+    border-left: 4px solid $secondary-color;
+  }
+
+  .status-description {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    line-height: $line-height-normal;
+    p {
+      margin: 0; // Remove default paragraph margin
+    }
+  }
+
+  /* NEW: Styles for the timeline, now inside company-info */
+  .timeline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: $font-weight-medium;
+    color: $primary-color;
+    margin-top: 12px; /* Space above the timeline */
+
+    mat-icon {
+      font-size: $font-size-md;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+    // .processing-stepper {
+    //   display: flex;
+    //   align-items: flex-start;
+    //   justify-content: space-between;
+
+    //   .step {
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     text-align: center;
+    //     width: 100px;
+
+    //     .step-circle {
+    //       width: 24px;
+    //       height: 24px;
+    //       border-radius: 50%;
+    //       background-color: $color-border-2;
+    //       color: $color-bg-white;
+    //       display: flex;
+    //       align-items: center;
+    //       justify-content: center;
+    //       font-weight: $font-weight-bold;
+    //       transition: all 0.3s ease;
+    //       border: 2px solid $color-bg-white;
+    //     }
+
+    //     .step-label {
+    //       margin-top: 8px;
+    //       font-size: $caption-font-size;
+    //       color: $color-text-muted;
+    //       font-weight: $font-weight-medium;
+    //     }
+
+    //     &.active .step-circle {
+    //       background-color: $primary-color;
+    //     }
+
+    //     &.current .step-circle {
+    //       background-color: $secondary-color;
+    //       transform: scale(1.1);
+    //       box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+    //     }
+
+    //     &.current .step-label {
+    //       color: $color-text-main;
+    //       font-weight: $font-weight-semibold;
+    //     }
+    //   }
+
+    //   .step-connector {
+    //     flex-grow: 1;
+    //     height: 2px;
+    //     background-color: $color-border-2;
+    //     margin: 11px -10px 0;
+    //   }
+    // }
+  
+
+  // =========================================================
+  // =================== END OF NEW STYLES ===================
+  // =========================================================
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.state-badge {
+  background: $color-chip-state-bg;
+  color: $color-chip-state-text;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: $caption-font-size;               // 12px
+  font-weight: $font-weight-semibold;          // 600
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.progress-indicator {
+  background: $color-progress-pill-bg;
+  color: $color-progress-pill-text;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: $caption-font-size;               // 12px
+  font-weight: $font-weight-semibold;          // 600
+
+  .progress-text { font-weight: $font-weight-bold; } // 700
+}
+
+.success-badge {
+  background: $color-success-bg;
+  color: $color-success-text;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: $caption-font-size;               // 12px
+  font-weight: $font-weight-semibold;          // 600
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  mat-icon {
+    font-size: $font-size-base;                // ~16px
+    width: 16px;
+    height: 16px;
+  }
+
+  /* explicit status color overrides kept as-is */
+  &.status-draft   { background: #fef3c7; color: #92400e; }
+  &.status-reviewed{ background: #dbeafe; color: #1d4ed8; }
+  &.status-ready   { background: #e9d5ff; color: #7c3aed; }
+  &.status-filed   { background: #cffafe; color: #0d9488; }
+  &.status-success { background: #d1fae5; color: #065f46; }
+  &.status-failure { background: #fee2e2; color: #dc2626; }
+  &.status-pending { background: #f3f4f6; color: #6b7280; }
+}
+
+.completion-date {
+  font-size: $caption-font-size;               // 12px
+  color: $color-text-muted;
+  font-weight: $font-weight-medium;            // 500
+}
+
+.suggested-tag {
+  position: absolute; top: 16px; right: 16px;
+  background: $secondary-color;
+  color: $color-bg-white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: $caption-font-size;               // 11px -> 12px token
+  font-weight: $font-weight-semibold;          // 600
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex; align-items: center; gap: 4px;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+
+  mat-icon {
+    font-size: $font-size-sm;                  // 14px
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.company-info {
+  flex: 1;
+  margin-bottom: 12px;
+
+  .company-name {
+    font-size: $font-size-md;                  // ~18px (close to 20px)
+    font-weight: $font-weight-bold;            // 700
+    color: $color-text-main;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+  }
+
+  .company-status {
+    font-size: $font-size-sm;                  // 14px
+    color: $color-text-muted;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+  }
+
+  .next-step {
+    display: flex; align-items: center; gap: 2px; padding: 2px;
+    background: $color-bg-light;
+    border-radius: 8px;
+    border-left: 4px solid $primary-color;
+
+    .step-icon {
+      display: flex; align-items: center; justify-content: center;
+      color: $primary-color;
+      font-size: $font-size-md;                // 18px
+    }
+
+    span {
+      font-size: $caption-font-size;           // 13px -> 12px token
+      color: $color-primary-dark;
+      font-weight: $font-weight-medium;        // 500
+    }
+  }
+
+  .benefits-list {
+    display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
+
+    .benefit {
+      display: flex; align-items: center; gap: 8px;
+      font-size: $caption-font-size;           // ~13px
+      color: $color-success-text;
+
+      mat-icon {
+        font-size: $font-size-base;            // ~16px
+        width: 16px; height: 16px;
+        color: $color-accent;
+      }
+    }
+  }
+}
+
+.card-actions { display: flex; gap: 12px; align-items: center; }
+
+.continue-btn,
+.view-btn {
+  background: $primary-color;
+  color: $color-bg-white;
+  font-size: $button-font-size;                // tokenized
+  font-weight: $font-weight-semibold;          // 600
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  text-transform: none;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.2s ease;
+
+  &:hover { background: $primary-hover-color; transform: translateY(-1px); }
+
+  mat-icon {
+    font-size: $font-size-md;                  // 18px
+    width: 18px; height: 18px;
+  }
+}
+
+.secondary-btn {
+  background: $color-bg-light;
+  color: $color-text-muted-2;
+  font-size: $font-size-sm;                    // 14px
+  font-weight: $font-weight-medium;            // 500
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid $color-border-2;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.2s ease;
+
+  &:hover { background: $color-border-2; color: $color-text-main; }
+
+  mat-icon {
+    font-size: $font-size-base;                // ~16px
+    width: 16px; height: 16px;
+  }
+}
+
+/* ------- Quick Actions Section ------- */
+.quick-actions-section {
+  background: $color-bg-white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid $color-border;
+  width: $quickviewwidth;
+  height: 350px;
+}
+
+/* ------- Quick Actions Grid ------- */
+.quick-actions-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+/* ------- Quick Action Cards ------- */
+.quick-action-card {
+  background: $color-bg-white;
+  border: 2px solid $color-border;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex; flex-direction: column;
+  height: 220px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  flex: 1; max-width: none;
+
+  &:hover { border-color: $color-border-2; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); transform: translateY(-4px); }
+
+  &.primary {
+    border-color: $primary-color;
+    background: linear-gradient(135deg, $color-bg-white 0%, $color-bg-light 100%);
+
+    &:hover {
+      border-color: $primary-hover-color;
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+    }
+
+    .action-icon {
+      background: $primary-color;
+
+      mat-icon { color: $color-bg-white; }
+    }
+
+    .go-btn {
+      background: $secondary-color;
+      &:hover { background: $primary-hover-color; }
+    }
+  }
+
+  .action-icon {
+    background: $color-bg-light;
+    padding: 16px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    width: 64px; height: 64px;
+
+    mat-icon {
+      color: $primary-color;
+      font-size: $font-size-xl;                // 28px
+      width: 28px; height: 28px;
+    }
+  }
+
+  .action-content {
+    flex: 1; margin-bottom: 20px;
+
+    .action-title {
+      font-size: $font-size-md;                // 18px
+      font-weight: $font-weight-bold;          // 700
+      color: $color-text-main;
+      margin: 0 0 8px 0;
+      line-height: 1.3;
+    }
+
+    .action-description {
+      font-size: $font-size-sm;                // 14px
+      color: $color-text-muted;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
+  .go-btn {
+    background: $primary-color;
+    color: $color-bg-white;
+    font-size: $button-font-size;              // 14px -> button token
+    font-weight: $font-weight-semibold;        // 600
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+
+    &:hover { background: $primary-hover-color; transform: translateY(-1px); }
+  }
+}
+
+/* ------- Empty States ------- */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  flex: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+
+  .empty-icon {
+    margin-bottom: 24px;
+
+    mat-icon {
+      font-size: $font-size-xxl;              // tokenized; visual size via width/height
+      width: 64px;
+      height: 64px;
+      color: $color-bg-scrollbar-thumb;
+    }
+  }
+
+  h3 {
+    font-size: $font-size-lg;                 // 24px
+    font-weight: $font-weight-semibold;       // 600
+    color: $color-text-main;
+    margin: 0 0 12px 0;
+    line-height: $line-height-tight;
+  }
+
+  p {
+    font-size: $font-size-base;               // 16px
+    color: $color-text-muted;
+    margin: 0 0 32px 0;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: $line-height-normal;
+  }
+
+  .trust-indicators {
+    display: flex; justify-content: center; gap: 32px; margin-top: 24px;
+
+    .indicator {
+      display: flex; align-items: center; gap: 8px;
+      color: $color-text-muted;
+      font-size: $font-size-sm;               // 14px
+      font-weight: $font-weight-medium;       // 500
+
+      mat-icon {
+        font-size: $font-size-md;             // 18px
+        width: 18px; height: 18px;
+        color: $color-accent;
+      }
+    }
+  }
+}
+
+/* ------- Drag and Drop ------- */
+.cdk-drag-preview { box-sizing: border-box; border-radius: 16px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); }
+.cdk-drag-placeholder { opacity: 0.4; }
+.cdk-drag-animating { transition: transform 250ms cubic-bezier(0, 0, 0.2, 1); }

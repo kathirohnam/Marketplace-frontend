@@ -1,0 +1,140 @@
+/* document-viewer.component.scss */
+@use 'src/variables' as *;
+
+.document-viewer-content {
+  background-color: $color-bg-white;
+  border-radius: 8px;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: fixed;   /* Keeps it fixed in place */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
+}
+
+.document-viewer-header {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $color-border-2;
+  background-color: $color-bg-light;
+
+  h2 {
+    margin: 0;
+    font-size: $font-size-lg;
+    line-height: $line-height-tight;
+    color: $title-color; // brand title color
+    font-weight: $font-weight-semibold;
+  }
+
+  .document-actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.document-selector {
+  margin: 16px;
+  width: calc(100% - 32px);
+}
+
+.document-viewer-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: $color-bg-light;
+
+  .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    p {
+      margin-top: 16px;
+      color: $color-text-muted;
+      font-size: $font-size-sm;
+      line-height: $line-height-normal;
+    }
+  }
+
+  .error-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: $color-error-bg; // using your error bg as text color to avoid hard-coded red
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+    }
+
+    p {
+      margin-top: 16px;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .empty-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: $color-text-muted;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      opacity: 0.5;
+    }
+
+    p {
+      margin-top: 16px;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+/* --------- Responsive --------- */
+@media (max-width: 768px) {
+  .document-viewer-content {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .document-viewer-header h2 {
+    font-size: $font-size-md;
+  }
+}
+
+@media (max-width: 480px) {
+  .document-viewer-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .document-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .document-selector {
+    margin: 8px;
+    width: calc(100% - 16px);
+  }
+}

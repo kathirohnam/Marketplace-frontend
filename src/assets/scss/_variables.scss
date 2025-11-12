@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+
+// font
+$font-family: "Plus Jakarta Sans", sans-serif;
+
+// light color variable
+$sidebarbg: white;
+$background: #fef6f8; // light blush background
+$cardbg: white;
+$toolbar: white;
+$cardshadow: rgba(0, 0, 0, 0.05) 0px 0px 2px 0px,
+  rgba(0, 0, 0, 0.08) 0px 12px 24px -4px;
+
+$hoverBgColor: #fff1f3;
+
+// Dark color variable
+// Dark color variables - adjusted for primary color harmony
+$darksidebarbg: #2a0e16;      // slightly warmer undertone
+$darkbackground: #3d1b26;     // warmer background with more red
+$darkcardbg: #2a0e16;         // matches sidebar for consistency  
+$darktoolbar: #2a0e16;        // matches sidebar and card
+$darkcardshadow: rgba(236, 50, 82, 0.3) 0px 0px 2px 0px,
+  rgba(236, 50, 82, 0.05) 0px 12px 24px -4px;
+$darkborderColor: #5c2938;    // stronger red undertone in border
+$darkformborderColor: #72384a; // warmer form border
+$darkhoverbgcolor: #4c1f2d;   // warmer hover with more red
+
+
+// Sidenav
+$sidenav-desktop: 270px !default;
+$sidenav-mini: 80px !default;
+$header-height: 70px !default;
+
+// BorderColor
+$borderColor: #f7d5db;
+$borderformColor: #f5c2cb;
+
+// custom
+// custom - adjusted for primary color harmony
+$primary: #ec3252; // main brand color
+$accent: #f06179; // softer accent pink
+$warning: #f5a6a6; // warmer coral with more red undertone
+$error: #f87a65; // warmer red-pink for errors
+$success: #4bd08b; // warm success green (complementary)
+$info: #e85a7a; // warmer rose-pink info
+$white: #ffffff;
+$black: #2a0e16; // adjusted to match other dark colors
+
+$light: #fff2f4; // warmer light background with pink undertone
+
+$gray-100: #a05b6e; // warmer muted rosy-gray with stronger red
+
+$light-primary: #fde6ea; // warmer light primary
+$light-accent: #fce2e6; // warmer light accent
+$light-warning: #fef3f3; // warmer light warning
+$light-error: #ffefec; // warmer light error
+$light-success: #e8f8f2; // proper light success (should be light green)
+$light-info: #f8fafc; // warmer light info with more pink
+// layout
+
+// layout
+$boxedWidth: 1400px; //boxwidth:1400px =>quickview :1335px
+$layout-padding: 20px;
+
+$border-radius: 18px;
+
+
+$quickviewwidth:1335px;
+
+
+
+// text color - adjusted for primary color harmony
+$textPrimary: #2a0e16; // darker burgundy with stronger red undertone
+$body-color: #6d4149;  
+
+$box-shadow: 0 2px 6px rgba(37, 83, 185, 0.1); 

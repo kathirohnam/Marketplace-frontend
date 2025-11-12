@@ -1,0 +1,153 @@
+<!-- ───────────────────────── HEADER ───────────────────────── -->
+<header class="hub-header">
+  <div class="hub-container hub-header__row">
+    <div class="hub-header__left">
+      <button (click)="onBack()" class="hub-back">
+        <svg class="hub-back__icon" viewBox="0 0 24 24" fill="none">
+          <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Back to Directory</span>
+      </button>
+
+      <div class="hub-divider"></div>
+
+      <div class="hub-brand">
+        <span class="hub-brand__mark">M</span>
+        <h1 class="hub-brand__name">Marketplace</h1>
+      </div>
+    </div>
+
+    <div class="hub-header__right">
+      <button (click)="onJoinNow()" class="hub-btn-primary">Join Now</button>
+    </div>
+  </div>
+</header>
+
+<!-- ───────────────────────── HERO ───────────────────────── -->
+<section class="hub-hero">
+  <div class="hub-container">
+    <div class="hub-badges">
+      <span class="hub-badge">1,200+ Members</span>
+      <span class="hub-badge">Trusted Directory</span>
+      <span class="hub-badge">Growing Network</span>
+    </div>
+
+    <h2 class="hub-hero__title">Find Your Perfect Business Partner</h2>
+    <p class="hub-hero__sub">
+      Connect with verified local businesses and services in your community.<br/>
+      Discover quality, trusted partners for all your needs.
+    </p>
+  </div>
+</section>
+
+<!-- ───────────────────────── SEARCH (PRO LAYOUT) ───────────────────────── -->
+<section class="hub-search-pro">
+  <div class="hub-container">
+    <div class="hub-card hub-animate-in hub-search-pro__card">
+      <div class="hub-search-pro__head">
+        <h3 class="hub-h3">Search Local Businesses</h3>
+        <p class="hub-subtle">Find exactly what you need with our advanced search filters</p>
+      </div>
+
+      <!-- Row 1: fields | Row 2: button under first column -->
+      <div class="hub-search-pro__grid">
+        <!-- Query -->
+        <div class="hub-field hub-area-query">
+          <label class="hub-label" for="queryInput">What are you looking for?</label>
+          <input
+            id="queryInput"
+            type="text"
+            class="hub-input"
+            placeholder="Search businesses, services, or keywords..."
+            [value]="searchQuery()"
+            (input)="onSearchInput($event)" />
+        </div>
+
+        <!-- Category -->
+        <div class="hub-field hub-area-category">
+          <label class="hub-label" for="catSelect">Category</label>
+          <select
+            id="catSelect"
+            class="hub-select"
+            [value]="selectedCategory()"
+            (change)="onCategorySelect($event)">
+            <option value="all">All Categories</option>
+            <option *ngFor="let c of categories()" [value]="c.value">{{ c.name }}</option>
+          </select>
+        </div>
+
+        <!-- ZIP -->
+        <div class="hub-field hub-area-zip">
+          <label class="hub-label" for="zipInput">ZIP Code</label>
+          <input
+            id="zipInput"
+            type="text"
+            inputmode="numeric"
+            class="hub-input"
+            placeholder="Enter ZIP code"
+            [value]="zipCode()"
+            maxlength="5"
+            pattern="[0-9]*"
+            (input)="onZipCodeInput($event)" />
+        </div>
+
+        <!-- Button (row 2, left) -->
+        <div class="hub-actions hub-area-button">
+          <button class="hub-btn-primary hub-btn-primary--lg" (click)="onSearch()">
+            <span class="hub-btn__content">
+              <svg class="hub-ico-16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M21 21l-5.5-5.5M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+              Search Businesses
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="hub-popular">
+        <span class="hub-small">Popular searches:</span>
+        <div class="hub-chips">
+          <button class="hub-chip" (click)="searchQuery.set('Restaurants')">Restaurants</button>
+          <button class="hub-chip" (click)="searchQuery.set('Dentists')">Dentists</button>
+          <button class="hub-chip" (click)="searchQuery.set('Legal Services')">Legal Services</button>
+          <button class="hub-chip" (click)="searchQuery.set('Real Estate')">Real Estate</button>
+          <button class="hub-chip" (click)="searchQuery.set('Auto Repair')">Auto Repair</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── CATEGORIES ───────────────────────── -->
+<section class="hub-categories">
+  <div class="hub-container">
+    <div class="hub-section__head">
+      <h3 class="hub-h3">Browse by Category</h3>
+      <p class="hub-subtle">Explore our comprehensive directory of local businesses</p>
+    </div>
+
+    <div class="hub-grid-3">
+      <article
+        class="hub-tile hub-card hub-animate-in"
+        *ngFor="let category of categories()"
+        (click)="onCategoryClick(category.value)"
+        tabindex="0"
+        (keyup.enter)="onCategoryClick(category.value)"
+        role="button"
+        [attr.aria-label]="'Open ' + category.name"
+      >
+        <div class="hub-tile__img" [style.backgroundImage]="'url(' + category.image + ')'"></div>
+        <div class="hub-tile__body">
+          <h4 class="hub-tile__title">{{ category.name }}</h4>
+          <p class="hub-small">{{ category.count }}+ listings</p>
+          <div class="hub-tile__actions">
+            <button class="hub-btn-primary">Explore →</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,555 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-14 fixed-wrapper">
+    <div class="formation-hub">
+      <header class="header-section">
+        <div class="welcome-section">
+          <h1 class="dashboard-title">{{ getWelcomeMessage() }}</h1>
+          <p class="dashboard-subtitle">{{ getSubtitleMessage() }}</p>
+        </div>
+        <button class="create-company-btn" (click)="navigateToPages()">
+          Start New LLC
+        </button>
+      </header>
+
+      <div class="main-layout">
+        <main class="main-content">
+          <div class="companies-section">
+            <div class="section-header">
+              <h2 class="section-title">Your LLC Formations</h2>
+              <p class="section-description">
+                Track progress and manage your business formations
+              </p>
+            </div>
+
+            <div class="tabs-container">
+              <button
+                class="tab-button"
+                [class.active-tab]="selectedTabIndex === 0"
+                (click)="selectedTabIndex = 0"
+              >
+                <mat-icon>edit_note</mat-icon>
+                <span class="tab-text">Drafts</span>
+                <span class="tab-count">({{ draftList.length }})</span>
+              </button>
+              <button
+                class="tab-button"
+                [class.active-tab]="selectedTabIndex === 1"
+                (click)="selectedTabIndex = 1"
+              >
+                <mat-icon>hourglass_empty</mat-icon>
+                <span class="tab-text">In Progress</span>
+                <span class="tab-count">({{ progressList.length }})</span>
+              </button>
+              <button
+                class="tab-button"
+                [class.active-tab]="selectedTabIndex === 2"
+                (click)="selectedTabIndex = 2"
+              >
+                <mat-icon>check_circle</mat-icon>
+                <span class="tab-text">Completed</span>
+                <span class="tab-count"
+                  >({{ completedProgressList.length }})</span
+                >
+              </button>
+            </div>
+
+            <div class="tab-content" *ngIf="selectedTabIndex === 0">
+              <div
+                class="companies-grid-container"
+                *ngIf="draftList.length > 0"
+              >
+                <div
+                  class="companies-grid"
+                  cdkDropList
+                  #draftDropList="cdkDropList"
+                  [cdkDropListData]="draftList"
+                  (cdkDropListDropped)="drop($event)"
+                >
+                  <div
+                    class="company-card card-side"
+                    *ngFor="
+                      let progress of draftList;
+                      trackBy: trackByCompanyId
+                    "
+                    [class.suggested-company]="isSuggestedCompany(progress)"
+                    cdkDrag
+                    (mouseenter)="onHoverCompany(progress)"
+                    (mouseleave)="onLeaveCompany()"
+                    (focusin)="onHoverCompany(progress)"
+                    (focusout)="onLeaveCompany()"
+                    (click)="selectCompany(progress)"
+                    tabindex="0"
+                  >
+                    <div class="card-header">
+                      <div class="state-badge">{{ progress.state }}</div>
+                      <div class="progress-indicator">
+                        <span class="progress-text"
+                          >{{
+                            getProgressPercentageForCompany(progress)
+                          }}%</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="suggested-tag"
+                      *ngIf="isSuggestedCompany(progress)"
+                    >
+                      <mat-icon>star</mat-icon>
+                      <span class="suggested-tag-text">Recommended next</span>
+                    </div>
+                    <div class="company-info">
+                      <h3 class="company-name">
+                        {{ progress.companyName || progress.llcName }}
+                      </h3>
+                      <p class="company-status">
+                        {{
+                          getDetailedStatus(progress.firstIncompleteStepIndex)
+                        }}
+                      </p>
+                      <div class="next-step">
+                        <mat-icon class="step-icon">arrow_forward</mat-icon>
+                        <span
+                          >Next:
+                          {{
+                            getNextStepDescription(
+                              progress.firstIncompleteStepIndex
+                            )
+                          }}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="card-actions">
+                      <button
+                        class="continue-btn"
+                        (click)="startWizard(progress.companyId, progress)"
+                      >
+                        <mat-icon>play_arrow</mat-icon>
+                        <span class="btn-text">Continue Formation</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="draftList.length === 0" class="empty-state">
+                <div class="empty-icon">
+                  <mat-icon>business_center</mat-icon>
+                </div>
+                <h3>Ready to start your business journey?</h3>
+                <p>
+                  Form your LLC in just a few simple steps. We'll handle the
+                  paperwork while you focus on building your dream business.
+                </p>
+                <div class="trust-indicators">
+                  <div class="indicator">
+                    <mat-icon>verified</mat-icon>
+                    <span>99.9% Success Rate</span>
+                  </div>
+                  <div class="indicator">
+                    <mat-icon>schedule</mat-icon>
+                    <span>7-10 Day Processing</span>
+                  </div>
+                  <div class="indicator">
+                    <mat-icon>support</mat-icon>
+                    <span>Expert Support</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-content" *ngIf="selectedTabIndex === 1">
+              <div
+                class="companies-grid-container"
+                *ngIf="progressList.length > 0"
+              >
+                <div
+                  class="companies-grid"
+                  cdkDropList
+                  #inProgressList="cdkDropList"
+                  [cdkDropListData]="progressList"
+                  (cdkDropListDropped)="drop($event)"
+                >
+                 <div
+        class="company-card card-side"
+        *ngFor="let progress of progressList; trackBy: trackByCompanyId"
+        cdkDrag
+      >
+        <div class="card-header">
+          <div class="state-badge">{{ progress.state }}</div>
+          <div
+            class="success-badge"
+            [ngClass]="getStatusClass(progress.statusName)"
+          >
+            <mat-icon>{{ getStatusIcon(progress.statusName) }}</mat-icon>
+            {{ getStatusDisplayText(progress.statusName) }}
+          </div>
+        </div>
+
+        <div class="company-info">
+          <h3 class="company-name">
+            {{ progress.companyName || progress.llcName }}
+          </h3>
+          
+          <div class="status-description">
+            <p>{{ getInProgressInfo(progress.statusName).description }}</p>
+          </div>
+
+          <div class="timeline">
+            <mat-icon>update</mat-icon>
+            <span>{{ getInProgressInfo(progress.statusName).timeline }}</span>
+          </div>
+        </div>
+        
+        <div class="card-actions">
+          <button
+            class="view-btn"
+            (click)="openViewDetails(progress.companyId)"
+          >
+            <mat-icon>visibility</mat-icon>
+            <span class="btn-text">View Details</span>
+          </button>
+        </div>
+      </div>
+                </div>
+              </div>
+
+              <div *ngIf="progressList.length === 0" class="empty-state">
+                <div class="empty-icon">
+                  <mat-icon>hourglass_top</mat-icon>
+                </div>
+                <h3>No applications in progress</h3>
+                <p>
+                  Once you submit a formation from your drafts, its progress
+                  will be tracked here.
+                </p>
+              </div>
+            </div>
+
+            <div class="tab-content" *ngIf="selectedTabIndex === 2">
+              <div
+                class="companies-grid-container"
+                *ngIf="completedProgressList.length > 0"
+              >
+                <div
+                  class="companies-grid"
+                  cdkDropList
+                  #completedList="cdkDropList"
+                  [cdkDropListData]="completedProgressList"
+                  (cdkDropListDropped)="drop($event)"
+                >
+                  <div
+                    class="company-card completed card-side"
+                    *ngFor="
+                      let progress of completedProgressList;
+                      trackBy: trackByCompanyId
+                    "
+                    cdkDrag
+                  >
+                    <div class="card-header">
+                      <div class="state-badge">{{ progress.state }}</div>
+
+                      <div
+                        class="success-badge"
+                        [ngClass]="getStatusClass(progress.statusName)"
+                      >
+                        <mat-icon>{{
+                          getStatusIcon(progress.statusName)
+                        }}</mat-icon>
+                        {{ getStatusDisplayText(progress.statusName) }}
+                      </div>
+                    </div>
+                    <div class="company-info">
+                      <h3 class="company-name">
+                        {{ progress.companyName || progress.llcName }}
+                      </h3>
+                      <p class="company-status">LLC formation complete</p>
+                      <div class="benefits-list">
+                        <div class="benefit">
+                          <mat-icon>shield</mat-icon>
+                          <span>Liability Protection Active</span>
+                        </div>
+                        <div class="benefit">
+                          <mat-icon>account_balance</mat-icon>
+                          <span>Tax Benefits Available</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-actions">
+                      <button
+                        class="view-btn"
+                        (click)="openViewDetails(progress.companyId)"
+                      >
+                        <mat-icon>visibility</mat-icon>
+                        <span class="btn-text">View</span>
+                      </button>
+                      <button class="secondary-btn" (click)="accessDocuments()">
+                        <mat-icon>folder</mat-icon>
+                        <span class="btn-text">Documents</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                *ngIf="completedProgressList.length === 0"
+                class="empty-state"
+              >
+                <div class="empty-icon">
+                  <mat-icon>emoji_events</mat-icon>
+                </div>
+                <h3>Your completed LLCs will appear here</h3>
+                <p>
+                  Once your LLC formation is complete, you'll see all your
+                  active businesses in this section.
+                </p>
+              </div>
+            </div>
+          </div>
+<div class="quick-actions-section">
+
+            <div class="section-header">
+
+              <h2 class="section-title">Quick Actions</h2>
+
+              <p class="section-description">
+
+                Essential tools and resources for your business
+
+              </p>
+
+            </div>
+
+
+
+            <div class="quick-actions-grid">
+
+              <div
+
+                class="quick-action-card primary"
+
+                (click)="navigateToPages()"
+
+              >
+
+                <div class="action-icon">
+
+                  <mat-icon>add_business</mat-icon>
+
+                </div>
+
+                <div class="action-content">
+
+                  <h3 class="action-title">Start New LLC</h3>
+
+                  <p class="action-description">
+
+                    Begin forming a new LLC with our simple step-by-step process
+
+                  </p>
+
+                </div>
+
+                <!-- <button class="go-btn">Get Started</button> -->
+
+              </div>
+
+
+
+              <div class="quick-action-card" (click)="accessDocuments()">
+
+                <div class="action-icon">
+
+                  <mat-icon>folder_shared</mat-icon>
+
+                </div>
+
+                <div class="action-content">
+
+                  <h3 class="action-title">Business Documents</h3>
+
+                  <p class="action-description">
+
+                    Access your Articles of Organization, EIN, and other
+
+                    important documents
+
+                  </p>
+
+                </div>
+
+                <!-- <button class="go-btn">View Documents</button> -->
+
+              </div>
+
+
+
+              <div class="quick-action-card" (click)="reviewCompliance()">
+
+                <div class="action-icon">
+
+                  <mat-icon>receipt_long</mat-icon>
+
+                </div>
+
+                <div class="action-content">
+
+                  <h3 class="action-title">Billing & Invoices</h3>
+
+                  <p class="action-description">
+
+                    View invoices, manage payments, and track your formation
+
+                    costs
+
+                  </p>
+
+                </div>
+
+                <!-- <button class="go-btn">View Billing</button> -->
+
+              </div>
+
+
+
+              <div class="quick-action-card" (click)="goToUserProfile()">
+
+                <div class="action-icon">
+
+                  <mat-icon>account_circle</mat-icon>
+
+                </div>
+
+                <div class="action-content">
+
+                  <h3 class="action-title">Account Settings</h3>
+
+                  <p class="action-description">
+
+                    Update your profile, preferences, and contact information
+
+                  </p>
+
+                </div>
+
+                <!-- <button class="go-btn">Manage Account</button> -->
+
+              </div>
+
+            </div>
+
+          </div>
+          </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <h2 class="sidebar-title">{{ getSidebarTitle() }}</h2>
+            <p class="sidebar-subtitle">{{ getSidebarSubtitle() }}</p>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-circle">
+              <svg class="progress-svg" viewBox="0 0 36 36">
+                <path
+                  class="progress-background"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                ></path>
+                <path
+                  class="progress-foreground"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  [attr.stroke-dasharray]="getProgressPercentage() + ', 100'"
+                  stroke-linecap="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+              <div class="progress-content">
+                <span class="progress-percentage"
+                  >{{ getProgressPercentage() }}%</span
+                >
+                <span class="progress-label">Complete</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="progress-steps"
+            *ngIf="selectedCompany || getFirstDraftCompany()"
+          >
+            <h4>Formation Steps</h4>
+            <div class="step-list">
+               <div class="step" [class.completed]="getProgressPercentage() > 0">
+                <mat-icon class="step-icon">{{
+                  getProgressPercentage() > 0
+                    ? "check_circle"
+                    : "radio_button_unchecked"
+                }}</mat-icon>
+                <span>Business Details</span>
+              </div>
+              <div
+                class="step"
+                [class.completed]="getProgressPercentage() > 25"
+              >
+                <mat-icon class="step-icon">{{
+                  getProgressPercentage() > 25
+                    ? "check_circle"
+                    : "radio_button_unchecked"
+                }}</mat-icon>
+                <span>Registered Agent</span>
+              </div>
+              <div
+                class="step"
+                [class.completed]="getProgressPercentage() > 50"
+              >
+                <mat-icon class="step-icon">{{
+                  getProgressPercentage() > 50
+                    ? "check_circle"
+                    : "radio_button_unchecked"
+                }}</mat-icon>
+                <span>Payment Processing</span>
+              </div>
+              <div
+                class="step"
+                [class.completed]="getProgressPercentage() > 75"
+              >
+                <mat-icon class="step-icon">{{
+                  getProgressPercentage() > 75
+                    ? "check_circle"
+                    : "radio_button_unchecked"
+                }}</mat-icon>
+                <span>Formation Complete</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="sidebar-cta"
+            *ngIf="!selectedCompany && !getFirstDraftCompany()"
+          >
+            <div class="cta-content">
+              <mat-icon style="font-size: 24px; width: 24px; height: 24px"
+                >rocket_launch</mat-icon
+              >
+              <h4>Ready to Launch?</h4>
+              <p>
+                Start your LLC formation today and protect your business with
+                limited liability.
+              </p>
+              <button
+                mat-raised-button
+                class="cta-button-small"
+                (click)="navigateToPages()"
+              >
+                Start Now
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

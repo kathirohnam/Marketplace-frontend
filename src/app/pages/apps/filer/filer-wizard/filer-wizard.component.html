@@ -1,0 +1,2790 @@
+<!-- src/app/apps/filler-wizard/filler-wizard.component.html -->
+<div class="container-fluid py-4">
+  <div *ngIf="loading" class="col-12 text-center py-5">
+    <div class="loading-content">
+      <ng-lottie
+        [options]="lottieOptions"
+        [styles]="{ width: '100%', height: '100%' }"
+      >
+      </ng-lottie>
+    </div>
+  </div>
+  <div *ngIf="!loading">
+    <div class="row gx-4">
+      <!-- LEFT COLUMN: Stepper -->
+      <div
+        [ngClass]="{
+          'col-lg-8': !isPreviewStep(stepper.selectedIndex),
+          'col-lg-12': isPreviewStep(stepper.selectedIndex)
+        }"
+      >
+        <mat-card class="shadow-sm bg-white overflow-hidden mb-4">
+          <mat-card-content class="p-4">
+            <mat-stepper
+              #stepper
+              [linear]="false"
+              [selectedIndex]="initialStep"
+              (selectionChange)="onStepChange($event)"
+            >
+              <!-- STEP 1 – Company Details -->
+              <mat-step label="Company Details">
+                <div class="container-fluid py-5 mb-5">
+                  <!-- Header -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex justify-content-between align-items-center"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">corporate_fare</mat-icon>
+                        <span>Business Details</span>
+                      </h3>
+
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="toggleSectionEdit('business')"
+                        matTooltip="Edit Business Details"
+                      >
+                        <mat-icon>{{
+                          isEditing["business"] ? "check" : "edit"
+                        }}</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Fields -->
+                  <div class="row gx-4 gy-2 mb-2">
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >State</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100 mt-2">
+                        <input
+                          matInput
+                          [(ngModel)]="data.step1"
+                          [readonly]="true"
+                          (input)="onFieldChange()"
+                        />
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Formation Date</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100 mt-2">
+                        <input
+                          matInput
+                          [matDatepicker]="formationPicker"
+                          [(ngModel)]="data.step3"
+                          name="formationDate"
+                          [readonly]="true"
+                          (dateChange)="onFieldChange()"
+                          (keydown)="$event.preventDefault()"
+                          (paste)="$event.preventDefault()"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="formationPicker"
+                          [disabled]="!isEditing['business']"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #formationPicker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="row gx-4 gy-2 mb-2">
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Business Name</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100 mt-2">
+                        <input
+                          matInput
+                          [(ngModel)]="data.step2.companyName"
+                          [readonly]="!isEditing['business']"
+                          (input)="onFieldChange()"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- Primary Contact -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex justify-content-between align-items-center"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">person</mat-icon>
+                        <span>Primary Contact</span>
+                      </h3>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="toggleSectionEdit('primaryContact')"
+                        matTooltip="Edit Primary Contact Details"
+                      >
+                        <mat-icon>{{
+                          isEditing["primaryContact"] ? "check" : "edit"
+                        }}</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <form [formGroup]="primaryContactForm">
+                    <div class="row g-4 mb-4">
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >First Name</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="firstName"
+                            [readonly]="!isEditing['primaryContact']"
+                            [errorStateMatcher]="errorStateMatcher"
+                            (input)="onFieldChange()"
+                            maxlength="60"
+                          />
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('firstName')
+                                ?.hasError('required')
+                            "
+                          >
+                            First name is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('firstName')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Use only letters
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('firstName')
+                                ?.hasError('maxlength')
+                            "
+                          >
+                            Name cannot exceed 60 characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Last Name</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="lastName"
+                            [readonly]="!isEditing['primaryContact']"
+                            [errorStateMatcher]="errorStateMatcher"
+                            (input)="onFieldChange()"
+                            maxlength="60"
+                          />
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('lastName')
+                                ?.hasError('required')
+                            "
+                          >
+                            Last name is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('lastName')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Use only letters
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('lastName')
+                                ?.hasError('maxlength')
+                            "
+                          >
+                            Name cannot exceed 60 characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row g-4 mb-5">
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Email</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="email"
+                            [readonly]="!isEditing['primaryContact']"
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('email')
+                                ?.hasError('required')
+                            "
+                          >
+                            Email is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('email')
+                                ?.hasError('email') ||
+                              primaryContactForm
+                                .get('email')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Please enter a valid email address
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Phone Number</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="phoneNumber"
+                            mask="(000) 000-0000"
+                            [dropSpecialCharacters]="false"
+                            (input)="onFieldChange()"
+                            [readonly]="!isEditing['primaryContact']"
+                            placeholder="(123) 456-7890"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('phoneNumber')
+                                ?.hasError('required')
+                            "
+                          >
+                            Phone number is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              primaryContactForm
+                                .get('phoneNumber')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Use format (123) 456-7890
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Controls for Step 1 -->
+                <div class="d-flex justify-content-end gap-2 mb-4">
+                  <button
+                    mat-raised-button
+                    class="button-all"
+                    *ngIf="!hasChanges"
+                    (click)="stepper.next()"
+                  >
+                    Next
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    *ngIf="hasChanges"
+                    (click)="saveAndContinue()"
+                    [disabled]="!changeNotes || !changeNotes.trim()"
+                  >
+                    Save
+                  </button>
+                </div>
+              </mat-step>
+
+              <!-- STEP 2 – Managers -->
+              <mat-step *ngIf="data?.step13a?.length" label="Managers">
+                <div class="container-fluid py-5 mb-5">
+                  <!-- Header -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex justify-content-between align-items-center"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">groups</mat-icon>
+                        <span>Manager-Managed</span>
+                      </h3>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="toggleSectionEdit('managers')"
+                        matTooltip="Edit Manager Details"
+                      >
+                        <mat-icon>{{
+                          isEditing["managers"] ? "check" : "edit"
+                        }}</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="scrollable-section"
+                    style="
+                      height: 490px;
+                      overflow-y: auto;
+                      overflow-x: hidden;
+                      padding-right: 16px;
+                    "
+                  >
+                    <div [formGroup]="managementForm">
+                      <div formArrayName="managers">
+                        <div class="row g-4">
+                          <ng-container
+                            *ngFor="
+                              let managerControl of managersForm.controls;
+                              let i = index
+                            "
+                          >
+                            <ng-container [formGroupName]="i">
+                              <div class="col-12">
+                                <h4 class="fw-semibold mb-3">
+                                  Manager {{ i + 1 }}
+                                </h4>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >First Name</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="firstName"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    maxlength="60"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('firstName')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    First name is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('firstName')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Use only letters
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('firstName')
+                                        ?.hasError('maxlength')
+                                    "
+                                  >
+                                    Name cannot exceed 60 characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Last Name</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="lastName"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    maxlength="60"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('lastName')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Last name is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('lastName')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Use only letters
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('lastName')
+                                        ?.hasError('maxlength')
+                                    "
+                                  >
+                                    Name cannot exceed 60 characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Email</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="email"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('email')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Email is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('email')
+                                        ?.hasError('email') ||
+                                      managerControl
+                                        .get('email')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Please enter a valid email address
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Phone Number</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    type="text"
+                                    formControlName="phoneNumber"
+                                    placeholder="(123) 456-7890"
+                                    mask="(000) 000-0000"
+                                    [dropSpecialCharacters]="false"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('phoneNumber')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Phone number is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('phoneNumber')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Use format (123) 456-7890
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Street Address 1</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="streetAddress1"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('streetAddress1')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Street address is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('streetAddress1')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Address contains invalid characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Street Address 2</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="streetAddress2"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('streetAddress2')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Address contains invalid characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-4">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >City</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="city"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('city')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    City is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('city')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Please enter a valid city
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-4">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >State</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="state"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('state')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    State is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-4">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Zip Code</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="zipCode"
+                                    mask="00000"
+                                    maxlength="5"
+                                    [readonly]="!isEditing['managers']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('zipCode')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Zip code is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      managerControl
+                                        .get('zipCode')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Zip code must be 5 digits
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Controls for Managers -->
+                <div class="d-flex justify-content-between gap-2 mb-4">
+                  <button
+                    mat-raised-button
+                    class="button-prev"
+                    matStepperPrevious
+                  >
+                    Back
+                  </button>
+                  <div>
+                    <button
+                      mat-raised-button
+                      class="button-all"
+                      *ngIf="!hasChanges"
+                      (click)="stepper.next()"
+                    >
+                      Next
+                    </button>
+                    <button
+                      mat-raised-button
+                      color="warn"
+                      *ngIf="hasChanges"
+                      (click)="saveAndContinue()"
+                      [disabled]="!changeNotes || !changeNotes.trim()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </mat-step>
+
+              <!-- STEP 3 – Members -->
+              <mat-step *ngIf="data?.step13b?.length" label="Members">
+                <div class="container-fluid py-5 mb-5">
+                  <!-- Header -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex justify-content-between align-items-center"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">groups</mat-icon>
+                        <span>Ownership Members</span>
+                      </h3>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="toggleSectionEdit('members')"
+                        matTooltip="Edit Member Details"
+                      >
+                        <mat-icon>{{
+                          isEditing["members"] ? "check" : "edit"
+                        }}</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="scrollable-section"
+                    style="
+                      height: 600px;
+                      overflow-y: auto;
+                      overflow-x: hidden;
+                      padding-right: 16px;
+                    "
+                  >
+                    <div [formGroup]="managementForm">
+                      <div formArrayName="members">
+                        <div class="row g-4">
+                          <ng-container
+                            *ngFor="
+                              let memberControl of membersForm.controls;
+                              let i = index
+                            "
+                          >
+                            <ng-container [formGroupName]="i">
+                              <div class="col-12">
+                                <h4 class="fw-semibold mb-3">
+                                  Member {{ i + 1 }}
+                                </h4>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >First Name</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="firstName"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    maxlength="60"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('firstName')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    First name is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('firstName')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Use only letters
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('firstName')
+                                        ?.hasError('maxlength')
+                                    "
+                                  >
+                                    Name cannot exceed 60 characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Last Name</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="lastName"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    maxlength="60"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('lastName')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Last name is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('lastName')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Use only letters
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('lastName')
+                                        ?.hasError('maxlength')
+                                    "
+                                  >
+                                    Name cannot exceed 60 characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Email</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="email"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('email')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Email is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('email')
+                                        ?.hasError('email') ||
+                                      memberControl
+                                        .get('email')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Please enter a valid email address
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Phone Number</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="phoneNumber"
+                                    placeholder="(123) 456-7890"
+                                    mask="(000) 000-0000"
+                                    [dropSpecialCharacters]="false"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('phoneNumber')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Phone number is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('phoneNumber')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Use format (123) 456-7890
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Ownership %</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    type="number"
+                                    formControlName="ownership"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    min="1"
+                                    max="100"
+                                  />
+                                  <!-- <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('ownership')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Ownership % is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('ownership')
+                                        ?.hasError('min')
+                                    "
+                                  >
+                                    Minimum is 1%
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('ownership')
+                                        ?.hasError('max')
+                                    "
+                                  >
+                                    Maximum is 100%
+                                  </mat-error> -->
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-6"></div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Street Address 1</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="streetAddress1"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('streetAddress1')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Street address is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('streetAddress1')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Address contains invalid characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-6">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Street Address 2</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="streetAddress2"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('streetAddress2')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Address contains invalid characters
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-4">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >City</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="city"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('city')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    City is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('city')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Please enter a valid city
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-4">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >State</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="state"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('state')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    State is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-md-4">
+                                <mat-label
+                                  class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                                  >Zip Code</mat-label
+                                >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 mt-2 mb-4"
+                                >
+                                  <input
+                                    matInput
+                                    formControlName="zipCode"
+                                    mask="00000"
+                                    maxlength="5"
+                                    [readonly]="!isEditing['members']"
+                                    (input)="onFieldChange()"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  />
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('zipCode')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    Zip code is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      memberControl
+                                        .get('zipCode')
+                                        ?.hasError('pattern')
+                                    "
+                                  >
+                                    Zip code must be 5 digits
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Controls for Members -->
+                <div class="d-flex justify-content-between gap-2 mb-4">
+                  <button
+                    mat-raised-button
+                    class="button-prev"
+                    matStepperPrevious
+                  >
+                    Back
+                  </button>
+                  <div>
+                    <button
+                      mat-raised-button
+                      class="button-all"
+                      *ngIf="!hasChanges"
+                      (click)="stepper.next()"
+                    >
+                      Next
+                    </button>
+                    <button
+                      mat-raised-button
+                      color="warn"
+                      *ngIf="hasChanges"
+                      (click)="saveAndContinue()"
+                      [disabled]="!changeNotes || !changeNotes.trim()"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </mat-step>
+
+              <!-- STEP 4 – Business Address & Registered Agent -->
+              <mat-step label="Business Address">
+                <div class="container-fluid py-5 mb-5">
+                  <!-- Business Address -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex justify-content-between align-items-center"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">location_on</mat-icon>
+                        <span>Business Address</span>
+                      </h3>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="toggleSectionEdit('businessAddress')"
+                        matTooltip="Edit Business Address"
+                      >
+                        <mat-icon>{{
+                          isEditing["businessAddress"] ? "check" : "edit"
+                        }}</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div [formGroup]="businessAddressForm">
+                    <div class="row g-4 mb-5">
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Street Address 1</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="streetAddress1"
+                            [readonly]="!isEditing['businessAddress']"
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('streetAddress1')
+                                ?.hasError('required')
+                            "
+                          >
+                            Street address is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('streetAddress1')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Address contains invalid characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Street Address 2 (Optional)</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="streetAddress2"
+                            [readonly]="!isEditing['businessAddress']"
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('streetAddress2')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Address contains invalid characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >City</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="city"
+                            [readonly]="!isEditing['businessAddress']"
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('city')
+                                ?.hasError('required')
+                            "
+                          >
+                            City is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('city')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Please enter a valid city
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >State</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="state"
+                            [readonly]="!isEditing['businessAddress']"
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('state')
+                                ?.hasError('required')
+                            "
+                          >
+                            State is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Zip Code</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="zipCode"
+                            mask="00000"
+                            maxlength="5"
+                            [readonly]="!isEditing['businessAddress']"
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('zipCode')
+                                ?.hasError('required')
+                            "
+                          >
+                            Zip code is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              businessAddressForm
+                                .get('zipCode')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Zip code must be 5 digits
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Registered Agent Section -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex align-items-center justify-content-between"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">verified_user</mat-icon>
+                        <span>Registered Agent</span>
+                      </h3>
+
+                      <div class="d-flex align-items-center gap-2">
+                        <mat-slide-toggle
+                          *ngIf="shouldShowRAToggle()"
+                          color="primary"
+                          [checked]="data?.step6?.useAddress === true"
+                          (change)="onUseCompanyRegAddressToggle($event)"
+                          [disabled]="raToggleLoading"
+                          matTooltip="Use the company's registered agent address"
+                        >
+                          Use company registered address
+                        </mat-slide-toggle>
+
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          class="btn btn-outline-primary btn-sm"
+                          (click)="toggleSectionEdit('registeredAgent')"
+                          *ngIf="!data?.step6?.useAddress"
+                          matTooltip="Edit Registered Agent Details"
+                        >
+                          <mat-icon>{{
+                            isEditing["registeredAgent"] ? "check" : "edit"
+                          }}</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Registered Agent Details -->
+                  <form [formGroup]="registeredAgentForm">
+                    <div class="row g-4 mb-5">
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >First Name</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="firstName"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                            maxlength="60"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('firstName')
+                                ?.hasError('required')
+                            "
+                          >
+                            First name is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('firstName')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Use only letters
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('firstName')
+                                ?.hasError('maxlength')
+                            "
+                          >
+                            Name cannot exceed 60 characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Last Name</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="lastName"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                            maxlength="60"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('lastName')
+                                ?.hasError('required')
+                            "
+                          >
+                            Last name is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('lastName')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Use only letters
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('lastName')
+                                ?.hasError('maxlength')
+                            "
+                          >
+                            Name cannot exceed 60 characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Address</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="streetAddress1"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('streetAddress1')
+                                ?.hasError('required')
+                            "
+                          >
+                            Street address is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('streetAddress1')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Address contains invalid characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Address Line 2</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="streetAddress2"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('streetAddress2')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Address contains invalid characters
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >City</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="city"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('city')
+                                ?.hasError('required')
+                            "
+                          >
+                            City is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('city')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Please enter a valid city
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >State</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="state"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('state')
+                                ?.hasError('required')
+                            "
+                          >
+                            State is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                          >Zip Code</mat-label
+                        >
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 mt-2 mb-4"
+                        >
+                          <input
+                            matInput
+                            formControlName="zipCode"
+                            mask="00000"
+                            maxlength="5"
+                            [readonly]="
+                              data?.step6?.useAddress ||
+                              !isEditing['registeredAgent']
+                            "
+                            (input)="onFieldChange()"
+                            [errorStateMatcher]="errorStateMatcher"
+                          />
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('zipCode')
+                                ?.hasError('required')
+                            "
+                          >
+                            Zip code is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              registeredAgentForm
+                                .get('zipCode')
+                                ?.hasError('pattern')
+                            "
+                          >
+                            Zip code must be 5 digits
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Controls for Business Address -->
+                <div class="d-flex justify-content-between gap-2 mb-4">
+                  <button
+                    mat-raised-button
+                    class="button-prev"
+                    matStepperPrevious
+                  >
+                    Back
+                  </button>
+                  <button
+                    mat-raised-button
+                    class="button-all"
+                    *ngIf="!hasChanges"
+                    (click)="fetchAndPreview()"
+                  >
+                    Process PDF
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    *ngIf="hasChanges"
+                    (click)="saveAndContinue()"
+                    [disabled]="!changeNotes || !changeNotes.trim()"
+                  >
+                    Save
+                  </button>
+                </div>
+              </mat-step>
+
+              <!-- STEP X – Document Preview -->
+              <mat-step
+                *ngIf="data.step13a?.length || data.step13b?.length"
+                label="Preview Document"
+              >
+                <div class="document-viewer-container p-4">
+                  <!-- Header Row -->
+                  <div
+                    class="d-flex justify-content-between align-items-center gap-4 mb-3"
+                  >
+                    <!-- Left side text -->
+                    <div class="fs-5 fw-semibold text-secondary">
+                      <span class="fw-bold text-primarycolor fs-5"
+                        >Important:</span
+                      >
+                      Please download this document. You’ll need it for filing
+                      with the state.
+                    </div>
+
+                    <!-- Right side buttons -->
+                    <div class="d-flex align-items-center gap-3">
+                      <button
+                        mat-icon-button
+                        (click)="downloadDocument()"
+                        matTooltip="Download"
+                      >
+                        <mat-icon>download</mat-icon>
+                      </button>
+                      <!-- <button
+                        mat-icon-button
+                        (click)="printDocument()"
+                        matTooltip="Print"
+                      >
+                        <mat-icon>print</mat-icon>
+                      </button> -->
+                    </div>
+                  </div>
+
+                  <!-- PDF Viewer -->
+                  <div class="document-content">
+                    <ngx-extended-pdf-viewer
+                      [src]="documentUrl"
+                      [showToolbar]="false"
+                      style="width: 100%; height: 100%"
+                    ></ngx-extended-pdf-viewer>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <br />
+                <div class="d-flex justify-content-between gap-2 mb-4">
+                  <button
+                    mat-raised-button
+                    class="button-prev"
+                    matStepperPrevious
+                  >
+                    Back
+                  </button>
+                  <button
+                    mat-raised-button
+                    class="button-all"
+                    (click)="closeWizard()"
+                  >
+                    Close
+                  </button>
+                </div>
+              </mat-step>
+
+              <!-- company data step -->
+              <mat-step
+                *ngIf="data && (data.step13a?.length || data.step13b?.length)"
+                [stepControl]="filingForm"
+                label="Ready to File"
+              >
+                <form
+                  [formGroup]="filingForm"
+                  class="container-fluid py-5 mb-5"
+                >
+                  <!-- Section Header -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">apartment</mat-icon>
+                        <span>Company Data</span>
+                      </h3>
+                    </div>
+                  </div>
+
+                  <!-- Instructions Section -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <p class="mat-subtitle-3 filer-wizard-description">
+                        Please enter the information regarding your LLC filing.
+                        The “Filed Date” should be the date when the document
+                        was submitted to the state. After entering the necessary
+                        data, you can proceed.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Read‑only Company & State -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Company Name</mat-label
+                      >
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                      >
+                        <input
+                          matInput
+                          [(ngModel)]="data.step2.companyName"
+                          [readonly]="true"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >State</mat-label
+                      >
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                      >
+                        <input
+                          matInput
+                          [(ngModel)]="data.step1"
+                          [readonly]="true"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- Filed Time & Date -->
+                  <div class="row g-4 mb-4">
+                    <!-- <div class="col-md-6">
+                    <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                      >Filed Time</mat-label
+                    >
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-100 mt-2 mb-4"
+                      matTooltip="Select the time when the document was filed"
+                    >
+                      <input matInput type="time" />
+                    </mat-form-field>
+                  </div> -->
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12">
+                        Filed Date <span class="text-danger">*</span>
+                      </mat-label>
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                        matTooltip="Set the date when the document was filed"
+                      >
+                        <input
+                          matInput
+                          [matDatepicker]="picker"
+                          formControlName="filingDate"
+                          placeholder="Choose a date"
+                          [max]="today"
+                          [readonly]="true"
+                          (keydown)="$event.preventDefault()"
+                          (paste)="$event.preventDefault()"
+                          [errorStateMatcher]="errorStateMatcher"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error
+                          *ngIf="
+                            filingForm
+                              .get('filingDate')
+                              ?.hasError('required') &&
+                            (filingForm.get('filingDate')?.touched ||
+                              filingForm.get('filingDate')?.dirty)
+                          "
+                        >
+                          Filed date is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- Payment Info Section -->
+                  <div class="row mb-4">
+                    <div
+                      class="col-12 d-flex justify-content-between align-items-center"
+                    >
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">credit_card</mat-icon>
+                        <span>Payment Information</span>
+                      </h3>
+                    </div>
+                  </div>
+
+                  <!-- Payment Method & Amount -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Payment Method</mat-label
+                      >
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                      >
+                        <mat-select
+                          formControlName="paymentMethod"
+                          placeholder="Select Payment Method"
+                          [errorStateMatcher]="errorStateMatcher"
+                        >
+                          <mat-option value="creditCard"
+                            >Credit Card</mat-option
+                          >
+                          <mat-option value="bankTransfer"
+                            >Bank Transfer</mat-option
+                          >
+                          <mat-option value="check">Cheque</mat-option>
+                          <mat-option value="paypal">PayPal</mat-option>
+                        </mat-select>
+                        <mat-error
+                          *ngIf="
+                            filingForm
+                              .get('paymentMethod')
+                              ?.hasError('required') &&
+                            (filingForm.get('paymentMethod')?.touched ||
+                              filingForm.get('paymentMethod')?.dirty)
+                          "
+                        >
+                          Payment Method is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12">
+                        Payment Amount <span class="text-danger">*</span>
+                      </mat-label>
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                      >
+                        <input
+                          matInput
+                          type="number"
+                          formControlName="paymentAmount"
+                          placeholder="Enter payment amount"
+                          [errorStateMatcher]="errorStateMatcher"
+                        />
+                        <mat-error
+                          *ngIf="
+                            filingForm
+                              .get('paymentAmount')
+                              ?.hasError('required') &&
+                            (filingForm.get('paymentAmount')?.touched ||
+                              filingForm.get('paymentAmount')?.dirty)
+                          "
+                        >
+                          Amount is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- Transaction ID & Payer Name -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12">
+                        Transaction ID <span class="text-danger">*</span>
+                      </mat-label>
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                      >
+                        <input
+                          matInput
+                          formControlName="transactionCode"
+                          placeholder="Enter transaction ID"
+                          [errorStateMatcher]="errorStateMatcher"
+                        />
+                        <mat-error
+                          *ngIf="
+                            filingForm
+                              .get('transactionCode')
+                              ?.hasError('required') &&
+                            (filingForm.get('transactionCode')?.touched ||
+                              filingForm.get('transactionCode')?.dirty)
+                          "
+                        >
+                          Transaction ID is required
+                        </mat-error>
+
+                        <mat-error
+                          *ngIf="
+                            filingForm
+                              .get('transactionCode')
+                              ?.hasError('pattern') &&
+                            !filingForm
+                              .get('transactionCode')
+                              ?.hasError('required')
+                          "
+                        >
+                          Invalid TransactionID
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Payer Name</mat-label
+                      >
+                      <mat-form-field
+                        appearance="outline"
+                        class="w-100 mt-2 mb-4"
+                      >
+                        <input
+                          matInput
+                          formControlName="payerName"
+                          placeholder="Enter payer name"
+                          [errorStateMatcher]="errorStateMatcher"
+                          maxlength="60"
+                        />
+                        <!-- <mat-error *ngIf="filingForm.get('payerName')?.hasError('required')">
+    Payer name is required.
+  </mat-error> -->
+                        <mat-error
+                          *ngIf="
+                            filingForm.get('payerName')?.hasError('required')
+                          "
+                        >
+                          Payer name is required.
+                        </mat-error>
+                        <mat-error
+                          *ngIf="
+                            filingForm.get('payerName')?.hasError('pattern')
+                          "
+                        >
+                          Use only letters
+                        </mat-error>
+                        <mat-error
+                          *ngIf="
+                            filingForm.get('payerName')?.hasError('maxlength')
+                          "
+                        >
+                          Name cannot exceed 60 characters
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+
+                <!-- Controls for New Section -->
+                <div class="d-flex justify-content-between p-2 mb-4">
+                  <button
+                    mat-raised-button
+                    class="button-prev"
+                    matStepperPrevious
+                    (click)="closeWizard()"
+                  >
+                    Cancel
+                  </button>
+
+                  <!-- Save if form dirtied, otherwise Next -->
+                  <ng-container *ngIf="filingForm.dirty; else nextTpl">
+                    <button
+                      mat-raised-button
+                      class="button-all"
+                      (click)="submitCompanyFiling()"
+                      [disabled]="filingForm.invalid"
+                    >
+                      Save
+                    </button>
+                  </ng-container>
+                  <ng-template #nextTpl>
+                    <button
+                      mat-raised-button
+                      class="button-all"
+                      [disabled]="filingForm.invalid"
+                      (click)="stepper.next()"
+                    >
+                      Next
+                    </button>
+                  </ng-template>
+                </div>
+              </mat-step>
+
+              <!-- Filing Status Step-->
+              <mat-step
+                label="Filing Status Update"
+                *ngIf="data && (data.step13a?.length || data.step13b?.length)"
+              >
+                <div class="container-fluid py-5 mb-1">
+                  <!-- Filing Status Header -->
+                  <div class="row mb-4">
+                    <div class="col-12 d-flex align-items-center">
+                      <!-- Icon and Header (aligned left) -->
+                      <h3
+                        class="fw-bold filer-wizard-title d-inline-flex align-items-center mb-1"
+                        style="font-size: 1.25rem"
+                      >
+                        <mat-icon class="icon-gap">warning</mat-icon>
+                        <span>Filing Status Update</span>
+                      </h3>
+                    </div>
+                  </div>
+
+                  <!-- Form Fields (Company Name & State) -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Company Name</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <input
+                          matInput
+                          [(ngModel)]="data.step2.companyName"
+                          [readonly]="true"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >State</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <input
+                          matInput
+                          [(ngModel)]="data.step1"
+                          [readonly]="true"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <!-- Filing Status and Document Type Dropdown (same row) -->
+                  <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                      <!-- Filing Status Dropdown aligned to the left -->
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Update Filing Status</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-select
+                          [(value)]="data.filingStatus"
+                          (selectionChange)="onStatusChange($event)"
+                          placeholder="Filing Status"
+                        >
+                          <mat-option value="SUCCESS">Success</mat-option>
+                          <mat-option value="FAIL">Fail</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <!-- Document Type Dropdown (Visible when SUCCESS is selected) -->
+                    <div
+                      *ngIf="data.filingStatus === 'SUCCESS'"
+                      class="col-md-6"
+                    >
+                      <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-12"
+                        >Document Type</mat-label
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-select
+                          [(value)]="data.documentType"
+                          placeholder="Select Document Type"
+                        >
+                          <mat-option
+                            *ngFor="let doc of documentTypes"
+                            [value]="doc.typeName"
+                          >
+                            {{ doc.typeName }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- Document Upload Section with Border -->
+                  <div
+                    *ngIf="data.filingStatus === 'SUCCESS' && data.documentType"
+                    class="row g-4 mb-5"
+                  >
+                    <div class="col-md-12">
+                      <div class="upload-container shadow-lg rounded p-4">
+                        <h4 class="text-center">Upload PDF Document</h4>
+
+                        <!-- File input (hidden) - PDF only, single file -->
+                        <input
+                          type="file"
+                          #fileInput
+                          (change)="onFilesSelected($event)"
+                          style="display: none"
+                          accept=".pdf"
+                          single
+                        />
+
+                        <!-- Upload box (outer green border in your UI) -->
+                        <div
+                          class="upload-box text-center p-4"
+                          [class.has-file]="selectedFile"
+                          (dragover)="onDragOver($event)"
+                          (dragleave)="onDragLeave($event)"
+                          (drop)="onDrop($event)"
+                        >
+                          <!-- No file uploaded state -->
+                          <div *ngIf="!selectedFile" class="upload-prompt">
+                            <mat-icon class="upload-icon mb-3" color="primary"
+                              >picture_as_pdf</mat-icon
+                            >
+                            <p class="mb-3">
+                              Drop PDF file here or click to browse
+                            </p>
+                            <button
+                              mat-raised-button
+                              color="primary"
+                              (click)="fileInput.click()"
+                              class="upload-btn"
+                            >
+                              <mat-icon>cloud_upload</mat-icon>
+                              Select PDF File
+                            </button>
+                            <p class="text-muted mt-3 small">
+                              PDF files only • Maximum size: 5MB
+                            </p>
+                          </div>
+
+                          <!-- File uploaded state (light-green inner card) -->
+                          <div *ngIf="selectedFile" class="file-uploaded p-3">
+                            <div
+                              class="d-flex align-items-center justify-content-between"
+                            >
+                              <div class="file-info d-flex align-items-center">
+                                <mat-icon class="me-2" color="primary"
+                                  >picture_as_pdf</mat-icon
+                                >
+                                <div>
+                                  <div class="file-name fw-bold">
+                                    {{ selectedFile.name }}
+                                  </div>
+                                  <div class="file-size text-muted small">
+                                    {{ getFileSize(selectedFile.size) }}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="file-actions d-flex gap-2">
+                                <button
+                                  mat-icon-button
+                                  color="primary"
+                                  (click)="previewFile()"
+                                  matTooltip="Preview PDF"
+                                >
+                                  <mat-icon>visibility</mat-icon>
+                                </button>
+                                <button
+                                  mat-icon-button
+                                  color="warn"
+                                  (click)="removeFile()"
+                                  matTooltip="Remove file"
+                                >
+                                  <mat-icon>delete</mat-icon>
+                                </button>
+                              </div>
+                            </div>
+
+                            <!-- Replace file option -->
+                            <div class="mt-3 text-center">
+                              <button
+                                mat-stroked-button
+                                color="primary"
+                                (click)="fileInput.click()"
+                                class="replace-btn"
+                              >
+                                <mat-icon>swap_horiz</mat-icon>
+                                Replace File
+                              </button>
+                            </div>
+                          </div>
+                          <!-- /File uploaded state -->
+
+                          <!-- Confirmation: perfectly centered in the lower area -->
+                          <div
+                            *ngIf="selectedFile"
+                            class="mt-2 d-flex"
+                            style="min-height: 120px"
+                          >
+                            <div class="m-auto">
+                              <div
+                                class="form-check d-inline-flex align-items-center"
+                              >
+                                <input
+                                  id="confirmFormationDoc"
+                                  type="checkbox"
+                                  class="form-check-input me-2"
+                                  [(ngModel)]="confirmationChecked"
+                                  name="confirmFormationDoc"
+                                />
+                                <label
+                                  class="form-check-label mb-0"
+                                  for="confirmFormationDoc"
+                                >
+                                  I confirm this PDF is the correct
+                                  <strong>Formation Document</strong>.
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- /Confirmation -->
+                        </div>
+
+                        <!-- Upload progress (if needed) -->
+                        <div
+                          *ngIf="uploadProgress > 0 && uploadProgress < 100"
+                          class="mt-3"
+                        >
+                          <mat-progress-bar
+                            [value]="uploadProgress"
+                            color="primary"
+                          ></mat-progress-bar>
+                          <p class="text-center mt-2">
+                            Uploading: {{ uploadProgress }}%
+                          </p>
+                        </div>
+
+                        <!-- Error messages -->
+                        <div
+                          *ngIf="uploadError"
+                          class="alert alert-danger mt-3 d-flex align-items-center gap-2"
+                        >
+                          <mat-icon>error</mat-icon>
+                          <span>{{ uploadError }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Report Failure Section (Visible only if FAIL) -->
+                  <div
+                    *ngIf="data.filingStatus === 'FAIL'"
+                    class="container-fluid my-0 px-3"
+                  >
+                    <div
+                      class="card shadow-lg border-0 rounded-4 overflow-hidden"
+                    >
+                      <!-- Header -->
+                      <div
+                        class="card-header gradient-header text-white text-center py-0 border-0"
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center mb-0"
+                        >
+                          <i class="bi bi-file-earmark-x-fill fs-1 me-3"></i>
+                          <h3 class="mb-0 fw-bold">Report Filing Status</h3>
+                        </div>
+                        <p class="mb-0 opacity-75">
+                          Please provide details about the filing failure to
+                          help us resolve the issue
+                        </p>
+                      </div>
+
+                      <!-- Body -->
+                      <div class="card-body p-2">
+                        <form [formGroup]="failureForm">
+                          <div class="row g-4">
+                            <!-- Failure Category -->
+                            <div class="col-12">
+                              <div class="field-wrapper">
+                                <div class="d-flex align-items-center mb-1">
+                                  <div
+                                    class="icon-wrapper bg-danger bg-opacity-10 rounded-circle p-2 me-3"
+                                  >
+                                    <i
+                                      class="bi bi-tags-fill text-danger fs-5"
+                                    ></i>
+                                  </div>
+                                  <div>
+                                    <label
+                                      for="failureCategory"
+                                      class="form-label fw-bold mb-1 text-dark"
+                                    >
+                                      Failure Category
+                                    </label>
+                                  </div>
+                                </div>
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 custom-mat-field"
+                                >
+                                  <mat-select
+                                    placeholder="Choose a failure category..."
+                                    id="failureCategory"
+                                    formControlName="failureCategory"
+                                    required
+                                    [errorStateMatcher]="errorStateMatcher"
+                                  >
+                                    <mat-option
+                                      *ngFor="let cat of failureCategories"
+                                      [value]="cat.filingFailureCategoryId"
+                                    >
+                                      {{ cat.filingFailureCategory }}
+                                    </mat-option>
+                                  </mat-select>
+                                  <mat-error
+                                    *ngIf="
+                                      failureForm
+                                        .get('failureCategory')
+                                        ?.hasError('required') &&
+                                      (failureForm.get('failureCategory')
+                                        ?.touched ||
+                                        failureForm.get('failureCategory')
+                                          ?.dirty)
+                                    "
+                                  >
+                                    Please select a failure category
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+
+                            <!-- Failure Reason -->
+                            <div class="col-lg-6">
+                              <div class="field-wrapper">
+                                <div class="d-flex align-items-center mb-1">
+                                  <div
+                                    class="icon-wrapper bg-danger bg-opacity-10 rounded-circle p-2 me-3"
+                                  >
+                                    <i
+                                      class="bi bi-bug-fill text-danger fs-5"
+                                    ></i>
+                                  </div>
+                                  <div>
+                                    <label
+                                      for="failureDescription"
+                                      class="form-label fw-bold mb-1 text-dark"
+                                    >
+                                      Failure Reason
+                                    </label>
+                                  </div>
+                                </div>
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 custom-mat-field"
+                                >
+                                  <textarea
+                                    matInput
+                                    placeholder="Describe the issue in detail. Include any error messages, steps taken, and relevant context..."
+                                    formControlName="failureDescription"
+                                    rows="4"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    required
+                                    class="custom-textarea"
+                                  ></textarea>
+                                  <mat-error
+                                    *ngIf="
+                                      failureForm
+                                        .get('failureDescription')
+                                        ?.hasError('required') &&
+                                      (failureForm.get('failureDescription')
+                                        ?.touched ||
+                                        failureForm.get('failureDescription')
+                                          ?.dirty)
+                                    "
+                                  >
+                                    Please provide a detailed explanation of the
+                                    failure
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+
+                            <!-- Recommended Next Steps -->
+                            <div class="col-lg-6">
+                              <div class="field-wrapper">
+                                <div class="d-flex align-items-center mb-1">
+                                  <div
+                                    class="icon-wrapper bg-danger bg-opacity-10 rounded-circle p-2 me-3"
+                                  >
+                                    <i
+                                      class="bi bi-lightbulb-fill fs-5 text-dark"
+                                    ></i>
+                                  </div>
+                                  <div>
+                                    <label
+                                      for="nextSteps"
+                                      class="form-label fw-bold mb-1 text-dark"
+                                    >
+                                      Recommended Next Steps
+                                    </label>
+                                  </div>
+                                </div>
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="w-100 custom-mat-field"
+                                >
+                                  <textarea
+                                    matInput
+                                    placeholder="Suggest specific actions, workarounds, or solutions that should be taken to address this failure..."
+                                    formControlName="nextSteps"
+                                    [errorStateMatcher]="errorStateMatcher"
+                                    rows="4"
+                                    required
+                                    class="custom-textarea"
+                                  ></textarea>
+                                  <mat-error
+                                    *ngIf="
+                                      failureForm
+                                        .get('nextSteps')
+                                        ?.hasError('required') &&
+                                      (failureForm.get('nextSteps')?.touched ||
+                                        failureForm.get('nextSteps')?.dirty)
+                                    "
+                                  >
+                                    Please suggest appropriate next steps
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Important Notice -->
+                          <div
+                            class="alert notice-box d-flex align-items-start mt-3 mb-3"
+                            role="alert"
+                          >
+                            <i
+                              class="bi bi-shield-exclamation fs-4 me-3 mt-1"
+                            ></i>
+                            <div>
+                              <h6 class="notice-heading fw-bold mb-0">
+                                ⚠️ Important Notice
+                              </h6>
+                              <p class="notice-text mb-0">
+                                Please ensure all information provided is
+                                accurate and complete. This report will be
+                                reviewed by our team to improve our filing
+                                processes and prevent similar issues in the
+                                future.
+                              </p>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Controls for Filing Status Update -->
+                  <div class="d-flex justify-content-between gap-2 mb-4">
+                    <button
+                      mat-raised-button
+                      class="button-prev"
+                      matStepperPrevious
+                      (click)="closeWizard()"
+                    >
+                      Cancel
+                    </button>
+                    <!-- Button for FAILURE Status -->
+                    <button
+                      *ngIf="data.filingStatus === 'FAIL'"
+                      mat-raised-button
+                      class="button-all"
+                      (click)="saveFailureReport()"
+                    >
+                      Finish
+                    </button>
+
+                    <!-- Button for SUCCESS Status -->
+                    <button
+                      *ngIf="data.filingStatus === 'SUCCESS'"
+                      mat-raised-button
+                      class="button-all"
+                      (click)="uploadDocuments()"
+                      [disabled]="!fileUploaded || !confirmationChecked"
+                    >
+                      Finish
+                    </button>
+                  </div>
+                </div>
+              </mat-step>
+            </mat-stepper>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- RIGHT COLUMN: Persistent Change Notes -->
+      <!-- RIGHT COLUMN: Persistent Change Notes -->
+      <div class="col-lg-4" *ngIf="!isPreviewStep(stepper.selectedIndex)">
+        <mat-card class="change-notes-card shadow-sm mb-0 h-80">
+          <mat-card-content class="px-3 pt-2 pb-3 d-flex flex-column h-100">
+            <div class="mb-2">
+              <h5
+                class="fw-bold filer-wizard-subtitle mb-1"
+                style="font-size: 1.25rem; margin-bottom: 0.3rem"
+              >
+                Change Notes:
+              </h5>
+
+              <!-- Context line -->
+              <div class="small filer-wizard-description">
+                Required when any field is edited. Keep it specific and concise.
+              </div>
+            </div>
+
+            <!-- Checklist -->
+            <ul class="list-group list-group-flush checklist mb-3">
+              <li class="list-group-item px-0 py-1 small">
+                Mention the exact field(s) you changed (e.g., “Formation Date”,
+                “Registered Agent Email”)
+              </li>
+              <li class="list-group-item px-0 py-1 small">
+                Add the reason: compliance, user request, typo fix, etc.
+              </li>
+              <li class="list-group-item px-0 py-1 small">
+                Add any impact/next steps (e.g., “Re-run EIN step”)
+              </li>
+            </ul>
+
+            <!-- Textarea (unchanged structure) -->
+            <mat-form-field appearance="outline" class="w-100 mt-auto">
+              <textarea
+                matInput
+                class="change-notes-textarea"
+                rows="10"
+                placeholder="Enter change details here..."
+                [(ngModel)]="changeNotes"
+                [disabled]="!shouldEnableChangeNotes()"
+                maxlength="500"
+                required
+              ></textarea>
+            </mat-form-field>
+
+            <!-- Helper row: max + live counter -->
+            <div class="d-flex justify-content-between align-items-center mt-1">
+              <span class="small text-muted">Max 500 characters</span>
+              <span class="small text-muted"
+                >{{ (changeNotes || "").length }}/500</span
+              >
+            </div>
+
+            <!-- Examples / template ideas -->
+            <div class="mt-3">
+              <details class="small">
+                <summary class="text-secondary">See examples</summary>
+                <div class="mt-2">
+                  <div class="example-box p-2 rounded border mb-2">
+                    <span class="fw-semibold">Example 1:</span>
+                    Updated <em>Formation Date</em> from
+                    <code>2025-08-12</code> to <code>2025-08-15</code> due to
+                    client request. No impact on fees. Ref:
+                    <code>LLC-1234</code>.
+                  </div>
+                  <div class="example-box p-2 rounded border">
+                    <span class="fw-semibold">Example 2:</span>
+                    Corrected <em>Registered Agent Email</em> (typo fix).
+                    Notified client via email. Next: Re-send confirmation. Ref:
+                    <code>SUP-9087</code>.
+                  </div>
+                </div>
+              </details>
+            </div>
+
+            <!-- Footer note -->
+            <div class="mt-3 small text-muted">
+              Tip: Notes are for audit trail—avoid sensitive data (SSN, full
+              card numbers, etc.).
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<section id="how-it-works" class="how-it-works-section section-padding">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-lg-8">
+        <h2 class="section-title mb-4">
+          How to <span class="gradient-text">Form Your LLC</span> in 4 Simple
+          Steps
+        </h2>
+        <p class="section-subtitle">
+          Our streamlined process makes LLC formation fast, easy, and
+          affordable. Get started today and have your LLC formed in as little as
+          1 business day.
+        </p>
+      </div>
+    </div>
+
+    <!-- Steps Timeline -->
+    <div class="steps-timeline">
+      <div class="row">
+        <div class="col-12">
+          <div class="timeline-container">
+            <div class="timeline-line"></div>
+
+            <div class="row g-4">
+              <div
+                class="col-lg-3 col-md-6"
+                *ngFor="let step of steps; let i = index"
+              >
+                <div class="step-card" [class.active]="i === 0">
+                  <div class="step-number">{{ step.number }}</div>
+                  <div class="step-icon">
+                    <mat-icon>{{ step.icon }}</mat-icon>
+                  </div>
+                  <h4 class="step-title">{{ step.title }}</h4>
+                  <p class="step-description">{{ step.description }}</p>
+                  <div class="step-details">
+                    <div
+                      class="detail-item"
+                      *ngFor="let detail of step.details"
+                    >
+                      <mat-icon class="detail-icon">check</mat-icon>
+                      <span>{{ detail }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!-- Video Section -->
+   <div class="video-section">
+  <div class="row align-items-center">
+    <!-- Left Content -->
+    <div class="col-lg-6">
+      <div class="video-content">
+        <h3>See How Easy It Is</h3>
+        <p>
+          Watch our quick 2-minute video to see exactly how our LLC formation 
+          process works and why thousands of entrepreneurs choose us.
+        </p>
+        
+        <div class="video-stats">
+          <div class="stat">
+            <strong class="gradient-text">2 min</strong>
+            <span>Average completion time</span>
+          </div>
+          <div class="stat">
+            <strong class="gradient-text">99.9%</strong>
+            <span>Success rate</span>
+          </div>
+          <div class="stat">
+            <strong class="gradient-text">50 states</strong>
+            <span>Available nationwide</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Video Placeholder -->
+    <div class="col-lg-6">
+      <div class="video-placeholder">
+        <img 
+          src="assets/business-sucess.jpg" 
+          alt="Business success after forming a new LLC" 
+          class="img-fluid"
+        >
+        <div class="play-button">
+          <mat-icon >play_arrow</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- CTA Section -->
+    <!-- <div class="cta-section">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <div class="cta-card">
+            <mat-icon class="cta-icon">rocket_launch</mat-icon>
+            <h3 class="cta-title">Ready to Start Your LLC?</h3>
+            <p class="cta-description">
+              Join over 100,000 entrepreneurs who chose ClearIncorp to form their LLC. 
+              Get started today with our $0 state fee package.
+            </p>
+            <div class="cta-actions">
+              <button class="btn btn-primary-custom btn-lg me-3" (click)="scrollToSection('pricing')">
+                Start My LLC Now
+                <mat-icon class="ms-2">arrow_forward</mat-icon>
+              </button>
+              <button class="btn btn-outline-custom btn-lg">
+                <mat-icon class="me-2">phone</mat-icon>
+                Speak to an Expert
+              </button>
+            </div>
+            <div class="guarantee-text">
+              <mat-icon>security</mat-icon>
+              <span>100% Satisfaction Guarantee • No Hidden Fees</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>

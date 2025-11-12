@@ -1,0 +1,155 @@
+<footer class="footer">
+  <div class="container">
+    <!-- Main Footer Content -->
+    <div class="footer-main">
+      <div class="row">
+        <!-- Company Info -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="footer-brand">
+            <div class="logo">
+  <img src="assets/cicLogodark.jpg" alt="Dark CIC logo for best site to file for LLC" class="logo-img">
+</div>
+            <p class="brand-description">
+              The trusted choice for LLC formation. Over 100,000 businesses
+              formed with our expert guidance and comprehensive support
+              services.
+            </p>
+            <div class="trust-indicators">
+              <div class="trust-item">
+                <mat-icon>star</mat-icon>
+                <span>4.9/5 Rating</span>
+              </div>
+              <div class="trust-item">
+                <mat-icon>security</mat-icon>
+                <span>100% Guaranteed</span>
+              </div>
+              <div class="trust-item">
+                <mat-icon>support_agent</mat-icon>
+                <span>24/7 Support</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Services Links -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <div class="footer-section">
+            <h5 class="section-title">Services</h5>
+            <ul class="footer-links">
+              <li *ngFor="let link of footerLinks.services">
+                <a [href]="link.href" class="footer-link">{{ link.name }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Company Links -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <div class="footer-section">
+            <h5 class="section-title">Company</h5>
+            <ul class="footer-links">
+              <li *ngFor="let link of footerLinks.company">
+                <a  class="footer-link" (click)="scrollToSection(link.href)">{{ link.name }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Contact & Support -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="footer-section">
+            <h5 class="section-title">Get Help</h5>
+            <div class="contact-info">
+              <div class="contact-item">
+                <mat-icon>phone</mat-icon>
+                <div class="contact-details">
+                  <span class="contact-label">Call Us</span>
+                  <a href="tel:+18001234567" class="contact-value"
+                    >(800) 123-4567</a
+                  >
+                </div>
+              </div>
+              <div class="contact-item">
+                <mat-icon>email</mat-icon>
+                <div class="contact-details">
+                  <span class="contact-label">Email Us</span>
+                  <a href="mailto:support@ClearIncorp.com" class="contact-value"
+                    >supportClearIncorp.com</a
+                  >
+                </div>
+              </div>
+              <div class="contact-item">
+                <mat-icon>chat</mat-icon>
+                <div class="contact-details">
+                  <span class="contact-label">Live Chat</span>
+                  <span class="contact-value">Available 24/7</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta-section">
+              <button
+                class="btn btn-primary-custom"
+                [routerLink]="'authentication/login'"
+              >
+                Start Your LLC Today
+                <mat-icon class="ms-2">arrow_forward</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="row align-items-center">
+        <div class="col-lg-6 col-md-12">
+          <div class="legal-links">
+            <a
+              *ngFor="let link of footerLinks.legal"
+              [href]="link.href"
+              class="legal-link"
+            >
+              {{ link.name }}
+            </a>
+          </div>
+          <p class="copyright">
+            © {{ currentYear }} ClearIncorp. All rights reserved.
+            <br class="d-md-none" />
+            <small
+              >ClearIncorp is not a law firm and does not provide legal
+              advice.</small
+            >
+          </p>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="footer-actions">
+            <div class="social-links">
+              <span class="social-label">Follow Us:</span>
+              <div class="social-icons">
+                <a
+                  *ngFor="let social of socialLinks"
+                  [href]="social.href"
+                  class="social-link"
+                  [title]="social.name"
+                >
+                  <mat-icon>{{ social.icon }}</mat-icon>
+                </a>
+              </div>
+            </div>
+
+            <button
+              class="back-to-top"
+              (click)="scrollToTop()"
+              title="Back to Top"
+            >
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

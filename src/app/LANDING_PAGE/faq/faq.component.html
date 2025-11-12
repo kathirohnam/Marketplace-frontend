@@ -1,0 +1,120 @@
+<section id="faq" class="faq-section section-padding">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-lg-8">
+        <h2 class="section-title mb-4">
+          Frequently Asked <span class="gradient-text">Questions</span>
+        </h2>
+        <p class="section-subtitle">
+          Get answers to the most common questions about LLC formation. 
+          Our experts are here to help you understand every step of the process.
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="faq-container">
+          <div *ngFor="let category of faqs; let categoryIndex = index" class="faq-category">
+            <div class="category-header">
+              <mat-icon class="category-icon">folder</mat-icon>
+              <h3 class="category-title">{{ category.category }}</h3>
+            </div>
+            
+            <div class="questions-list">
+              <div *ngFor="let item of category.questions; let questionIndex = index" 
+                   class="faq-item"
+                   [class.expanded]="isExpanded(categoryIndex + '-' + questionIndex)">
+                <div class="question-header" 
+                     (click)="toggleQuestion(categoryIndex + '-' + questionIndex)">
+                  <h4 class="question-text">{{ item.question }}</h4>
+                  <mat-icon class="expand-icon" 
+                            [class.rotated]="isExpanded(categoryIndex + '-' + questionIndex)">
+                    expand_more
+                  </mat-icon>
+                </div>
+                <div class="answer-content" 
+                     [class.show]="isExpanded(categoryIndex + '-' + questionIndex)">
+                  <div class="answer-text">
+                    <p>{{ item.answer }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FAQ Quick Access -->
+    <div class="pricing-faq-section">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          <h4 class="mb-4">Still Have Questions?</h4>
+          <p class="mb-4">
+            Our LLC experts are here to help you choose the right package for your business needs.
+          </p>
+          <div class="faq-actions">
+            <button class="btn btn-primary-custom me-3" style="color: white;">
+              <mat-icon class="me-2">phone</mat-icon>
+              Call (800) 123-4567
+            </button>
+            <button class="btn btn-outline-custom">
+              <mat-icon class="me-2">chat</mat-icon>
+              Live Chat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Still Have Questions Section -->
+    <!-- <div class="contact-section">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="contact-card">
+            <div class="row align-items-center">
+              <div class="col-lg-8">
+                <h4 class="contact-title">Still have questions?</h4>
+                <p class="contact-description">
+                  Our LLC formation experts are available 24/7 to help answer your questions 
+                  and guide you through the formation process. Get personalized assistance 
+                  from real people who understand your business needs.
+                </p>
+                <div class="contact-features">
+                  <div class="contact-feature">
+                    <mat-icon>phone</mat-icon>
+                    <span>Free phone consultations</span>
+                  </div>
+                  <div class="contact-feature">
+                    <mat-icon>chat</mat-icon>
+                    <span>Live chat support</span>
+                  </div>
+                  <div class="contact-feature">
+                    <mat-icon>email</mat-icon>
+                    <span>Email support within 1 hour</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 text-center">
+                <div class="contact-actions">
+                  <button class="btn btn-primary-custom btn-lg mb-3">
+                    <mat-icon class="me-2">phone</mat-icon>
+                    Call (800) 123-4567
+                  </button>
+                  <button class="btn btn-outline-custom btn-lg">
+                    <mat-icon class="me-2">chat</mat-icon>
+                    Start Live Chat
+                  </button>
+                  <p class="availability-text">
+                    <mat-icon>schedule</mat-icon>
+                    <small>Available 24/7, 365 days a year</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>

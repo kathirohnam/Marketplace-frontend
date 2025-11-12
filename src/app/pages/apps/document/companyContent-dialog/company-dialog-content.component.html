@@ -1,0 +1,58 @@
+<h2 mat-dialog-title><strong>{{ action }} Company</strong></h2>
+
+<mat-dialog-content style="max-width: 600px">
+  <form [formGroup]="companyForm">
+    <div class="d-flex align-items-center m-b-16">
+      <img class="mat-card-avatar" [src]="localData.imagePath || 'default-image.png'" class="rounded-circle" width="50" height="50" />
+      <button mat-flat-button color="primary" class="m-l-16 input-file-button" [disabled]="isLoading">
+        <input type="file" (change)="selectFile($event)" />
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Company Name</mat-label>
+          <input matInput formControlName="companyName" required />
+          <mat-error *ngIf="companyForm.get('companyName')?.hasError('required')">Company Name is required</mat-error>
+          <mat-error *ngIf="companyForm.get('companyName')?.hasError('minlength')">Minimum 2 characters</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Jurisdiction</mat-label>
+          <input matInput formControlName="jurisdiction" required />
+          <mat-error *ngIf="companyForm.get('jurisdiction')?.hasError('required')">Jurisdiction is required</mat-error>
+          <mat-error *ngIf="companyForm.get('jurisdiction')?.hasError('minlength')">Minimum 2 characters</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Uploaded On</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="uploadedOn" required />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="companyForm.get('uploadedOn')?.hasError('required')">Date is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Type</mat-label>
+          <input matInput formControlName="type" required />
+ 
+          <mat-error *ngIf="companyForm.get('type')?.hasError('required')">Type is required</mat-error>
+          <mat-error *ngIf="companyForm.get('type')?.hasError('minlength')">Minimum 2 characters</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button mat-flat-button color="primary" (click)="doAction()" [disabled]="companyForm.invalid || isLoading">
+      <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+      <span *ngIf="!isLoading">{{ action }}</span>
+    </button>
+    <button mat-stroked-button color="warn" class="m-l-8" (click)="closeDialog()" [disabled]="isLoading">Cancel</button>
+  </form>
+</mat-dialog-content>

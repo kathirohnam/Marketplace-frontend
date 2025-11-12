@@ -1,0 +1,269 @@
+<!-- Floating Chat Button -->
+<ng-container *ngIf="routeAllowsChat">
+  <div
+    class="floating-chat-button"
+    *ngIf="!isOpen && !isMinimized"
+    (click)="toggleChat()"
+    [@bounceIn]
+  >
+    <div class="chat-icon">
+      <ng-lottie
+        [options]="lottieOptions"
+        style="width: 60px; height: 60px"
+        aria-hidden="true"
+      >
+      </ng-lottie>
+    </div>
+
+    <div class="unread-badge" *ngIf="unreadCount > 0" [@fadeInOut]>
+      {{ unreadCount }}
+    </div>
+  </div>
+
+  <!-- Minimized State -->
+  <div
+    class="minimized-chat"
+    *ngIf="isMinimized && !isOpen"
+    (click)="toggleChat()"
+    [@fadeInOut]
+  >
+    <div class="minimized-content">
+      <span class="bot-name">LLC Assistant</span>
+      <div class="unread-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</div>
+    </div>
+  </div>
+
+  <!-- Chat Window -->
+  <div
+    class="chat-window"
+    *ngIf="isOpen"
+    [@slideInOut]="isOpen ? 'open' : 'closed'"
+  >
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="header-content">
+        <div class="bot-avatar">
+          <img src="./assets/chatbot.jpg"
+        
+        style="width: 45px; height:45px"
+        aria-hidden="true"
+      >
+        </div>
+        <div class="bot-info">
+          <h4>LLC AI Assistant</h4>
+          <span class="status" [ngClass]="{'error': hasApiError, 'success': !hasApiError}">
+            {{ hasApiError ? 'Connection Issues' : 'Online • Ready to help' }}
+          </span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="share-btn" (click)="shareConversation()" title="Share conversation">
+          <ng-icon name="tablerShare3" aria-hidden="true"></ng-icon>
+        </button>
+        <button class="minimize-btn" (click)="minimizeChat()" title="Minimize">
+          <ng-icon name="tablerMinus" aria-hidden="true"></ng-icon>
+        </button>
+        <button class="close-btn" (click)="closeChat()" title="Close">
+          <ng-icon name="tablerX" aria-hidden="true"></ng-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Body -->
+    <div class="chat-body" #chatBody>
+      <div class="messages-container">
+        <!-- Welcome message if no chat history -->
+        <div class="welcome-message" *ngIf="messages.length === 0" [@fadeInOut]>
+          <div class="welcome-content">
+            <h3>👋 Welcome to LLC Assistant!</h3>
+            <p>
+              I'm your AI-powered LLC formation specialist. I can help you with business formation, 
+              legal requirements, pricing, state regulations, and more. Let's get your business started!
+            </p>
+          </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div
+          class="message-wrapper"
+          *ngFor="let message of messages; trackBy: trackByMessageId"
+          [ngClass]="{
+            'user-message-wrapper': message.isUser,
+            'bot-message-wrapper': !message.isUser
+          }"
+          [@fadeInOut]
+        >
+          <div
+            class="message"
+            [ngClass]="{
+              'user-message': message.isUser,
+              'bot-message': !message.isUser,
+              'error-message': message.isError
+            }"
+          >
+            <div class="message-avatar" *ngIf="!message.isUser">
+              <span class="avatar-emoji">🤖</span>
+            </div>
+            <div class="message-avatar" *ngIf="message.isUser">
+              <span class="avatar-emoji"
+                ><ng-icon name="tablerUser"></ng-icon
+              ></span>
+            </div>
+            <div class="message-content">
+              <div class="message-text" [innerHTML]="formatMessageText(message.text)"></div>
+              <div class="message-time">
+                {{ formatTime(message.timestamp) }}
+              </div>
+              <!-- Retry button for error messages -->
+              <button 
+                *ngIf="message.isError && message.originalMessage" 
+                class="retry-btn" 
+                (click)="retryMessage(message.originalMessage!)"
+                title="Retry message"
+              >
+                <ng-icon name="tablerRefresh" aria-hidden="true"></ng-icon> Retry
+              </button>
+
+              <!-- Message Actions -->
+              <div class="message-actions" *ngIf="!message.isUser && !message.isError">
+                 <div class="feedback-actions">
+                    <ng-container *ngIf="!feedbackSent.has(message.id) && showFeedbackFormFor !== message.id">
+                        <button (click)="giveFeedback(message.id, 'like')" class="feedback-btn" [class.selected]="message.feedback === 'like'" title="Good response">
+                          <ng-icon name="tablerThumbUp"></ng-icon>
+                        </button>
+                        <button (click)="giveFeedback(message.id, 'dislike')" class="feedback-btn" [class.selected]="message.feedback === 'dislike'" title="Bad response">
+                          <ng-icon name="tablerThumbDown"></ng-icon>
+                        </button>
+                    </ng-container>
+                    <div *ngIf="feedbackSent.get(message.id)" class="feedback-thanks">
+                        Thanks for your feedback!
+                    </div>
+                 </div>
+                 <div class="copy-action">
+                    <span *ngIf="copiedMessageId === message.id" class="copied-text">Copied!</span>
+                    <button (click)="copyMessage(message.text, message.id)" class="copy-btn" title="Copy message">
+                      <ng-icon name="tablerCopy"></ng-icon>
+                    </button>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Feedback Form -->
+        <div class="feedback-form-wrapper" *ngIf="showFeedbackFormFor">
+          <div class="message bot-message">
+              <div class="message-avatar">
+                <span class="avatar-emoji">🤖</span>
+              </div>
+              <div class="message-content feedback-form">
+                <p>Please provide additional feedback.</p>
+                <div class="rating-stars">
+                  <span *ngFor="let star of [1,2,3,4,5]" (click)="currentRating = star" [class.filled]="star <= currentRating">★</span>
+                </div>
+                <textarea [(ngModel)]="feedbackText" placeholder="What did you not like about the response?"></textarea>
+                <div class="feedback-form-actions">
+                  <button (click)="submitFeedback(showFeedbackFormFor!)">Submit</button>
+                  <button (click)="cancelFeedback()">Cancel</button>
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" *ngIf="isTyping" [@fadeInOut]>
+          <div class="message bot-message">
+            <div class="message-avatar">
+              <span class="avatar-emoji">🤖</span>
+            </div>
+            <div class="message-content">
+              <div class="typing-animation">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Replies -->
+    <div class="quick-replies" *ngIf="!isTyping && messages.length > 0 && showQuickReplies">
+      <div class="quick-replies-label">Quick LLC questions:</div>
+      <div class="quick-replies-buttons">
+        <button
+          class="quick-reply-btn"
+          *ngFor="let reply of quickReplies"
+          (click)="sendQuickReply(reply)"
+        >
+          {{ reply.text }}
+        </button>
+      </div>
+    </div>
+
+    <!-- API Status Indicator -->
+    <div class="api-status" *ngIf="hasApiError" [@fadeInOut]>
+      <div class="status-message">
+        <ng-icon name="tablerAlertCircle" aria-hidden="true"></ng-icon>
+        Connection issues detected. Using fallback responses.
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-footer">
+      <div class="chat-input">
+        <input
+          type="text"
+          [(ngModel)]="currentMessage"
+          (keyup.enter)="sendMessage()"
+          placeholder="Ask me about LLC formation..."
+          [disabled]="isTyping"
+          maxlength="500"
+        />
+        <button
+          class="send-btn"
+          (click)="sendMessage()"
+          [disabled]="!currentMessage.trim() || isTyping"
+          title="Send message"
+          aria-label="Send message"
+        >
+          <span class="send-icon" *ngIf="!isTyping">
+            <ng-icon name="tablerSend" aria-hidden="true"></ng-icon>
+          </span>
+          <span class="loading-spinner" *ngIf="isTyping">
+            <mat-progress-spinner
+              diameter="20"
+              mode="indeterminate"
+              [strokeWidth]="3"
+              class="custom-spinner"
+            ></mat-progress-spinner>
+          </span>
+        </button>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="chat-footer-actions">
+        <button
+          class="footer-action-btn"
+          (click)="clearHistory()"
+          title="Clear chat history"
+        >
+          <ng-icon name="tablerTrash" aria-hidden="true"></ng-icon> Clear
+          History
+        </button>
+        <div class="powered-by">Powered by Gemini AI</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backdrop for mobile -->
+  <div
+    class="chat-backdrop"
+    *ngIf="isOpen"
+    (click)="closeChat()"
+    [@fadeInOut]
+  ></div>
+</ng-container>
+

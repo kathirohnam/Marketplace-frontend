@@ -1,0 +1,167 @@
+<!-- Listing and total number of counts -->
+
+<div class="row">
+  <div class="col-sm-6 col-lg-4">
+    <mat-card class="shadow-none">
+      <div
+        class="p-30 bg-light-primary text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('')"
+      >
+        <h3 class="f-s-24 text-primarycolor f-w-600 m-0 m-b-4">
+          {{ totalCount }}
+        </h3>
+        <h6 class="text-primary f-w-600 m-0 f-s-16">Total Count</h6>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <mat-card class="shadow-none">
+      <div
+        class="p-30 bg-light-warning text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('vendor')"
+      >
+        <h3 class="f-s-24 text-primarycolor m-0 m-b-4">
+          {{ countAdminsByRole("Vendor") }}
+        </h3>
+        <h6 class="text-warning f-w-600 m-0 f-s-16">Vendors</h6>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <mat-card class="shadow-none">
+      <div
+        class="p-30 bg-light-success text-center cursor-pointer rounded"
+        (click)="btnCategoryClick('superfiler')"
+      >
+        <h3 class="f-s-24 text-primarycolor m-0 m-b-4">
+          {{ countAdminsByRole("SuperFiler") }}
+        </h3>
+        <h6 class="text-success f-w-600 m-0 f-s-16">SuperFilers</h6>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Add and search admins -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="row justify-content-between gap-16">
+      <div class="col-sm-4">
+        <mat-form-field appearance="outline" class="hide-hint">
+          <input
+            matInput
+            (keyup)="onKeyup($event)"
+            [(ngModel)]="searchValue"
+            placeholder="Search"
+          />
+          <mat-icon matSuffix>
+            <ng-icon name="tablerSearch" class="icon-24 d-flex justify-content-center align-items-center"></ng-icon>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4 d-flex justify-content-end align-items-center">
+        <button
+          mat-flat-button
+          class="button-all"
+          (click)="navigateToAdminForm()"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<!-- Table -->
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100 f-w-500 no-wrap">
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Email
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            First Name
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Last Name
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Phone
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Role</th>
+          <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              (click)="navigateToAdminForm(element)"
+              class="m-r-10 cursor-pointer"
+              ><ng-icon name="tablerPencil" class="icon-24 "></ng-icon>
+            </a>
+            <a (click)="deleteAdmin(element)" class="m-r-10 cursor-pointer"
+              ><ng-icon name="tablerTrash" class="icon-24 "></ng-icon>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td
+            class="mat-cell p-24 text-center"
+            [attr.colspan]="displayedColumns.length"
+          >
+            <div class="empty-state">
+              <mat-icon color="warn">info</mat-icon>
+              <div class="f-s-14 m-t-8">
+                <ng-container *ngIf="searchValue; else noUsers">
+                  No users match your search criteria.
+                </ng-container>
+                <ng-template #noUsers> No user records found. </ng-template>
+              </div>
+              <button
+                *ngIf="searchValue"
+                mat-stroked-button
+                color="primary"
+                class="m-t-12"
+                (click)="clearSearch()"
+              >
+                Clear Search
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </mat-card-content>
+</mat-card>

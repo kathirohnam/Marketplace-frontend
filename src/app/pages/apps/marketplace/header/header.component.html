@@ -1,0 +1,21 @@
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Brand (no icon, just the wordmark) -->
+    <div class="brand">
+      <h1 class="brand-name">ClearCorp</h1>
+    </div>
+
+    <!-- SINGLE NAV -->
+    <nav class="main-nav">
+      <button class="nav-link" [class.active]="activeTab==='home'" (click)="select('home')">Home</button>
+      <button class="nav-link" [class.active]="activeTab==='services'" (click)="select('services')">Services</button>
+      <button class="nav-link" [class.active]="activeTab==='about'" (click)="select('about')">About</button>
+      <button class="nav-link" [class.active]="activeTab==='contact'" (click)="select('contact')">Contact</button>
+    </nav>
+
+    <!-- CTA pinned right -->
+    <div class="cta">
+      <button (click)="onJoinNow()" class="btn-primary">Join Now</button>
+    </div>
+  </div>
+</header>

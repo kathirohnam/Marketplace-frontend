@@ -1,0 +1,25 @@
+<!-- <mat-progress-bar
+  *ngIf="loadingService.loading$()"
+  mode="query"
+  class="loading-bar">
+</mat-progress-bar> -->
+
+<div class="loading-overlay" *ngIf="loadingService.loading$()">
+  <div class="loading-content">
+    <!-- Realistic horse animation -->
+    <ng-lottie
+      [options]="lottieOptions"
+      [styles]="{ width: '120px', height: '120px' }">
+    </ng-lottie>
+    
+<p class="spinner-message" *ngIf="!loadingService.loadingMessage$()">
+      Loading...
+    </p>
+    <p class="spinner-message" *ngIf="loadingService.loadingMessage$()">
+      {{ loadingService.loadingMessage$() }}
+    </p>
+  </div>
+</div>
+<app-floating-chatbot></app-floating-chatbot>
+
+<router-outlet></router-outlet>

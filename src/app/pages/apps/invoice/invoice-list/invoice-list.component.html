@@ -1,0 +1,386 @@
+<div class="invoice-tab-main">
+  <div class="row">
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="invoice-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab() === 'All' }"
+        (click)="handleTabClick('All')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerListDetails"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">Total</h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{
+                isAdmin() ? totalItems : invoiceService.invoices().length
+              }}
+              invoices
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="invoice-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab() === 'Shipped' }"
+        (click)="handleTabClick('Shipped')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerShoppingBag"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">Shipped</h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countInvoicesByStatus("Shipped") }} invoices
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="invoice-tab cardWithShadow cursor-pointer bg-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab() === 'Delivered' }"
+        (click)="handleTabClick('Delivered')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerTruck"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">Delivered</h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countInvoicesByStatus("Delivered") }} invoices
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <mat-card
+        class="invoice-tab cardWithShadow cursor-pointer bg-light-white shadow-none"
+        [ngClass]="{ 'active-tab': activeTab() === 'Pending' }"
+        (click)="handleTabClick('Pending')"
+      >
+        <mat-card-content class="p-24 d-flex align-items-center gap-16">
+          <div
+            class="icon icon-38 rounded d-flex align-items-center justify-content-center bg-light-infocolor"
+          >
+            <ng-icon
+              name="tablerSortAscending"
+              class="icon-24 d-flex text-primarycolor"
+            ></ng-icon>
+          </div>
+          <div class="info">
+            <h5 class="mat-subtitle-1 f-w-400 lh-sm f-s-14">Pending</h5>
+            <h5 class="mat-subtitle-1 f-w-500 lh-sm f-s-14">
+              {{ countInvoicesByStatus("Pending") }} invoices
+            </h5>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="row justify-content-between align-items-center">
+      <div class="col-sm-12 col-md-4 tablerSearch-field">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Search Invoice"
+            [(ngModel)]="searchValue"
+            (keydown.enter)="isAdmin() ? onSearch(searchValue) : null"
+            (keyup)="!isAdmin() ? onSearch($any($event.target).value) : null"
+            aria-label="Search Invoice"
+          />
+
+          <button
+            mat-icon-button
+            matSuffix
+            aria-label="Search"
+            (click)="isAdmin() ? onSearch(searchValue) : null"
+          >
+            <mat-icon matSuffix
+              ><ng-icon name="tablerSearch" class="icon-24 d-flex justify-content-center align-items-center"></ng-icon
+            ></mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <!-- Add Invoice button + tablerRefresh -->
+      <!-- <div class="col-sm-4 d-flex align-items-center justify-content-end gap-2"> -->
+      <!-- ➕ Add Invoice Button: only for admin -->
+      <!-- <a *ngIf="isAdmin()" mat-flat-button color="primary" [routerLink]=""
+          >Add Invoice</a
+        > -->
+
+      <!-- 🔄 Refresh Button: for all users -->
+      <!-- <button
+          *ngIf="!isAdmin()"
+          mat-icon-button
+          (click)="refreshInvoiceList()"
+          matTooltip="Refresh Invoice List"
+        >
+          <ng-icon name="tablerRefresh" class="icon-20"></ng-icon>
+        </button> -->
+      <!-- </div> -->
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="table-responsive">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="no-wrap m-t-0 v-middle w-100"
+      >
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="f-w-600 f-s-16 text-center"
+          >
+            Id
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.id }}
+          </td>
+        </ng-container>
+
+        <!-- Invoice -->
+        <ng-container matColumnDef="invoiceId">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="f-w-600 f-s-16 text-center"
+          >
+            Invoice
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.invoiceId || "N/A" }}
+          </td>
+        </ng-container>
+
+        <!-- Due Paid -->
+        <ng-container matColumnDef="duePaid">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="f-w-600 f-s-16 text-center"
+          >
+            Due Paid
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.orderDate | date : "mediumDate" }}
+          </td>
+        </ng-container>
+
+        <!-- Company -->
+        <ng-container matColumnDef="company">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="f-w-600 f-s-16 text-center"
+          >
+            Company
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.billTo }}
+          </td>
+        </ng-container>
+
+        <!-- Total Cost -->
+        <ng-container matColumnDef="totalCost">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="f-w-600 f-s-16 text-center"
+          >
+            Total Cost
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            ${{ element.grandTotal }}
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="f-w-600 f-s-16 text-center"
+          >
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            <span
+              class="p-x-8 p-y-4 f-w-600 rounded-pill f-s-12"
+              [ngStyle]="{
+                'background-color':
+                  element.status === 'Shipped'
+                    ? 'rgb(93, 135, 255)'
+                    : element.status === 'succeeded'
+                    ? 'rgb(19, 222, 185)'
+                    : element.status === 'Pending'
+                    ? 'rgb(255, 174, 31)'
+                    : 'transparent',
+                color: 'white'
+              }"
+            >
+              {{ element.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Action -->
+        <ng-container matColumnDef="action">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="f-w-600 f-s-16 text-center"
+          >
+            Action
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="d-flex align-items-center justify-content-center text-center"
+          >
+            <!-- For admin: show edit, view, and delete buttons -->
+            <ng-container *ngIf="isAdmin(); else userActions">
+              <a mat-icon-button>
+                <ng-icon name="tablerPencil" class="icon-22 d-flex justify-content-center align-items-center "></ng-icon>
+              </a>
+              <a mat-icon-button (click)="navigateToView(element.id)">
+                <ng-icon name="tablerEye" class="icon-22 d-flex justify-content-center align-items-center"></ng-icon>
+              </a>
+              <button mat-icon-button>
+                <ng-icon name="tablerTrash" class="icon-22 d-flex justify-content-center align-items-center"></ng-icon>
+              </button>
+            </ng-container>
+            <!-- For non-admin users: only display the view button -->
+            <ng-template #userActions>
+              <a
+                mat-icon-button
+                [routerLink]="['/apps/viewInvoice/', element.id]"
+              >
+                <ng-icon name="tablerEye" class="icon-22 d-flex justify-content-center align-items-center"></ng-icon>
+              </a>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <!-- No Data Row -->
+        <div *ngIf="isAdmin()">
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell p-24 text-center"
+              [attr.colspan]="displayedColumns.length"
+            >
+              <div class="empty-state">
+                <mat-icon color="warn">info</mat-icon>
+                <div class="f-s-14 m-t-8">
+                  <ng-container *ngIf="searchValue; else noRecords">
+                    No invoices match your search criteria.
+                  </ng-container>
+                  <ng-template #noRecords>
+                    There are currently no invoices to display.
+                  </ng-template>
+                </div>
+                <button
+                  *ngIf="searchValue"
+                  mat-stroked-button
+                  color="primary"
+                  class="m-t-12"
+                  (click)="clearSearch()"
+                >
+                  Clear Search
+                </button>
+              </div>
+            </td>
+          </tr>
+        </div>
+        <div *ngIf="!isAdmin()">
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell p-24 text-center"
+              [attr.colspan]="displayedColumns.length"
+            >
+              <div
+                class="align-items-center justify-content-center one d-lg-flex flex-column text-center"
+                style="margin-top: 30px; padding: 0"
+              >
+                <h4
+                  class="fw-bold"
+                  style="margin: 0; padding: 0; line-height: 1.5"
+                >
+                  No Data Found
+                </h4>
+                <p
+                  class="text-primary"
+                  style="margin: 0; padding: 0; line-height: 1"
+                >
+                  There is no data to show you right now
+                </p>
+              </div>
+            </td>
+          </tr>
+        </div>
+      </table>
+
+      <mat-paginator
+        *ngIf="isAdmin()"
+        [length]="totalItems"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 8, 10]"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+
+      <mat-paginator
+        *ngIf="!isAdmin()"
+        [pageSizeOptions]="[5, 8, 10]"
+        [pageSize]="pageSize"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

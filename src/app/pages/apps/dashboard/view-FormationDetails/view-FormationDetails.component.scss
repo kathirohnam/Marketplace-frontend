@@ -1,0 +1,56 @@
+@use 'src/variables' as *;
+.view-title {
+  color: $primary-color;
+   margin-bottom: 0;     /* remove default Bootstrap margin */
+  line-height: 1.4;  
+}
+::ng-deep .mat-step-header .mat-step-icon {
+    display: none !important; // Hides the step numbers
+  }
+  ::ng-deep .mat-stepper-horizontal-line {
+    display: none !important; // Hides the stepper line between steps
+  }
+  ::ng-deep .mat-step-header {
+    overflow: visible !important; // Override overflow if needed
+    outline: none !important;
+    cursor: default !important; // Disable pointer cursor
+    position: static !important;
+    box-sizing: border-box !important;
+    -webkit-tap-highlight-color: transparent !important;
+    pointer-events: none !important; // Disable clicks
+  }
+  ::ng-deep .mat-horizontal-stepper-header-container {
+    white-space: normal !important; // Allows wrapping if needed
+    display: none !important; // Completely hides the step headers
+    align-items: flex-start !important; // Adjusts alignment
+  } 
+  .scroll-container {
+    max-height: 110px;
+    overflow-y: auto;
+    overflow-x: hidden; 
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: #bdbdbd;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: #f5f5f5;
+    }
+    
+  }
+  .scroll-container-member {
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden; 
+    &::-webkit-scrollbar-thumb {
+      background-color: #bdbdbd;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: #f5f5f5;
+    }
+  
+  }
+  
